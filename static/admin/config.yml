@@ -1,0 +1,996 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+locale: de
+
+i18n:
+  # Required and can be one of multiple_folders, multiple_files or single_file
+  # multiple_folders - persists files in `<folder>/<locale>/<slug>.<extension>`
+  # multiple_files - persists files in `<folder>/<slug>.<locale>.<extension>`
+  # single_file - persists a single file in `<folder>/<slug>.<extension>`
+  structure: multiple_files
+
+  # Required - a list of locales to show in the editor UI
+  locales: [de, en, fr]
+
+  # Optional, defaults to the first item in locales.
+  # The locale to be used for fields validation and as a baseline for the entry.
+  default_locale: de
+
+  # Optional, defaults to true
+  # When true, new entries will be created with all locales pre-filled with the value of the default locale.
+  # When false, new entries will be created with no values.
+  default_missing_locale_values: true
+
+media_folder: static/
+public_folder: /
+
+collections:
+  - name: 'seiten'
+    label: 'Seiten'
+    format: 'frontmatter'
+    extension: 'md'
+    folder: 'content/seiten'
+    create: true
+    sortable_fields: ['title']
+    slug: '{{fields.slug}}'
+    i18n: true
+    editor:
+      preview: false
+    fields:
+      - {
+          label: 'Seitentitel',
+          name: 'siteTitle',
+          widget: 'string',
+          i18n: true,
+        }
+      - {
+          label: 'Permalink',
+          name: 'slug',
+          widget: 'string',
+          i18n: true,
+          hint: 'Link unter dem der Beitrag aufrufbar sein soll (z.B. mein-beitrag)',
+          required: false,
+        }
+      - label: 'Meta Titel'
+        name: 'metaTitle'
+        widget: 'string'
+        i18n: true
+        required: false
+
+      - label: 'Meta Beschreibung'
+        name: 'metaDescription'
+        widget: 'string'
+        i18n: true
+        required: false
+
+      - label: 'Seiten Komponenten'
+        name: 'components'
+        widget: 'list'
+        i18n: true
+        types:
+          - label: 'Textblock'
+            name: 'contentblock'
+            widget: 'list'
+            i18n: true
+            summary: '{{fields.mainHeadline}}'
+            fields:
+              - {
+                  label: 'Überschrift',
+                  name: 'mainHeadline',
+                  widget: 'string',
+                  i18n: true,
+                  required: false,
+                }
+              - {
+                  label: 'unter Überschrift',
+                  name: 'subHeadline',
+                  widget: 'string',
+                  required: false,
+                  i18n: true,
+                }
+              - {
+                  label: 'Highlight',
+                  name: 'highlight',
+                  widget: 'boolean',
+                  required: false,
+                  i18n: false,
+                }
+              - {
+                  label: 'Textinhalt',
+                  name: 'contentText',
+                  widget: 'markdown',
+                  required: false,
+                  i18n: true,
+                }
+              - label: 'Button'
+                name: 'button'
+                widget: 'object'
+                required: false
+                collapsed: true
+                i18n: true
+                fields:
+                  - label: 'Button Text'
+                    name: 'buttonText'
+                    widget: 'string'
+                    required: false
+                    i18n: true
+                  - label: 'Button Link'
+                    name: 'buttonLink'
+                    widget: 'string'
+                    required: false
+                    i18n: true
+                  - label: 'Button Icon'
+                    name: 'buttonIcon'
+                    widget: 'boolean'
+                    required: false
+                    i18n: false
+
+              - label: 'Bildblock'
+                name: 'imageblock'
+                widget: 'object'
+                i18n: false
+                collapsed: true
+                required: false
+                default: false
+                fields:
+                  - {
+                      label: 'Bild',
+                      name: 'image',
+                      widget: 'image',
+                      required: false,
+                      i18n: false,
+                      default: false,
+                    }
+                  - label: 'Gallerie'
+                    name: 'galery'
+                    widget: 'list'
+                    required: false
+                    i18n: true
+                    default: false
+                    fields:
+                      - {
+                          label: 'Bild',
+                          name: 'image',
+                          widget: 'image',
+                          required: false,
+                          i18n: true,
+                        }
+                  - label: '3D Viewer'
+                    name: 'sphereViewer'
+                    widget: 'boolean'
+                    required: false
+                    i18n: false
+                    default: false
+                  - {
+                      label: 'Hintergrundbild',
+                      name: 'backgroundImage',
+                      widget: 'image',
+                      required: false,
+                      i18n: false,
+                    }
+
+              - {
+                  label: 'Map',
+                  name: 'map',
+                  widget: 'object',
+                  required: false,
+                  i18n: false,
+                  collapsed: true,
+                  default: false,
+                  fields:
+                    [
+                      {
+                        label: 'zeige Map',
+                        name: 'showMap',
+                        widget: 'boolean',
+                        required: false,
+                        i18n: false,
+                        default: false,
+                      },
+                      {
+                        label: 'Map',
+                        name: 'map',
+                        widget: 'map',
+                        required: false,
+                        i18n: false,
+                      },
+                      {
+                        label: 'Maps API Key',
+                        name: 'api_key',
+                        widget: 'string',
+                        required: false,
+                        i18n: false,
+                      },
+                    ],
+                }
+
+              - {
+                  label: 'Kontaktformular',
+                  name: 'contactForm',
+                  widget: 'boolean',
+                  required: false,
+                  i18n: false,
+                  default: false,
+                }
+
+              - {
+                  label: 'Container ID',
+                  name: 'containerId',
+                  widget: 'string',
+                  required: false,
+                }
+          - label: "Getränkekarte"
+            name: "getraenkekarte"
+            widget: "object"
+            i18n: true
+            collapsed: true
+            required: false
+            fields:
+              - label: 'Speisekarte'
+                name: 'speisekarte'
+                widget: 'list'
+                required: false
+                i18n: true
+                default: false
+                fields:
+                  - label: 'Kategorie'
+                    name: 'category'
+                    widget: 'string'
+                    required: false
+                    i18n: true
+                  - label: 'Getränke'
+                    name: 'getraenke'
+                    widget: 'list'
+                    required: false
+                    i18n: true
+                    fields:
+                      - label: 'Getränk'
+                        name: 'name'
+                        widget: 'markdown'
+                        required: false
+                        i18n: true
+                      - label: 'Preis erstes Getränk'
+                        name: 'first_price'
+                        widget: 'string'
+                        required: false
+                        i18n: true
+                      - label: 'Preis zweites Getränk'
+                        name: 'second_price'
+                        widget: 'string'
+                        required: false
+                        i18n: true
+
+          - label: 'Job Formular'
+            name: 'jobForm'
+            widget: 'object'
+            required: false
+            i18n: true
+            fields:
+              - {
+                  label: 'Formular einbinden',
+                  name: 'embedForm',
+                  widget: 'boolean',
+                  i18n: true,
+                  required: false,
+                }
+
+          - label: 'FAQ'
+            name: 'faq'
+            widget: 'list'
+            required: false
+            i18n: true
+            default: false
+            fields:
+              - {
+                  label: 'Überschrift',
+                  name: 'mainHeadline',
+                  widget: 'string',
+                  i18n: true,
+                  required: false,
+                }
+              - {
+                  label: 'unter Überschrift',
+                  name: 'subHeadline',
+                  widget: 'string',
+                  required: false,
+                  i18n: true,
+                }
+              - {
+                  label: 'Highlight',
+                  name: 'highlight',
+                  widget: 'boolean',
+                  required: false,
+                  i18n: false,
+                }
+              - {
+                  label: 'Textinhalt',
+                  name: 'contentText',
+                  widget: 'markdown',
+                  required: false,
+                  i18n: true,
+                }
+              - label: 'Button'
+                name: 'button'
+                widget: 'object'
+                required: false
+                collapsed: true
+                i18n: true
+                fields:
+                  - label: 'Button Text'
+                    name: 'buttonText'
+                    widget: 'string'
+                    required: false
+                    i18n: true
+                  - label: 'Button Link'
+                    name: 'buttonLink'
+                    widget: 'string'
+                    required: false
+                    i18n: true
+                  - label: 'Button Icon'
+                    name: 'buttonIcon'
+                    widget: 'boolean'
+                    required: false
+                    i18n: false
+
+              - label: 'FAQ'
+                name: 'faq'
+                widget: 'list'
+                required: false
+                i18n: true
+                default: false
+                fields:
+                  - {
+                      label: 'Frage',
+                      name: 'question',
+                      widget: 'string',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'Antwort',
+                      name: 'answer',
+                      widget: 'markdown',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'geöffnet',
+                      name: 'open',
+                      widget: 'boolean',
+                      required: false,
+                      default: false,
+                    }
+
+          - label: 'Blöcke'
+            name: 'blocks'
+            widget: 'object'
+            summary: '{{fields.title}}'
+            i18n: true
+            required: false
+            fields:
+              - label: 'Titel'
+                name: 'title'
+                widget: 'string'
+                required: false
+                i18n: true
+
+              - label: 'Block'
+                name: 'block'
+                widget: 'list'
+                summary: '{{fields.blockTitle}}'
+                i18n: true
+                required: false
+                fields:
+                  - {
+                      label: 'Icon',
+                      name: 'icon',
+                      widget: 'image',
+                      required: false,
+                      i18n: false,
+                    }
+                  - {
+                      label: 'Überschrift',
+                      name: 'blockTitle',
+                      widget: 'string',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'Text',
+                      name: 'body',
+                      widget: 'markdown',
+                      required: false,
+                      i18n: true,
+                    }
+                  - label: 'Link'
+                    name: 'link'
+                    widget: 'object'
+                    required: false
+                    i18n: true
+                    fields:
+                      - label: 'Link Text'
+                        name: 'linkText'
+                        widget: 'string'
+                        required: false
+                        i18n: true
+
+                      - label: 'Link'
+                        name: 'link'
+                        widget: 'string'
+                        required: false
+                        i18n: true
+
+                      - label: 'Link Download'
+                        name: 'linkDownload'
+                        widget: 'file'
+                        required: false
+                        i18n: true
+                  - {
+                      label: 'ID',
+                      name: 'block_id',
+                      widget: 'string',
+                      required: false,
+                      i18n: false,
+                    }
+
+          - label: 'Kompetenzblöcke'
+            name: 'competenciesBlocks'
+            widget: 'object'
+            i18n: true
+            required: false
+            fields:
+              - {
+                  label: 'Titel',
+                  name: 'title',
+                  widget: 'string',
+                  required: false,
+                  i18n: true,
+                }
+              - label: 'Kompetenzen'
+                name: 'competencies'
+                widget: 'relation'
+                collection: 'kompetenzen'
+                required: false
+                multiple: true
+                i18n: false
+                value_field: '{{slug}}'
+                search_fields: ['competenceName']
+                display_fields: ['competenceName']
+
+          - label: 'Product Vorschau'
+            name: 'productPreview'
+            widget: 'object'
+            summary: '{{fields.product}}'
+            i18n: true
+            fields:
+              - label: 'Produkt'
+                name: 'product'
+                widget: 'relation'
+                required: false
+                i18n: true
+                collection: 'produkte'
+                value_field: '{{slug}}'
+                search_fields: ['productTitle']
+                display_fields: ['productTitle']
+              - label: 'Bild/er'
+                name: 'productImage'
+                widget: 'image'
+                required: false
+                i18n: true
+              - label: 'Bild/er Mobil'
+                name: 'productMobileImage'
+                widget: 'image'
+                required: false
+                i18n: true
+              - label: 'Marker'
+                name: 'productImageMarkerPosition'
+                widget: 'object'
+                required: false
+                i18n: true
+                fields:
+                  - {
+                      label: 'Unten',
+                      name: 'bottom',
+                      widget: 'number',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'links',
+                      name: 'left',
+                      widget: 'number',
+                      required: false,
+                      i18n: true,
+                    }
+              - label: 'Titel'
+                name: 'productTitle'
+                widget: 'string'
+                required: false
+                i18n: true
+              - label: 'Beschreibung'
+                name: 'productDescription'
+                widget: 'markdown'
+                required: false
+                i18n: true
+              - label: 'Zitat'
+                name: 'productQuote'
+                widget: 'string'
+                required: false
+                i18n: true
+              - label: 'Call To Action'
+                name: 'productCtaLink'
+                widget: 'relation'
+                required: false
+                i18n: true
+                collection: 'seiten'
+                value_field: '{{slug}}'
+                search_fields: ['siteTitle']
+                display_fields: ['siteTitle']
+              - label: 'Call To Action Text'
+                name: 'productCtaText'
+                widget: 'string'
+                required: false
+                i18n: true
+
+          - label: 'Karten'
+            name: 'cards'
+            widget: 'object'
+            summary: '{{fields.cardsTitle}}'
+            i18n: true
+            fields:
+              - {
+                  label: 'Überschrift',
+                  name: 'cardsTitle',
+                  widget: 'string',
+                  required: false,
+                  i18n: true,
+                }
+              - label: 'Karte'
+                name: 'card'
+                widget: 'list'
+                summary: '{{fields.cardTitle}}'
+                i18n: true
+                fields:
+                  - {
+                      label: 'Überschrift',
+                      name: 'cardTitle',
+                      widget: 'string',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'Textinhalt',
+                      name: 'cardText',
+                      widget: 'markdown',
+                      required: false,
+                      i18n: true,
+                    }
+                  - label: 'Bild/er'
+                    name: 'cardImage'
+                    widget: 'image'
+                    required: false
+                    i18n: true
+                  - label: 'Link'
+                    name: 'cardLink'
+                    widget: 'string'
+                    required: false
+                    i18n: false
+
+          - label: 'News'
+            name: 'news'
+            widget: 'object'
+            summary: '{{fields.news}}'
+            i18n: true
+            fields:
+              - label: 'Titel'
+                name: 'title'
+                widget: 'string'
+                required: false
+                i18n: true
+              - label: 'Aktuelle News einbinden'
+                name: 'embedNews'
+                widget: 'boolean'
+                i18n: true
+                default: false
+              - label: 'News Kategorien'
+                name: 'newsCategories'
+                widget: 'relation'
+                required: false
+                i18n: true
+                collection: 'category'
+                multiple: true
+                value_field: '{{slug}}'
+                search_fields: ['categoryTitle']
+                display_fields: ['categoryTitle']
+
+          - label: 'Team'
+            name: 'team'
+            widget: 'object'
+            summary: '{{fields.name}}'
+            i18n: true
+            fields:
+              - label: 'Titel'
+                name: 'title'
+                widget: 'string'
+                required: false
+                i18n: true
+              - label: 'Teammitglied'
+                name: 'teamMember'
+                widget: 'list'
+                i18n: true
+                summary: '{{fields.name}} - {{fields.position}}'
+                fields:
+                  - {
+                      label: 'Name',
+                      name: 'name',
+                      widget: 'string',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'Position',
+                      name: 'position',
+                      widget: 'string',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'Bild',
+                      name: 'image',
+                      widget: 'image',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'E-Mail',
+                      name: 'email',
+                      widget: 'string',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'Telefon',
+                      name: 'phone',
+                      widget: 'string',
+                      required: false,
+                      i18n: true,
+                    }
+
+          - label: 'Reihe'
+            name: 'row'
+            widget: 'object'
+            summary: '{{fields.textImageBlockTitle}}'
+            i18n: true
+            fields:
+              - label: 'Komponente'
+                name: 'component'
+                widget: 'list'
+                i18n: true
+                types:
+                  - label: 'Bildblock'
+                    name: 'imageblock'
+                    widget: 'object'
+                    i18n: false
+                    collapsed: true
+                    required: false
+                    default: false
+                    fields:
+                      - {
+                          label: 'Bild',
+                          name: 'image',
+                          widget: 'image',
+                          required: false,
+                          i18n: false,
+                          default: false,
+                        }
+                      - label: 'Gallerie'
+                        name: 'galery'
+                        widget: 'list'
+                        required: false
+                        i18n: true
+                        default: false
+                        fields:
+                          - {
+                              label: 'Bild',
+                              name: 'image',
+                              widget: 'image',
+                              required: false,
+                              i18n: true,
+                            }
+                      - label: '3D Viewer'
+                        name: 'sphereViewer'
+                        widget: 'boolean'
+                        required: false
+                        i18n: false
+                        default: false
+                      - {
+                          label: 'Hintergrundbild',
+                          name: 'backgroundImage',
+                          widget: 'image',
+                          required: false,
+                          i18n: false,
+                        }
+                  - label: 'Textblock'
+                    name: 'Textblock'
+                    widget: 'object'
+                    i18n: true
+                    collapsed: true
+                    required: false
+                    fields:
+                      - {
+                          label: 'Überschrift',
+                          name: 'mainHeadline',
+                          widget: 'string',
+                          i18n: true,
+                          required: false,
+                        }
+                      - {
+                          label: 'unter Überschrift',
+                          name: 'subHeadline',
+                          widget: 'string',
+                          required: false,
+                          i18n: true,
+                        }
+                      - {
+                          label: 'Highlight',
+                          name: 'highlight',
+                          widget: 'boolean',
+                          required: false,
+                          i18n: false,
+                        }
+                      - {
+                          label: 'Textinhalt',
+                          name: 'contentText',
+                          widget: 'markdown',
+                          required: false,
+                          i18n: true,
+                        }
+
+                      - label: 'Button'
+                        name: 'button'
+                        widget: 'object'
+                        required: false
+                        collapsed: true
+                        i18n: true
+                        fields:
+                          - label: 'Button Text'
+                            name: 'buttonText'
+                            widget: 'string'
+                            required: false
+                            i18n: true
+                          - label: 'Button Link'
+                            name: 'buttonLink'
+                            widget: 'string'
+                            required: false
+                            i18n: true
+                          - label: 'Button Icon'
+                            name: 'buttonIcon'
+                            widget: 'boolean'
+                            required: false
+                            i18n: false
+                  - label: 'Speisekartenblock'
+                    name: 'speisekartenblock'
+                    widget: 'object'
+                    i18n: true
+                    collapsed: true
+                    required: false
+                    fields:
+                      - label: 'Speisekarte'
+                        name: 'speisekarte'
+                        widget: 'list'
+                        required: false
+                        i18n: true
+                        default: false
+                        fields:
+                          - label: 'Kategorie'
+                            name: 'category'
+                            widget: 'string'
+                            required: false
+                            i18n: true
+
+                          - label: 'Getränke'
+                            name: 'getraenke'
+                            widget: 'list'
+                            required: false
+                            i18n: true
+                            fields:
+                              - label: 'Getränk'
+                                name: 'name'
+                                widget: 'markdown'
+                                required: false
+                                i18n: true
+                              - label: 'Preis erstes Getränk'
+                                name: 'first_price'
+                                widget: 'string'
+                                required: false
+                                i18n: true
+                              - label: 'Preis zweites Getränk'
+                                name: 'second_price'
+                                widget: 'string'
+                                required: false
+                                i18n: true
+
+      - { label: 'ID', name: 'id', widget: 'uuid' }
+
+  - name: 'blog'
+    label: 'Blog & News'
+    format: 'frontmatter'
+    extension: 'md'
+    folder: 'content/blog'
+    slug: '{{fields.title}}'
+    create: true
+    view_groups:
+      - label: Jahren
+        field: date
+        # groups items based on the value matched by the pattern
+        pattern: \d{4}
+      - label: Kategorie
+        field: category
+        # groups items based on the value matched by the pattern
+        pattern: \w+
+    #make sortable by date field
+    sortable_fields: ['date']
+    i18n: true
+    editor:
+      preview: false
+    fields:
+      - { label: 'Titel', name: 'title', widget: 'string', i18n: true }
+      - {
+          label: 'Permalink',
+          name: 'slug',
+          widget: 'string',
+          i18n: true,
+          hint: 'Link unter dem der Beitrag aufrufbar sein soll (z.B. mein-beitrag)',
+          required: false,
+        }
+      - {
+          label: 'Beschreibung',
+          name: 'excerpt',
+          widget: 'markdown',
+          i18n: true,
+          required: false,
+        }
+      - {
+          label: 'Datum',
+          name: 'date',
+          widget: 'datetime',
+          i18n: true,
+          required: false,
+        }
+      - {
+          label: 'Autor',
+          name: 'author',
+          widget: 'string',
+          i18n: true,
+          required: false,
+        }
+      - {
+          label: 'Bild',
+          name: 'image',
+          widget: 'image',
+          required: false,
+          i18n: true,
+        }
+      - {
+          label: 'Inhalt',
+          name: 'body',
+          widget: 'markdown',
+          i18n: true,
+          required: false,
+        }
+      - label: 'Kategorien'
+        name: 'category'
+        widget: 'relation'
+        collection: 'blogkategorien'
+        value_field: '{{slug}}'
+        search_fields: ['categoryTitle']
+        display_fields: ['categoryTitle']
+        i18n: true
+        required: true
+
+  - name: 'menu'
+    label: 'Menü'
+    format: 'json'
+    folder: 'content/menu'
+    slug: '{{slug}}'
+    display_fields: ['titel']
+    i18n: true
+    create: true
+    editor:
+      preview: false
+    fields:
+      - name: 'titel'
+        label: 'Titel'
+        widget: 'string'
+        required: true
+      - name: 'links'
+        label: 'Links'
+        widget: 'list'
+        fields:
+          - name: 'siteTitle'
+            label: 'Titel'
+            widget: 'string'
+            required: true
+          - name: 'siteLink'
+            label: 'Link'
+            widget: 'relation'
+            required: false
+            collection: 'seiten'
+            value_field: 'slug'
+            search_fields: ['siteTitle']
+            display_fields: ['siteTitle']
+          - name: 'subLinks'
+            label: 'Unterseiten'
+            widget: 'list'
+            required: false
+            fields:
+              - name: 'siteTitle'
+                label: 'Titel'
+                widget: 'string'
+                required: true
+              - name: 'siteLink'
+                label: 'Link'
+                widget: 'relation'
+                required: false
+                collection: 'seiten'
+                value_field: '{{slug}}'
+                search_fields: ['siteTitle']
+                display_fields: ['siteTitle']
+          - name: 'featuredProducts'
+            label: 'Produkte'
+            widget: 'relation'
+            required: false
+            collection: 'produkte'
+            multiple: true
+            value_field: '{{slug}}'
+            search_fields: ['productTitle']
+            display_fields: ['productTitle']
+          - name: 'featuredCompetencies'
+            label: 'Kompetenzen'
+            widget: 'relation'
+            required: false
+            collection: 'kompetenzen'
+            multiple: true
+            value_field: '{{slug}}'
+            search_fields: ['competenceName']
+            display_fields: ['competenceName']
+          - label: 'Karten'
+            name: 'cards'
+            widget: 'object'
+            summary: '{{fields.cardsTitle}}'
+            i18n: true
+            fields:
+              - label: 'Karte'
+                name: 'card'
+                widget: 'list'
+                summary: '{{fields.cardTitle}}'
+                i18n: true
+                fields:
+                  - {
+                      label: 'Überschrift',
+                      name: 'cardTitle',
+                      widget: 'string',
+                      required: false,
+                      i18n: true,
+                    }
+                  - {
+                      label: 'Textinhalt',
+                      name: 'cardText',
+                      widget: 'markdown',
+                      required: false,
+                      i18n: true,
+                    }
+                  - label: 'Bild/er'
+                    name: 'cardImage'
+                    widget: 'image'
+                    required: false
+                    i18n: true
+                  - label: 'Link'
+                    name: 'cardLink'
+                    widget: 'string'
+                    required: false
+                    i18n: false

@@ -1,46 +1,75 @@
 <template>
   <div>
-    <div class="content-container footer-container">
-      <img
-        src="/blue-angel-stripclub-wortbildmarke.svg"
-        alt="blue-angle-logo"
-        title="blue-angle-logo"
-        width="170"
-        style="margin-top: 10px"
-      />
-      <div class="link-container">
-        <NuxtLink :to="LocalizePath('/impressum')">{{
-          translations[locale].impressum
-        }}</NuxtLink>
-        <NuxtLink :to="LocalizePath('/datenschutzerklaerung')">{{
-          translations[locale].datenschutzerklären
-        }}</NuxtLink>
-      </div>
-      <div class="social-actions">
-        <a href="https://www.facebook.com/blue.angel.breisach" target="_blank">
-          <img src="/images/facebook.svg" alt="facebook" width="30" height="30"
-        /></a>
-        <a href="https://www.instagram.com/blue.angel.nightclub/" target="_blank"
-          ><img
-            src="/images/instagram.svg"
-            alt="instagram"
-            width="30"
-            height="30"
-        /></a>
+    <div class="bg-hgv-50 py-12 mt-20">
+      <div
+        class="container mx-auto flex md:flex-row flex-col md:justify-between md:align-end"
+      >
+        <div class="flex flex-col">
+          <nuxt-link class="font-sans my-1" :to="footerLinks_one.contactLink">{{
+            footerLinks_one.translations[$i18n.locale].contact
+          }}</nuxt-link>
+          <nuxt-link
+            class="font-sans my-1"
+            :to="footerLinks_one.impressumLink"
+            >{{
+              footerLinks_one.translations[$i18n.locale].impressum
+            }}</nuxt-link
+          >
+          <nuxt-link
+            class="font-sans my-1"
+            :to="footerLinks_one.datenschutzerklärenLink"
+            >{{
+              footerLinks_one.translations[$i18n.locale].datenschutzerklären
+            }}</nuxt-link
+          >
+        </div>
+        <div class="flex flex-col mt-4 md:mt-0">
+          <nuxt-link
+            class="font-sans my-1"
+            :to="footerLinks_two.tour_guidesLink"
+            >{{
+              footerLinks_two.translations[$i18n.locale].tour_guides
+            }}</nuxt-link
+          >
+          <nuxt-link class="font-sans my-1" :to="footerLinks_two.toursLink">{{
+            footerLinks_two.translations[$i18n.locale].tours
+          }}</nuxt-link>
+        </div>
+        <div class="flex flex-col mt-4 md:mt-0">
+          <nuxt-link
+            class="font-sans my-1"
+            :to="footerLinks_three.about_usLink"
+            >{{
+              footerLinks_three.translations[$i18n.locale].about_us
+            }}</nuxt-link
+          >
+          <nuxt-link
+            class="font-sans my-1"
+            :to="footerLinks_three.honoraryLink"
+            >{{
+              footerLinks_three.translations[$i18n.locale].honorary
+            }}</nuxt-link
+          >
+          <nuxt-link
+            class="font-sans my-1"
+            :to="footerLinks_three.become_a_memberLink"
+            >{{
+              footerLinks_three.translations[$i18n.locale].become_a_member
+            }}</nuxt-link
+          >
+        </div>
       </div>
     </div>
-    <div class="highlighted">
-      <div class="content-container footer-credencials">
-        <img
-          src="/payments.png"
-          alt="zahlungsmöglichleiten"
-          title="zahlungsmöglichekiten"
-          height="30"
-          style="margin: 10px 0"
-        />
-        <p style="text-transform: uppercase; margin: 0">
-          © 2023 Blue Angel Breisach
-        </p>
+    <div class="bg-hgv-950">
+      <div
+        class="container mx-auto flex flex-col sm:flex-row items-center justify-between"
+      >
+        <span class="font-sans text-sm text-hgv-50 py-2"
+          >Hamburger Gästeführer Verein e.V. 2023</span
+        >
+        <span class="font-sans text-sm text-hgv-50 py-2"
+          >Developed by khri8! more playgrounds.</span
+        >
       </div>
     </div>
   </div>
@@ -50,19 +79,53 @@
 export default {
   data() {
     return {
-      translations: {
-        de: {
-          impressum: 'Impressum',
-          datenschutzerklären: 'Datenschutzerklärung',
+      footerLinks_one: {
+        translations: {
+          de: {
+            contact: 'Kontakt',
+            impressum: 'Impressum',
+            datenschutzerklären: 'Datenschutzerklärung',
+          },
+          en: {
+            contact: 'Contact',
+            impressum: 'Imprint',
+            datenschutzerklären: 'Privacy Policy',
+          },
         },
-        en: {
-          impressum: 'Imprint',
-          datenschutzerklären: 'Privacy Policy',
+        contactLink: '/contact',
+        impressumLink: '/imprint',
+        datenschutzerklärenLink: '/privacy-policy',
+      },
+      footerLinks_two: {
+        translations: {
+          de: {
+            tour_guides: 'Gästeführer',
+            tours: 'Touren',
+          },
+          en: {
+            tour_guides: 'Tour Guides',
+            tours: 'Tours',
+          },
         },
-        fr: {
-          impressum: 'Mentions légales',
-          datenschutzerklären: 'Politique de confidentialité',
+        tour_guidesLink: '/guides',
+        toursLink: '/tour',
+      },
+      footerLinks_three: {
+        translations: {
+          de: {
+            about_us: 'Über uns',
+            honorary: 'Honorare',
+            become_a_member: 'Mitglied werden',
+          },
+          en: {
+            about_us: 'About us',
+            honorary: 'Honorary',
+            become_a_member: 'Become a member',
+          },
         },
+        about_usLink: '/about',
+        honoraryLink: '/fees',
+        become_a_memberLink: '/become-member',
       },
       locale: this.$i18n.locale,
     }
@@ -75,6 +138,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

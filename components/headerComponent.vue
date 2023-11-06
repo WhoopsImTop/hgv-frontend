@@ -1,40 +1,38 @@
 <template>
   <div>
-    <div class="header flex justify-between items-center py-4">
+    <div class="header bg-white z-10 flex justify-between items-center py-4">
       <div class="logo">
-        <h1 class="font-sans text-hgv-950 text-4xl font-bold">HGV</h1>
+        <nuxt-link to="/" class="text-decoration-none">
+          <img src="../assets/logo.svg" alt="Hamburger Gästeführer e.V." />
+        </nuxt-link>
       </div>
-      <div class="hidden md:block link-container">
+      <div class="hidden md:flex link-container items-center">
         <nuxt-link
-          class="font-sans text-hgv-950 mx-2 hover:no-underline hover:text-hgv-600"
-          :to="LocalizePath('/')"
-          >Gästeführer</nuxt-link
+          class="font-sans text-hgv-950 mx-2.5 hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/guides')"
+          >{{ $i18n.locale === 'de' ? 'Gästeführer' : 'Guides' }}</nuxt-link
         >
         <nuxt-link
-          class="font-sans text-hgv-950 mx-2 hover:no-underline hover:text-hgv-600"
-          :to="LocalizePath('/')"
-          >Führungen</nuxt-link
+          class="font-sans text-hgv-950 mx-2.5 hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/tour')"
+          >{{ $i18n.locale === 'de' ? 'Führungen' : 'Tours' }}</nuxt-link
         >
         <nuxt-link
-          class="font-sans text-hgv-950 mx-2 hover:no-underline hover:text-hgv-600"
-          :to="LocalizePath('/')"
-          >Über Uns</nuxt-link
+          class="font-sans text-hgv-950 mx-2.5 hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/about')"
+          >{{ $i18n.locale === 'de' ? 'Über Uns' : 'About us' }}</nuxt-link
         >
         <nuxt-link
-          class="font-sans text-hgv-950 mx-2 hover:no-underline hover:text-hgv-600"
-          :to="LocalizePath('/')"
-          >Honorare</nuxt-link
+          class="font-sans text-hgv-950 mx-2.5 hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/fees')"
+          >{{ $i18n.locale === 'de' ? 'Honorare' : 'Fees' }}</nuxt-link
         >
         <nuxt-link
-          class="font-sans text-hgv-950 mx-2 mr-4 hover:no-underline hover:text-hgv-600"
-          :to="LocalizePath('/')"
-          >Kontakt</nuxt-link
+          class="font-sans text-hgv-950 mx-2.5 mr-3 hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/contact')"
+          >{{ $i18n.locale === 'de' ? 'Kontakt' : 'Contact' }}</nuxt-link
         >
-        <nuxt-link
-          class="font-sans text-white px-4 py-2 rounded bg-hgv-950 hover:no-underline hover:bg-hgv-600"
-          :to="LocalizePath('/')"
-          >Mitglied werden</nuxt-link
-        >
+        <language-switch-component />
       </div>
       <div class="md:hidden flex flex-col" @click="toggleMobileMenu">
         <div class="w-6 h-0.5 bg-hgv-950 my-0.5"></div>
@@ -42,37 +40,36 @@
         <div class="w-6 h-0.5 bg-hgv-950 my-0.5"></div>
       </div>
     </div>
-    <div :class="mobileMenuOpen ? 'flex' : 'hidden'" class="flex-col justify-center md:hidden link-container h-[calc(100vh-88px)]">
-      <nuxt-link
-        class="font-sans text-center text-hgv-950 my-4 hover:no-underline hover:text-hgv-600"
-        :to="LocalizePath('/')"
-        >Gästeführer</nuxt-link
-      >
-      <nuxt-link
-        class="font-sans text-center text-hgv-950 my-4 hover:no-underline hover:text-hgv-600"
-        :to="LocalizePath('/')"
-        >Führungen</nuxt-link
-      >
-      <nuxt-link
-        class="font-sans text-center text-hgv-950 my-4 hover:no-underline hover:text-hgv-600"
-        :to="LocalizePath('/')"
-        >Über Uns</nuxt-link
-      >
-      <nuxt-link
-        class="font-sans text-center text-hgv-950 my-4 hover:no-underline hover:text-hgv-600"
-        :to="LocalizePath('/')"
-        >Honorare</nuxt-link
-      >
-      <nuxt-link
-        class="font-sans text-center text-hgv-950 my-4 hover:no-underline hover:text-hgv-600"
-        :to="LocalizePath('/')"
-        >Kontakt</nuxt-link
-      >
-      <nuxt-link
-        class="font-sans text-center text-hgv-950 my-4 hover:no-underline hover:text-hgv-600"
-        :to="LocalizePath('/')"
-        >Mitglied werden</nuxt-link
-      >
+    <div
+      :class="mobileMenuOpen ? 'flex' : 'hidden'"
+      class="flex-col pt-12 md:hidden link-container h-[calc(100vh-88px)]"
+    >
+    <nuxt-link
+          class="font-sans text-hgv-950 my-4 mx-auto hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/guides')"
+          >{{ $i18n.locale === 'de' ? 'Gästeführer' : 'Guides' }}</nuxt-link
+        >
+        <nuxt-link
+          class="font-sans text-hgv-950 my-4 mx-auto hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/tour')"
+          >{{ $i18n.locale === 'de' ? 'Führungen' : 'Tours' }}</nuxt-link
+        >
+        <nuxt-link
+          class="font-sans text-hgv-950 my-4 mx-auto hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/about')"
+          >{{ $i18n.locale === 'de' ? 'Über Uns' : 'About us' }}</nuxt-link
+        >
+        <nuxt-link
+          class="font-sans text-hgv-950 my-4 mx-auto hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/fees')"
+          >{{ $i18n.locale === 'de' ? 'Honorare' : 'Fees' }}</nuxt-link
+        >
+        <nuxt-link
+          class="font-sans text-hgv-950 my-4 mx-auto mr-3 hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/contact')"
+          >{{ $i18n.locale === 'de' ? 'Kontakt' : 'Contact' }}</nuxt-link
+        >
+        <language-switch-component class="mx-auto mt-4" />
     </div>
   </div>
 </template>
@@ -83,6 +80,12 @@ export default {
     return {
       mobileMenuOpen: false,
     }
+  },
+
+  watch: {
+    $route() {
+      this.mobileMenuOpen = false
+    },
   },
 
   methods: {
@@ -104,5 +107,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

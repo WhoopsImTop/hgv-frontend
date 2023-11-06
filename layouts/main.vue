@@ -1,8 +1,10 @@
 <template>
-  <div class="container mx-auto">
-    <headerComponent />
-    <nuxt></nuxt>
-    <!-- <footerComponent /> -->
+  <div>
+    <div class="container mx-auto">
+      <headerComponent />
+      <nuxt></nuxt>
+    </div>
+    <footerComponent />
   </div>
 </template>
 
@@ -37,4 +39,27 @@ export default {
 </script>
 
 <style>
+a {
+  @apply text-hgv-950 hover:text-hgv-950;
+}
+
+h1 {
+  @apply text-4xl font-sans font-bold text-hgv-950;
+}
+
+h2 {
+  @apply text-3xl font-sans font-bold text-hgv-950;
+}
+
+h3 {
+  @apply text-2xl font-sans font-bold text-hgv-950;
+}
+
+h4 {
+  @apply text-xl font-sans font-bold text-hgv-950;
+}
+
+h5 {
+  @apply text-lg font-sans font-bold text-hgv-950;
+}
 </style>

@@ -208,7 +208,7 @@ export default {
           return guideIds.includes(guide.id)
         })
       }
-      return guides
+      return guides.sort(() => Math.random() - 0.5)
     },
   },
   beforeMount() {

@@ -8,7 +8,9 @@
           id="category"
           v-model="selectedCategory"
         >
-          <option value="0">{{ $i18n.locale === 'de' ? 'Kategorie' : 'Categories'}}</option>
+          <option value="0">
+            {{ $i18n.locale === 'de' ? 'Kategorie' : 'Categories' }}
+          </option>
           <option
             v-for="category in categories"
             :key="category.id"
@@ -23,7 +25,9 @@
           id="language"
           v-model="selectedLanguage"
         >
-          <option value="0">{{ $i18n.locale === 'de' ? 'Sprachen' : 'Languages'}}</option>
+          <option value="0">
+            {{ $i18n.locale === 'de' ? 'Sprachen' : 'Languages' }}
+          </option>
           <option
             v-for="language in languages"
             :key="language.id"
@@ -35,7 +39,9 @@
         <div
           class="border border-gray-300 rounded-lg p-2 flex items-center justify-between"
         >
-          <span class="text-hgv-950 font-sans">{{ $i18n.locale === 'de' ? 'Öffentliche Touren' : 'Public Tours'}}</span>
+          <span class="text-hgv-950 font-sans">{{
+            $i18n.locale === 'de' ? 'Öffentliche Touren' : 'Public Tours'
+          }}</span>
           <label class="relative inline-flex items-center cursor-pointer mb-0">
             <input
               type="checkbox"
@@ -54,7 +60,9 @@
           id="guide"
           v-model="selectedGuide"
         >
-          <option value="0">{{ $i18n.locale === 'de' ? 'Guides' : 'Guides'}}</option>
+          <option value="0">
+            {{ $i18n.locale === 'de' ? 'Guides' : 'Guides' }}
+          </option>
           <option v-for="guide in guides" :key="guide.id" :value="guide.id">
             {{ guide.translations[$i18n.locale === 'de' ? '0' : '1'].name }}
           </option>
@@ -65,7 +73,9 @@
           v-model="selectedMobility"
           id="mobility"
         >
-          <option value="0">{{ $i18n.locale === 'de' ? 'Mobilität' : 'Mobility'}}</option>
+          <option value="0">
+            {{ $i18n.locale === 'de' ? 'Mobilität' : 'Mobility' }}
+          </option>
           <option
             v-for="mobility in mobility"
             :key="mobility.id"
@@ -80,12 +90,10 @@
           v-model="selectedSkill"
           id="skills"
         >
-          <option value="0">{{ $i18n.locale === 'de' ? 'Themen' : 'Skills'}}</option>
-          <option
-            v-for="skill in skills"
-            :key="skill.id"
-            :value="skill.id"
-          >
+          <option value="0">
+            {{ $i18n.locale === 'de' ? 'Themen' : 'Skills' }}
+          </option>
+          <option v-for="skill in skills" :key="skill.id" :value="skill.id">
             {{ skill.translations[$i18n.locale === 'de' ? '0' : '1'].name }}
           </option>
         </select>
@@ -146,7 +154,19 @@
           :key="tour.id"
           :to="`/tour/${tour.id}`"
           class="rounded-xl aspect-square relative overflow-hidden"
-        >
+          ><div
+            v-if="tour.needs_registration"
+            class="absolute top-5 left-5 py-1 px-2 bg-white rounded flex items-center"
+          >
+            <img
+              src="/info.svg"
+              width="15"
+              alt="info"
+              title="info"
+              class="mr-1"
+            />
+            <h4 class="text-sm">Anmeldung Erforderlich</h4>
+          </div>
           <img
             :src="tour.images[0].url"
             :alt="tour.name"

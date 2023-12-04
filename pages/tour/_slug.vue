@@ -3,6 +3,10 @@
     <div
       class="relative h-[60vh] rounded-xl mx-auto w-full overflow-hidden flex items-center justify-center"
     >
+      <div v-if="tour.needs_registration" class="absolute top-5 left-5 py-1 px-2 bg-white rounded flex items-center">
+        <img src="/info.svg" width="25" alt="info" title="info" class="mr-2"/>
+        <h4>Anmeldung Erforderlich</h4>
+      </div>
       <img
         v-if="tour.images.length > 0"
         :src="tour.images[0].url"
@@ -45,6 +49,12 @@
           >
           <span
             class="text-hgv-950 font-sans font-medium justify-self-center flex items-center"
+            ><img src="/calendar.svg" alt="price" class="mr-2" />{{
+              new Date(tour.date).toLocaleDateString('de-DE')
+            }}
+          </span>
+          <span
+            class="text-hgv-950 font-sans font-medium justify-self-center flex items-center"
             ><img src="/duration.svg" alt="duration" class="mr-2" />{{
               tour.duration
             }}
@@ -66,10 +76,7 @@
           "
         ></div>
         <div class="mt-2 border border-zink-50 rounded-xl overflow-hidden mb-2">
-          <mapComponent
-            class="min-h-[450px]"
-            :tours="[tour]"
-          />
+          <mapComponent class="min-h-[450px]" :tours="[tour]" />
         </div>
       </div>
       <div class="col-span-1">

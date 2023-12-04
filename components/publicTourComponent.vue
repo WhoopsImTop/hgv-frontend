@@ -1,8 +1,10 @@
 <template>
   <div class="flex flex-col items-center my-64">
-    <h2 class="font-sans text-4xl font-bold text-hgv-950">Touren</h2>
+    <h2 class="font-sans text-4xl font-bold text-hgv-950">
+      {{ translations[$i18n.locale].title }}
+    </h2>
     <p class="mt-4 text-hgv-950">
-      Diese Touren haben ein konkretes Datum und können direkt gebucht werden.
+      {{ translations[$i18n.locale].text }}
     </p>
 
     <div
@@ -56,6 +58,16 @@ export default {
   data() {
     return {
       tours: [],
+      translations: {
+        de: {
+          title: 'Touren',
+          text: `Diese Touren haben ein konkretes Datum und können direkt gebucht werden.`,
+        },
+        en: {
+          title: 'Tours',
+          text: `These tours have a specific date and can be booked directly.`,
+        },
+      },
     }
   },
   mounted() {

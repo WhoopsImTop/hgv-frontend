@@ -2,16 +2,10 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 my-64">
     <div>
       <h2 class="font-sans text-4xl font-bold text-hgv-950">
-        Individuelle Touren
+        {{ translations[$i18n.locale].title }}
       </h2>
       <p class="mt-4 text-hgv-950">
-        Entdecken Sie Hamburg mit unseren vielfältigen Touren! Von klassischen
-        Stadtrundgängen und Busrundfahrten bis zu thematischen Erkundungen
-        bieten wir 70 verschiedene Führungen in 15 Sprachen an. Erleben Sie
-        Hamburgs Highlights, erkunden Sie Stadtviertel und Quartiere, tauchen
-        Sie in spannende Themen ein oder erkunden Sie die Metropolregion und
-        ihre Umgebung. Für eine besondere Erfahrung bieten wir auch individuelle
-        Touren an. Kontaktieren Sie uns für Ihre maßgeschneiderte Tour!
+        {{ translations[$i18n.locale].text }}
       </p>
     </div>
     <div
@@ -81,6 +75,28 @@ export default {
   data() {
     return {
       tours: [],
+      translations: {
+        de: {
+          title: 'Individuelle Touren',
+          text: `Entdecken Sie Hamburg mit unseren vielfältigen Touren! Von klassischen
+          Stadtrundgängen und Busrundfahrten bis zu thematischen Erkundungen
+          bieten wir 70 verschiedene Führungen in 15 Sprachen an. Erleben Sie
+          Hamburgs Highlights, erkunden Sie Stadtviertel und Quartiere, tauchen
+          Sie in spannende Themen ein oder erkunden Sie die Metropolregion und
+          ihre Umgebung. Für eine besondere Erfahrung bieten wir auch individuelle
+          Touren an. Kontaktieren Sie uns für Ihre maßgeschneiderte Tour!`,
+        },
+        en: {
+          title: 'Individual Tours',
+          text: `Discover Hamburg with our diverse tours! From classic
+          City tours and bus tours to thematic explorations
+          we offer 70 different tours in 15 languages. Experience
+          Hamburg's highlights, explore neighborhoods and neighborhoods, dive
+          Immerse yourself in exciting topics or explore the metropolitan region and
+          their surroundings. For a special experience we also offer individual
+          Tours. Contact us for your customized tour!`,
+        },
+      },
     }
   },
   mounted() {

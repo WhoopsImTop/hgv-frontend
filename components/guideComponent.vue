@@ -13,21 +13,25 @@
       />
     </div>
     <div class="ml-2">
-      <h3 class="font-sans font-bold">
+      <h3 class="font-sans font-bold mb-2">
         {{ guide.name }}
       </h3>
-      <p class="block mb-2">
+      <p class="block mb-2 my-2">
         <a
-          :href="`mailto:${JSON.parse(guide.contact).email}`"
-          class="text-hgv-950 hover:text-hgv_red-700"
+          v-if="JSON.parse(guide.contact).email"
+          class="flex items-center"
+          :href="'mailto:' + JSON.parse(guide.contact).email"
+          ><img src="/mail.svg" alt="mail" class="mr-2" />{{
+            JSON.parse(guide.contact).email
+          }}</a
         >
-          {{ JSON.parse(guide.contact).email }}</a
-        >
-        |
         <a
-          :href="`tel:${JSON.parse(guide.contact).phone}`"
-          class="text-hgv-950 hover:text-hgv_red-700"
-          >{{ JSON.parse(guide.contact).phone }}</a
+          v-if="JSON.parse(guide.contact).phone"
+          class="flex items-center"
+          :href="'tel:' + JSON.parse(guide.contact).phone"
+          ><img src="/phone.svg" alt="phone" class="mr-2" />{{
+            JSON.parse(guide.contact).phone
+          }}</a
         >
       </p>
       <div class="flex items-center flex-wrap">

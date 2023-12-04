@@ -3,16 +3,9 @@
     class="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:h-[calc(100vh-176px)] mt-4"
   >
     <div class="col-span-4 flex flex-col justify-center">
-      <h1 class="font-sans text-hgv-950 font-bold text-6xl">
-        Hamburger <br />
-        Gästeführer <br />
-        Verein e.V.
-      </h1>
+      <h1 class="font-sans text-hgv-950 font-bold text-6xl" v-html="translations[$i18n.locale].headline"></h1>
       <p class="mt-4 lg:mb-28 text-hgv-950">
-        Wir bieten 70 verschiedene Führungen in 15 Sprachen an, darunter Bus-
-        und Stadtrundfahrten zu vielfältigen Themen. Unser Verein vereint über
-        80 engagierte Guides. Schauen Sie sich unser Angebot an und treten Sie
-        direkt in Kontakt.
+        {{ translations[$i18n.locale].description }}
       </p>
     </div>
     <div
@@ -36,15 +29,35 @@
           type="text"
           placeholder="Sprache"
         />
-        <button class="bg-hgv-950 ring-1 ring-hgv-950 mx-2 px-4 py-2 rounded text-white">Tour finden</button>
+        <button
+          class="bg-hgv-950 ring-1 ring-hgv-950 mx-2 px-4 py-2 rounded text-white"
+        >
+          Tour finden
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      translations: {
+        de: {
+          headline: 'Hamburger <br> Gästeführer <br> Verein e.V.',
+          description:
+            'Wir bieten 70 verschiedene Führungen in 15 Sprachen an, darunter Bus- und Stadtrundfahrten zu vielfältigen Themen. Unser Verein vereint über 80 engagierte Guides. Schauen Sie sich unser Angebot an und treten Sie direkt in Kontakt.',
+        },
+        en: {
+          headline: 'Hamburger <br> Gästeführer <br> Verein e.V.',
+          description:
+            'We offer 70 different tours in 15 languages, including bus and city tours on a variety of topics. Our association unites over 80 dedicated guides. Take a look at our offer and get in touch directly.',
+        },
+      },
+    }
+  },
+}
 </script>
 
-<style>
-</style>
+<style></style>

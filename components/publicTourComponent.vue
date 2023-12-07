@@ -17,6 +17,25 @@
         :to="`/tour/${tour.id}`"
         class="rounded-xl aspect-square relative overflow-hidden"
       >
+        <div
+          v-if="tour.needs_registration"
+          class="absolute top-5 left-5 py-1 px-2 bg-white rounded flex items-center"
+        >
+          <img
+            src="/info.svg"
+            width="25"
+            alt="info"
+            title="info"
+            class="mr-2"
+          />
+          <h4>
+            {{
+              $i18n.locale === 'de'
+                ? 'Anmeldung Erforderlich'
+                : 'Registration Required'
+            }}
+          </h4>
+        </div>
         <img
           :src="tour.images[0].url"
           :alt="tour.name"
@@ -72,7 +91,7 @@ export default {
   },
   mounted() {
     axios
-      .get('https://api.hamburger-gaestefuehrer.de/api/tours')
+      .get('https://api.hamburger-gaestefuehrer.de/api/tours?preview=true')
       .then((response) => {
         this.tours = response.data.tours.filter((tour) => {
           return tour.is_public

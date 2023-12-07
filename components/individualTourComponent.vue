@@ -32,36 +32,36 @@
       <nuxt-link
         class="rounded-xl relative overflow-hidden h-full"
         :to="`/tour/${tours[0].id}`"
-        v-if="tours[0]"
+        v-if="tours[1]"
       >
         <img
-          :src="tours[0].images[0].url"
-          :alt="tours[0].name"
+          :src="tours[1].images[0].url"
+          :alt="tours[1].name"
           class="object-cover h-full w-full"
         />
         <div
           class="absolute bottom-0 py-3 px-4 w-full flex items-end h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0"
         >
           <h3 class="text-white text-base md:text-lg lg:text-xl font-bold">
-            {{ tours[0].name }}
+            {{ tours[1].name }}
           </h3>
         </div>
       </nuxt-link>
       <nuxt-link
         class="md:col-start-2 rounded-xl relative overflow-hidden h-full max-sm:w-full max-sm:aspect-square"
-        v-if="tours[0]"
-        :to="`/tour/${tours[0].id}`"
+        v-if="tours[2]"
+        :to="`/tour/${tours[2].id}`"
       >
         <img
-          :src="tours[0].images[0].url"
-          :alt="tours[0].name"
+          :src="tours[2].images[0].url"
+          :alt="tours[2].name"
           class="object-cover h-full w-full"
         />
         <div
           class="absolute bottom-0 py-3 px-4 w-full flex items-end h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0"
         >
           <h3 class="text-white text-base md:text-lg lg:text-xl font-bold">
-            {{ tours[0].name }}
+            {{ tours[2].name }}
           </h3>
         </div>
       </nuxt-link>
@@ -101,12 +101,11 @@ export default {
   },
   mounted() {
     axios
-      .get('https://api.hamburger-gaestefuehrer.de/api/tours')
+      .get('https://api.hamburger-gaestefuehrer.de/api/tours?preview=true')
       .then((response) => {
         this.tours = response.data.tours.filter((tour) => {
           return tour.is_public === 0
         })
-        console.log(this.tours)
       })
       .catch((error) => {
         console.log(error)

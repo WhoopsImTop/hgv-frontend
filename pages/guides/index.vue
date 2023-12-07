@@ -147,7 +147,7 @@ export default {
       const url = `https://api.unsplash.com/photos/random?query=hamburg%20tourism&orientation=landscape&client_id=${accesskey}&client_key=${secretkey}&count=1`
       const response = await fetch(url)
       const data = await response.json()
-      return { guides: guides.guides, image: data[0] }
+      return { guides: guides.guides.data.sort(() => Math.random() - 0.5), image: data[0] }
     } catch (error) {
       console.log(error)
     }
@@ -168,6 +168,8 @@ export default {
       selectedMobility: '0',
       selectedSkill: '0',
       selectedPlace: '0',
+      guidePage: 1,
+      currentPageLoading: false,
     }
   },
   computed: {
@@ -208,7 +210,7 @@ export default {
           return guideIds.includes(guide.id)
         })
       }
-      return guides.sort(() => Math.random() - 0.5)
+      return guides;
     },
   },
   beforeMount() {
@@ -219,8 +221,8 @@ export default {
   },
 
   methods: {
-    getAllLanguages() {
-      this.$axios
+    async getAllLanguages() {
+      await this.$axios
         .get('https://api.hamburger-gaestefuehrer.de/api/languages')
         .then((response) => {
           this.languages = response.data.languages
@@ -229,8 +231,8 @@ export default {
           console.log(error)
         })
     },
-    getAllMobility() {
-      this.$axios
+    async getAllMobility() {
+      await this.$axios
         .get('https://api.hamburger-gaestefuehrer.de/api/mobility')
         .then((response) => {
           this.mobility = response.data.mobilities
@@ -240,8 +242,8 @@ export default {
         })
     },
 
-    getAllSkills() {
-      this.$axios
+    async getAllSkills() {
+      await this.$axios
         .get('https://api.hamburger-gaestefuehrer.de/api/skills')
         .then((response) => {
           this.skills = response.data.skills
@@ -251,8 +253,8 @@ export default {
         })
     },
 
-    getAllPlaces() {
-      this.$axios
+    async getAllPlaces() {
+      await this.$axios
         .get('https://api.hamburger-gaestefuehrer.de/api/places?with_guides=1')
         .then((response) => {
           this.places = response.data.places
@@ -261,6 +263,40 @@ export default {
           console.log(error)
         })
     },
+
+    getMoreGuides() {
+      if (this.currentPageLoading) {
+        return
+      }
+      this.guidePage++
+      this.currentPageLoading = true
+      this.$axios
+        .get(
+          `https://api.hamburger-gaestefuehrer.de/api/guides?page=${this.guidePage}`
+        )
+        .then((response) => {
+          this.guides.push(...response.data.guides.data)
+          this.currentPageLoading = false
+        })
+        .catch((error) => {
+          console.log(error)
+          window.alert(
+            'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.'
+          )
+        })
+    },
+
+    handleScroll() {
+      const bottomOfWindow =
+        document.documentElement.scrollTop + window.innerHeight >=
+          (document.documentElement.offsetHeight - window.innerHeight * 2/3);
+      if (bottomOfWindow) {
+        this.getMoreGuides()
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
   },
 }
 </script>

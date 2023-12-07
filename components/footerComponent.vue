@@ -2,7 +2,7 @@
   <div>
     <div class="bg-hgv-50 py-12 mt-20">
       <div
-        class="container mx-auto flex md:flex-row flex-col md:justify-between md:align-end"
+        class="container mx-auto flex md:flex-row flex-col md:justify-between md:align-end items-start"
       >
         <div class="flex flex-col">
           <nuxt-link class="font-sans my-1" :to="footerLinks_one.contactLink">{{
@@ -23,7 +23,7 @@
             }}</nuxt-link
           >
         </div>
-        <div class="flex flex-col mt-4 md:mt-0">
+        <div class="flex flex-col">
           <nuxt-link
             class="font-sans my-1"
             :to="footerLinks_two.tour_guidesLink"
@@ -35,7 +35,7 @@
             footerLinks_two.translations[$i18n.locale].tours
           }}</nuxt-link>
         </div>
-        <div class="flex flex-col mt-4 md:mt-0">
+        <div class="flex flex-col">
           <nuxt-link
             class="font-sans my-1"
             :to="footerLinks_three.about_usLink"

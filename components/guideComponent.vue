@@ -4,7 +4,7 @@
     class="flex items-start border border-gray-50 rounded-xl pt-4 px-4 pb-3 text-decoration-none"
   >
     <div
-      class="w-12 h-12 aspect-square rounded-full overflow-hidden flex items-center justify-center"
+      class="min-w-[48px] min-h-[48px] w-12 h-12 aspect-square rounded-full overflow-hidden flex items-center justify-center"
     >
       <img
         :src="getUrl(guide)"
@@ -26,11 +26,11 @@
           }}</a
         >
         <a
-          v-if="JSON.parse(guide.contact).phone"
+          v-if="JSON.parse(guide.contact).mobile"
           class="flex items-center"
-          :href="'tel:' + JSON.parse(guide.contact).phone"
-          ><img src="/phone.svg" alt="phone" class="mr-2" />{{
-            JSON.parse(guide.contact).phone
+          :href="'tel:' + JSON.parse(guide.contact).mobile"
+          ><img src="/phone.svg" alt="mobile" class="mr-2" />{{
+            JSON.parse(guide.contact).mobile
           }}</a
         >
       </p>
@@ -128,6 +128,8 @@ export default {
         )
 
         return canvas.toDataURL()
+      } else if (Array.isArray(guide.image)) {
+        return guide.image[0].url
       } else {
         return guide.image.url
       }

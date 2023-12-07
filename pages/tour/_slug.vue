@@ -3,9 +3,12 @@
     <div
       class="relative h-[60vh] rounded-xl mx-auto w-full overflow-hidden flex items-center justify-center"
     >
-      <div v-if="tour.needs_registration" class="absolute top-5 left-5 py-1 px-2 bg-white rounded flex items-center">
-        <img src="/info.svg" width="25" alt="info" title="info" class="mr-2"/>
-        <h4>Anmeldung Erforderlich</h4>
+      <div
+        v-if="tour.needs_registration"
+        class="absolute top-5 left-5 py-1 px-2 bg-white rounded flex items-center"
+      >
+        <img src="/info.svg" width="25" alt="info" title="info" class="mr-2" />
+        <h4>{{ $i18n.locale === 'de' ? 'Anmeldung Erforderlich' : 'Registration Required' }}</h4>
       </div>
       <img
         v-if="tour.images.length > 0"
@@ -75,12 +78,25 @@
             tour.description
           "
         ></div>
-        <div class="mt-2 border border-zink-50 rounded-xl overflow-hidden mb-2">
-          <mapComponent class="min-h-[450px]" :tours="[tour]" />
+        <div class="border border-zink-50 rounded-xl p-3 mt-3">
+          <h3 class="font-bold text-2xl font-sans mb-3">
+            {{ translations.guides[$i18n.locale] }}
+          </h3>
+          <div class="grid grid-cols-2 gap-4">
+            <guide-component
+              v-for="guide in filteredGuides"
+              :guide="guide"
+              :key="guide.id"
+            >
+            </guide-component>
+          </div>
         </div>
       </div>
       <div class="col-span-1">
-        <div class="border border-zink-50 rounded-xl px-3 pt-3 mb-2">
+        <div
+          class="border border-zink-50 rounded-xl px-3 pt-3 mb-2"
+          v-if="tour.themes.length > 0"
+        >
           <h3 class="font-bold text-2xl font-sans mb-3">
             {{ translations.categories[$i18n.locale] }}
           </h3>
@@ -95,17 +111,8 @@
             </nuxt-link>
           </div>
         </div>
-        <div class="border border-zink-50 rounded-xl p-3">
-          <h3 class="font-bold text-2xl font-sans mb-3">
-            {{ translations.guides[$i18n.locale] }}
-          </h3>
-          <guide-component
-            v-for="guide in tour.guides"
-            :guide="guide"
-            :key="guide.id"
-            class="mb-3"
-          >
-          </guide-component>
+        <div class="border-zink-50 rounded-xl overflow-hidden mb-2 h-[60vh] sticky top-3">
+          <mapComponent class="min-h-[450px]" :tours="[tour]" />
         </div>
       </div>
     </div>
@@ -123,8 +130,8 @@ export default {
     return {
       translations: {
         guides: {
-          de: 'Guides',
-          en: 'Guides',
+          de: 'Buchen Sie diese Tour mit einem unserer Guides',
+          en: 'Book this tour with one of our guides',
         },
         categories: {
           de: 'Kategorien',
@@ -174,6 +181,29 @@ export default {
       `https://api.hamburger-gaestefuehrer.de/api/tours/${params.slug}`
     )
     return tour
+  },
+  computed: {
+    filteredGuides() {
+      let guides = this.tour.guides
+      if (this.$route.query.language) {
+        guides = guides.filter((guide) => {
+          return guide.languages.some(
+            (language) => language.id === parseInt(this.$route.query.language)
+          )
+        })
+      } else if (this.$route.query.guide) {
+        guides = guides.filter((guide) => {
+          return guide.id === parseInt(this.$route.query.guide)
+        })
+      } else if (this.$route.query.mobility) {
+        guides = guides.filter((guide) => {
+          return guide.mobility.some(
+            (mobility) => mobility.id === parseInt(this.$route.query.mobility)
+          )
+        })
+      }
+      return guides.sort(() => Math.random() - 0.5)
+    },
   },
   methods: {
     getUrl(guide) {

@@ -133,7 +133,7 @@
               <img
                 :src="tour.images[0].url"
                 :alt="tour.name"
-                class="object-cover h-100"
+                class="object-cover h-100 w-100"
               />
               <div
                 class="absolute bottom-0 py-3 px-4 w-full flex items-end h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0"
@@ -306,7 +306,7 @@ export default {
 
         return canvas.toDataURL()
       } else {
-        return guide.image.url
+        return guide.image[0].url
       }
     },
     generateContactOutput(guide) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-150px)]">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 min-h-[calc(100vh-150px)]">
     <div class="col-span-2">
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         <select
@@ -112,7 +112,7 @@
             selectedMobility = '0'
             selectedSkill = '0'
             publicTour = false
-            FilterTours()
+            getAllTours()
           "
         >
           {{ $i18n.locale === 'de' ? 'Filter zurücksetzen' : 'reset filter' }}
@@ -121,8 +121,8 @@
       <hr class="border-1 border-gray-300 w-full my-3" />
 
       <div
-        v-if="filteredTours.length && tourLoading === false"
-        class="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-3 mt-6"
+        v-if="tourLoading === false"
+        class="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-3 mt-6 h-auto"
       >
         <div
           v-if="filteredTours.length === 0 && tourLoading === false"
@@ -180,7 +180,7 @@
         </nuxt-link>
       </div>
       <div
-        v-else
+        v-else-if="tourLoading === true"
         class="h-[calc(100vh-170px)] w-full flex flex-col justify-center items-center"
       >
         <div>
@@ -203,8 +203,23 @@
           <span class="sr-only">Loading...</span>
         </div>
       </div>
+
+      <div class="flex justify-center items-center mt-8" v-if="filteredTours.length > 0 || pagination != null">
+        <div v-for="page in pagination" :key="page.url">
+          <button
+            v-if="page.url !== null"
+            class="border border-gray-300 rounded-lg px-2.5 py-1 text-hgv-950 font-sans mx-1"
+            :class="page.active ? 'bg-hgv-950 text-white' : ''"
+            @click="getAllTours(page.url)"
+          >
+            {{ page.label }}
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="overflow-hidden rounded-xl hidden lg:block">
+    <div
+      class="overflow-hidden rounded-xl hidden lg:block sticky top-[6em] max-h-[80vh]"
+    >
       <mapComponent class="h-full" :tours="filteredTours" />
     </div>
   </div>
@@ -230,6 +245,7 @@ export default {
     selectedMobility: '0',
     selectedSkill: '0',
     publicTour: false,
+    pagination: {},
     locations: [
       {
         lat: 53.551086,
@@ -282,6 +298,7 @@ export default {
     },
     FilterTours() {
       this.tourLoading = true
+      this.pagination = null
       let query = '?'
       if (this.selectedCategory !== '0') {
         query += 'theme=' + this.selectedCategory + '&'
@@ -314,19 +331,40 @@ export default {
           this.tourLoading = false
         })
     },
-    getAllTours() {
+    getAllTours(url = null) {
       this.mapLoading = true
       this.tourLoading = true
+      let fetchUrl = url || 'https://api.hamburger-gaestefuehrer.de/api/tours'
+      
+      if (fetchUrl.includes('?')) {
+        fetchUrl += '&'
+      } else {
+        fetchUrl += '?'
+      }
+      fetchUrl += 'preview=true'
+
       this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/tours?preview=true')
+        .get(fetchUrl)
         .then((response) => {
-          const tours = response.data.tours.sort((a, b) =>
+          const tours = response.data.tours.data.sort((a, b) =>
             a.translations[
               this.$i18n.locale === 'de' ? 0 : 1
             ].name.localeCompare(
               b.translations[this.$i18n.locale === 'de' ? 0 : 1].name
             )
           )
+
+          this.pagination = response.data.tours.links
+            .filter((link) => {
+              return !isNaN(link.label)
+            })
+            .map((link) => {
+              return {
+                label: link.label,
+                url: link.url,
+                active: link.active,
+              }
+            })
           this.tours = tours
           this.mapLoading = false
           this.tourLoading = false

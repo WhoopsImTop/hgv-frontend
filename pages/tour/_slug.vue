@@ -38,8 +38,8 @@
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-1 xl:grid-cols-3 py-8 md:gap-2">
-      <div class="col-span-2">
+    <div class="grid grid-cols-1 xl:grid-cols-3 py-8 lg:gap-3">
+      <div class="xl:col-span-2">
         <div
           v-if="tour.is_public === 1"
           class="flex flex-row justify-between items-center py-2 px-2 rounded-xl border border-hgv-950 mb-2"
@@ -82,7 +82,7 @@
           <h3 class="font-bold text-2xl font-sans mb-3">
             {{ translations.guides[$i18n.locale] }}
           </h3>
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <guide-component
               v-for="guide in filteredGuides"
               :guide="guide"
@@ -94,7 +94,7 @@
       </div>
       <div class="col-span-1">
         <div
-          class="border border-zink-50 rounded-xl px-3 pt-3 mb-2"
+          class="border border-zink-50 rounded-xl px-3 pt-3 mb-3"
           v-if="tour.themes.length > 0"
         >
           <h3 class="font-bold text-2xl font-sans mb-3">
@@ -111,8 +111,8 @@
             </nuxt-link>
           </div>
         </div>
-        <div class="border-zink-50 rounded-xl overflow-hidden mb-2 h-[60vh] sticky top-3">
-          <mapComponent class="min-h-[450px]" :tours="[tour]" />
+        <div class="border-zink-50 rounded-xl overflow-hidden mb-2 h-[60vh] sticky top-32">
+          <mapComponent class="min-h-[450px]" :tours="[tour]"/>
         </div>
       </div>
     </div>
@@ -130,8 +130,8 @@ export default {
     return {
       translations: {
         guides: {
-          de: 'Buchen Sie diese Tour mit einem unserer Guides',
-          en: 'Book this tour with one of our guides',
+          de: 'Fragen Sie diese Tour direkt bei einem unserer Guides an',
+          en: 'Ask this tour directly from one of our guides',
         },
         categories: {
           de: 'Kategorien',

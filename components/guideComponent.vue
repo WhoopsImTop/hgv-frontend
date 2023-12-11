@@ -19,7 +19,7 @@
       <p class="block mb-2 my-2">
         <a
           v-if="JSON.parse(guide.contact).email"
-          class="flex items-center"
+          class="flex items-center text-xs sm:text-base"
           :href="'mailto:' + JSON.parse(guide.contact).email"
           ><img src="/mail.svg" alt="mail" class="mr-2" />{{
             JSON.parse(guide.contact).email
@@ -27,7 +27,7 @@
         >
         <a
           v-if="JSON.parse(guide.contact).mobile"
-          class="flex items-center"
+          class="flex items-center text-xs sm:text-base"
           :href="'tel:' + JSON.parse(guide.contact).mobile"
           ><img src="/phone.svg" alt="mobile" class="mr-2" />{{
             JSON.parse(guide.contact).mobile

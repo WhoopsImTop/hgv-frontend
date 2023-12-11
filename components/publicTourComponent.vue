@@ -93,7 +93,7 @@ export default {
     axios
       .get('https://api.hamburger-gaestefuehrer.de/api/tours?preview=true')
       .then((response) => {
-        this.tours = response.data.tours.filter((tour) => {
+        this.tours = response.data.tours.data.filter((tour) => {
           return tour.is_public
         })
       })

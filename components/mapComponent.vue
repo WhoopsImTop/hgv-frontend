@@ -16,30 +16,35 @@ export default {
   },
   computed: {
     markers() {
-      return this.tours.map((tour) => {
-        return {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [
-              JSON.parse(tour.location).lng,
-              JSON.parse(tour.location).lat,
-            ],
-          },
-          properties: {
-            title:
-              (this.$i18n.locale === 'de'
-                ? tour.translations[0].name
-                : tour.translations[0].name) || tour.name,
-            description:
-              (this.$i18n.locale === 'de'
-                ? tour.translations[0].description
-                : tour.translations[0].description) || tour.description,
-            image: tour.images ? tour.images[0] : null,
-            id: tour.id,
-          },
-        }
-      })
+      console.log(this.tours)
+      if (Array.isArray(this.tours)) {
+        return this.tours.map((tour) => {
+          return {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                JSON.parse(tour.location).lng,
+                JSON.parse(tour.location).lat,
+              ],
+            },
+            properties: {
+              title:
+                (this.$i18n.locale === 'de'
+                  ? tour.translations[0].name
+                  : tour.translations[0].name) || tour.name,
+              description:
+                (this.$i18n.locale === 'de'
+                  ? tour.translations[0].description
+                  : tour.translations[0].description) || tour.description,
+              image: tour.images ? tour.images[0] : null,
+              id: tour.id,
+            },
+          }
+        })
+      } else {
+        return []
+      }
     },
   },
   mounted() {

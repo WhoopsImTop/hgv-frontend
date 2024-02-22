@@ -4,7 +4,7 @@
       v-if="pageData.translations"
       class="mt-12 md:mt-32 grid grid-cols-1 md:grid-cols-2 gap-16"
     >
-      <div>
+      <div class="relative block w-full">
         <h1 class="text-4xl font-sans font-bold text-hgv-950">
           {{ pageData.translations[$i18n.locale === 'de' ? 0 : 1].name }}
         </h1>
@@ -36,6 +36,38 @@
               "
               target="_blank"
               >{{ image.user.username }}</a
+            >
+            {{ $i18n.locale == 'de' ? 'auf' : 'on' }}
+            <a
+              class="hover:text-white text-white"
+              href="https://unsplash.com/?utm_source=hgv&utm_medium=referral"
+              target="_blank"
+              >Unsplash</a
+            >
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-center items-center relative md:col-span-2">
+        <img
+          class="object-cover w-full h-full rounded-xl"
+          :src="
+            image2.urls.regular ||
+            'https://images.unsplash.com/photo-1569150216991-aba1feb19ac5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+          "
+        />
+        <div
+          v-if="image2 && image2.user"
+          class="absolute top-0 right-0 px-2 py-2 text-xs text-white bg-black bg-opacity-50 rounded-bl"
+        >
+          <p>
+            {{ $i18n.locale == 'de' ? 'Bild von' : 'image by' }}
+            <a
+              class="hover:text-white text-white"
+              :href="
+                image2.user.links.html + '?utm_source=hgv&utm_medium=referral'
+              "
+              target="_blank"
+              >{{ image2.user.username }}</a
             >
             {{ $i18n.locale == 'de' ? 'auf' : 'on' }}
             <a
@@ -84,10 +116,10 @@ export default {
     try {
       const accesskey = 'fpsBXV7HBwRnN5B90GnMnIZYg2EtqCBTCGMMyBvjvtw'
       const secretkey = '-m9PfeP7BMEvsGE6HdU5QIWr2Hmb4-TfnTaszqbh_GI'
-      const url = `https://api.unsplash.com/photos/random?query=hamburg%20tourism&orientation=landscape&client_id=${accesskey}&client_key=${secretkey}&count=1`
+      const url = `https://api.unsplash.com/photos/random?query=hamburg%20tourism&orientation=landscape&client_id=${accesskey}&client_key=${secretkey}&count=2`
       const response = await fetch(url)
       const data = await response.json()
-      return { image: data[0] }
+      return { image: data[0], image2: data[1] }
     } catch (error) {
       console.log(error)
     }
@@ -98,6 +130,25 @@ export default {
       pageData: {},
       loading: false,
       errorMessages: '',
+    }
+  },
+
+  head() {
+    return {
+      title:
+        this.$i18n.locale === 'de'
+          ? 'Über uns | Hamburger Gästeführer Verein e.V.'
+          : 'About us | Hamburger Gästeführer Verein e.V.',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            this.$i18n.locale === 'de'
+              ? 'Der Hamburger Gästeführer Verein e. V. (HGV) wurde am 28. November 1995 als Berufsverband professioneller Gästeführerinnen und Gästeführer in Hamburg gegründet. Er vertritt die Interessen seiner Mitglieder gegenüber Tourismuseinrichtungen, Behörden und Verbänden.'
+              : 'The Hamburger Gästeführer Verein e. V. (HGV) was founded on November 28, 1995 as a professional association for professional tour guides in Hamburg. It represents the interests of its members vis-à-vis tourism facilities, authorities and associations.',
+        },
+      ],
     }
   },
 

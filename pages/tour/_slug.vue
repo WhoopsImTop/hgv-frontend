@@ -8,7 +8,13 @@
         class="absolute top-5 left-5 py-1 px-2 bg-white rounded flex items-center"
       >
         <img src="/info.svg" width="25" alt="info" title="info" class="mr-2" />
-        <h4>{{ $i18n.locale === 'de' ? 'Anmeldung Erforderlich' : 'Registration Required' }}</h4>
+        <h4>
+          {{
+            $i18n.locale === 'de'
+              ? 'Anmeldung Erforderlich'
+              : 'Registration Required'
+          }}
+        </h4>
       </div>
       <img
         v-if="tour.images.length > 0"
@@ -111,8 +117,10 @@
             </nuxt-link>
           </div>
         </div>
-        <div class="border-zink-50 rounded-xl overflow-hidden mb-2 h-[60vh] sticky top-32">
-          <mapComponent class="min-h-[450px]" :tours="[tour]"/>
+        <div
+          class="border-zink-50 rounded-xl overflow-hidden mb-2 h-[60vh] sticky top-32"
+        >
+          <mapComponent class="min-h-[450px]" :tours="[tour]" />
         </div>
       </div>
     </div>
@@ -126,6 +134,13 @@ export default {
     mapComponent,
   },
   layout: 'main',
+
+  async asyncData({ $axios, params }) {
+    const tour = await $axios.$get(
+      `https://api.hamburger-gaestefuehrer.de/api/tours/${params.slug}`
+    )
+    return tour
+  },
   data() {
     return {
       translations: {
@@ -176,12 +191,58 @@ export default {
       },
     }
   },
-  async asyncData({ $axios, params }) {
-    const tour = await $axios.$get(
-      `https://api.hamburger-gaestefuehrer.de/api/tours/${params.slug}`
-    )
-    return tour
+  head() {
+    const schema = {
+      '@context': 'http://schema.org',
+      '@type': 'TouristAttraction', // Adjust type based on your content
+      name: this.tour
+        ? this.tour.translations[0].name +
+          ' | ' +
+          'Hamburger Gästeführer Verein e.V.'
+        : 'Hamburger Gästeführer Verein e.V.',
+      description: this.tour
+        ? this.tour.translations[0].description.replace(/(<([^>]+)>)/gi, '')
+        : 'Entdecken Sie Hamburg mit den Hamburger Gästeführern! Wir bieten 70 einzigartige Touren in 15 Sprachen an, von klassischen Highlights bis zu individuellen Erkundungen. Buchen Sie jetzt und erleben Sie Hamburg mit Experten an Ihrer Seite',
+      image:
+        this.tour && this.tour.images.length > 0
+          ? this.tour.images[0].url
+          : 'Default Image URL',
+      // Add more properties as needed
+    }
+
+    return {
+      title: this.tour
+        ? this.tour.translations[0].name +
+          ' | ' +
+          'Hamburger Gästeführer Verein e.V.'
+        : 'Hamburger Gästeführer Verein e.V.',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.tour
+            ? this.tour.translations[0].description.replace(/(<([^>]+)>)/gi, '')
+            : 'Entdecken Sie Hamburg mit den Hamburger Gästeführern! Wir bieten 70 einzigartige Touren in 15 Sprachen an, von klassischen Highlights bis zu individuellen Erkundungen. Buchen Sie jetzt und erleben Sie Hamburg mit Experten an Ihrer Seite',
+        },
+        {
+          hid: 'image',
+          name: 'image',
+          content:
+            this.tour && this.tour.images.length > 0
+              ? this.tour.images[0].url
+              : 'Default Image URL',
+        },
+        // Add more meta tags as needed
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(schema),
+        },
+      ],
+    }
   },
+
   computed: {
     filteredGuides() {
       let guides = this.tour.guides

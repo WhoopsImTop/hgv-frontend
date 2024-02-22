@@ -18,7 +18,9 @@
           {{ $i18n.locale == 'de' ? 'Bild von' : 'image by' }}
           <a
             class="hover:text-white text-white"
-            :href="image.user.links.html + '?utm_source=hgv&utm_medium=referral'"
+            :href="
+              image.user.links.html + '?utm_source=hgv&utm_medium=referral'
+            "
             target="_blank"
             >{{ image.user.username }}</a
           >
@@ -42,13 +44,11 @@
         </h1>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-      <div class="flex flex-col">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+      <div v-for="tour in themes.tours" :key="tour.id" class="flex flex-col">
         <nuxt-link
-          v-for="tour in themes.tours"
-          :key="tour.id"
           :to="`/tour/${tour.id}`"
-          class="flex flex-row items-start border border-zinc-50 rounded-xl p-3 my-4 text-decoration-none"
+          class="flex flex-row items-start border border-zinc-50 rounded-xl p-3 text-decoration-none"
         >
           <div class="mr-4">
             <img
@@ -84,6 +84,17 @@
 <script>
 export default {
   layout: 'main',
+  async asyncData({ $axios, params }) {
+    const themes = await $axios.$get(
+      `https://api.hamburger-gaestefuehrer.de/api/themes/${params.slug}`
+    )
+    const accesskey = 'fpsBXV7HBwRnN5B90GnMnIZYg2EtqCBTCGMMyBvjvtw'
+    const secretkey = '-m9PfeP7BMEvsGE6HdU5QIWr2Hmb4-TfnTaszqbh_GI'
+    const url = `https://api.unsplash.com/photos/random?query=hamburg&client_id=${accesskey}&client_key=${secretkey}&count=1`
+    const response = await fetch(url)
+    const data = await response.json()
+    return { themes: themes.theme, image: data[0] }
+  },
   data() {
     return {
       translations: {
@@ -101,21 +112,6 @@ export default {
         },
       },
     }
-  },
-  async asyncData({ $axios, params }) {
-    const themes = await $axios.$get(
-      `https://api.hamburger-gaestefuehrer.de/api/themes/${params.slug}`
-    )
-    const accesskey = 'fpsBXV7HBwRnN5B90GnMnIZYg2EtqCBTCGMMyBvjvtw'
-    const secretkey = '-m9PfeP7BMEvsGE6HdU5QIWr2Hmb4-TfnTaszqbh_GI'
-    const url = `https://api.unsplash.com/photos/random?query=hamburg&client_id=${accesskey}&client_key=${secretkey}&count=1`
-    const response = await fetch(url)
-    const data = await response.json()
-    return { themes: themes.theme, image: data[0] }
-  },
-
-  mounted() {
-    console.log(this.image)
   },
 }
 </script>

@@ -1,53 +1,62 @@
 <template>
-  <div class="my-64">
+  <div class="my-48">
     <h2 class="text-center font-sans text-4xl font-bold text-hgv-950">
       {{ translations[$i18n.locale].title }}
     </h2>
     <p class="text-center mt-4 text-hgv-950">
       {{ translations[$i18n.locale].text }}
     </p>
-    <div class="flex flex-col md:grid grid-cols-3 mt-8 md:mt-12">
-      <div class="flex flex-col items-center max-md:my-8">
-        <img src="../assets/tour.svg" alt="tour" title="tour" />
-        <h3 class="text-center font-sans text-xl font-bold text-hgv-950 mt-2">
-          Tour finden
-        </h3>
+    <div class="py-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div v-for="guide in guides" :key="guide.id">
+        <guide-component :guide="guide" class="h-100" />
       </div>
-      <div class="flex flex-col items-center max-md:my-8">
-        <img src="../assets/mail.svg" alt="Email" title="Email" />
-        <h3 class="text-center font-sans text-xl font-bold text-hgv-950 mt-2">
-          Gästeführer Anfragen
-        </h3>
-      </div>
-      <div class="flex flex-col items-center max-md:my-8">
-        <img
-          src="../assets/verified.svg"
-          alt="bestätigung"
-          title="bestätigung"
-        />
-        <h3 class="text-center font-sans text-xl font-bold text-hgv-950 mt-2">
-          Bestätigung vom Gästeführer
-        </h3>
-      </div>
+    </div>
+    <div class="flex items-center justify-center">
+      <nuxt-link
+        to="/guides"
+        class="text-center bg-hgv-950 text-white font-bold text-decoration-none py-2 px-3 rounded hover:bg-hgv-900 inline-flex"
+      >
+        {{ translations[$i18n.locale].button }}
+      </nuxt-link>
     </div>
   </div>
 </template>
 
 <script>
+import guideComponent from './guideComponent.vue'
 export default {
+  components: { guideComponent },
   data() {
     return {
       translations: {
         de: {
-          title: "So funktioniert's",
-          text: `So einfach können Sie eine Tour bei uns buchen.`,
+          title: 'Guides',
+          text: `Hier finden Sie alle unsere Gästeführer.`,
+          button: 'Alle anzeigen',
         },
         en: {
-          title: 'How it works',
-          text: `This is how you can book a tour with us.`,
+          title: 'Guides',
+          text: `Here you can find all our guides.`,
+          button: 'Show all',
         },
       },
+      guides: [],
     }
+  },
+  methods: {
+    getGuides() {
+      this.$axios
+        .get('https://api.hamburger-gaestefuehrer.de/api/guides?preview=true')
+        .then((response) => {
+          this.guides = response.data.guides.data.splice(0, 4)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+  },
+  mounted() {
+    this.getGuides()
   },
 }
 </script>

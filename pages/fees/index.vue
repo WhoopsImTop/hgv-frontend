@@ -101,6 +101,25 @@ export default {
     }
   },
 
+  head() {
+    return {
+      title:
+        this.$i18n.locale === 'de'
+          ? 'Honorare | Hamburger Gästeführer Verein e.V.'
+          : 'Fees | Hamburger Gästeführer Verein e.V.',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            this.$i18n.locale === 'de'
+              ? 'Honorare für Stadtführungen in Hamburg'
+              : 'Fees for city tours in Hamburg',
+        },
+      ],
+    }
+  },
+
   beforeMount() {
     this.loading = true
     axios

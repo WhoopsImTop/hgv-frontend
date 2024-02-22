@@ -88,7 +88,8 @@
                 guide.skills
                   .map(
                     (skill) =>
-                      '#' + skill.translations[$i18n.locale === 'de' ? 0 : 1].name
+                      '#' +
+                      skill.translations[$i18n.locale === 'de' ? 0 : 1].name
                   )
                   .join(', ')
               }}
@@ -259,6 +260,66 @@ export default {
           en: 'Tours',
         },
       },
+    }
+  },
+
+  head() {
+    return {
+      title: this.guide.name
+        ? this.guide.name + ' | Hamburger Gästeführer Verein e.V.'
+        : 'Hamburger Gästeführer Verein e.V.',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.guide.description
+            ? this.guide.description.slice(0, 200) + '...'
+            : 'Wir vereinen nicht nur über 80 engagierte Guides, sondern bieten auch mehr als 70 verschiedene Führungen in 18 Sprachen an! Lauschen Sie bei einem Rundgang interessanten Fakten über die Stadt, erkunden Sie historisch entscheidende Orte auf dem Fahrrad oder erleben Sie Hamburgs Klassiker per Bus, Schiff oder zu Fuß: Bei unseren Führungen werden Sie mit Sicherheit fündig! ',
+        },
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.guide.name
+            ? this.guide.name + ' | Hamburger Gästeführer Verein e.V.'
+            : 'Hamburger Gästeführer Verein e.V.',
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.guide.description
+            ? this.guide.description.slice(0, 200) + '...'
+            : 'Wir vereinen nicht nur über 80 engagierte Guides, sondern bieten auch mehr als 70 verschiedene Führungen in 18 Sprachen an! Lauschen Sie bei einem Rundgang interessanten Fakten über die Stadt, erkunden Sie historisch entscheidende Orte auf dem Fahrrad oder erleben Sie Hamburgs Klassiker per Bus, Schiff oder zu Fuß: Bei unseren Führungen werden Sie mit Sicherheit fündig! ',
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: this.guide.image ? this.guide.image[0].url : '',
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: 'https://hamburger-gaestefuehrer.de/guide/' + this.guide.id,
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: this.guide.name
+            ? this.guide.name + ' | Hamburger Gästeführer Verein e.V.'
+            : 'Hamburger Gästeführer Verein e.V.',
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: this.guide.description
+            ? this.guide.description.slice(0, 200) + '...'
+            : 'Wir vereinen nicht nur über 80 engagierte Guides, sondern bieten auch mehr als 70 verschiedene Führungen in 18 Sprachen an! Lauschen Sie bei einem Rundgang interessanten Fakten über die Stadt, erkunden Sie historisch entscheidende Orte auf dem Fahrrad oder erleben Sie Hamburgs Klassiker per Bus, Schiff oder zu Fuß: Bei unseren Führungen werden Sie mit Sicherheit fündig! ',
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content: this.guide.image ? this.guide.image[0].url : '',
+        },
+      ],
     }
   },
 

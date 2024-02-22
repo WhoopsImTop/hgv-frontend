@@ -4,14 +4,15 @@
     class="flex items-start border border-gray-50 rounded-xl pt-4 px-4 pb-3 text-decoration-none"
   >
     <div
-      class="min-w-[48px] min-h-[48px] w-12 h-12 aspect-square rounded-full overflow-hidden flex items-center justify-center"
+      class="min-w-[48px] min-h-[48px] w-12 h-12 aspect-square rounded-full flex items-center justify-center overflow-hidden"
     >
       <img
         :src="getUrl(guide)"
         :alt="guide.name"
-        class="object-cover rounded-full"
+        class="object-cover w-full h-full"
       />
     </div>
+
     <div class="ml-2">
       <h3 class="font-sans font-bold mb-2">
         {{ guide.name }}

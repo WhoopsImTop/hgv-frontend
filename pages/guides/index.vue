@@ -46,9 +46,9 @@
       <h3 class="font-sans font-sm font-bold text-hgv-950 mt-5 mb-1">
         {{ $i18n.locale === 'de' ? 'Guide Filter' : 'Guide filter' }}
       </h3>
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-3">
         <select
-          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans"
+          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
           name="language"
           id="language"
           v-model="selectedLanguage"
@@ -65,7 +65,7 @@
           </option>
         </select>
         <select
-          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans"
+          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
           name="mobility"
           v-model="selectedMobility"
           id="mobility"
@@ -81,7 +81,7 @@
             {{ mobil.translations[$i18n.locale === 'de' ? 0 : 1].name }}
           </option></select
         ><select
-          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans"
+          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
           name="theme"
           id="theme"
           v-model="selectedSkill"
@@ -94,7 +94,7 @@
           </option>
         </select>
         <select
-          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans"
+          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
           name="orte"
           id="orte"
           v-model="selectedPlace"
@@ -107,7 +107,19 @@
           </option>
         </select>
         <button
-          class="bg-hgv-950 text-white rounded-lg p-2 font-sans disabled:opacity-50 disabled:cursor-not-allowed"
+          class="bg-hgv-950 text-white rounded-lg p-2 font-sans disabled:opacity-50 disabled:cursor-not-allowed md:col-span-3"
+          :disabled="
+            selectedLanguage === '0' &&
+            selectedMobility === '0' &&
+            selectedSkill === '0' &&
+            selectedPlace === '0'
+          "
+          @click="filterGuide()"
+        >
+          {{ $i18n.locale === 'de' ? 'Guides Filtern' : 'filter guides' }}
+        </button>
+        <button
+          class="bg-hgv_red-50 rounded-lg p-2 font-sans disabled:opacity-50 disabled:cursor-not-allowed md:col-span-1 flex items-center justify-center"
           :disabled="
             selectedLanguage === '0' &&
             selectedMobility === '0' &&
@@ -119,13 +131,17 @@
             selectedMobility = '0'
             selectedSkill = '0'
             selectedPlace = '0'
+            filterGuide()
           "
         >
-          {{ $i18n.locale === 'de' ? 'Filter löschen' : 'Clear filter' }}
+          <img src="/delete.svg" alt="delete" class="w-6 h-6" />
         </button>
       </div>
       <hr class="border-1 border-gray-300 mt-1 mb-3" />
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div
+        v-if="filteredGuides.length > 0"
+        class="grid grid-cols-1 md:grid-cols-3 gap-4"
+      >
         <guide-component
           v-for="guide in filteredGuides"
           :guide="guide"
@@ -178,6 +194,13 @@
           ></div>
         </div>
       </div>
+      <div v-else class="flex justify-center items-center">
+        <p class="text-hgv-950">
+          {{
+            $i18n.locale === 'de' ? 'Keine Guides gefunden' : 'No guides found'
+          }}
+        </p>
+      </div>
     </div>
     <div
       v-else
@@ -220,10 +243,42 @@ export default {
       guides: [],
       maxPages: 0,
       image: null,
-      languages: [],
-      mobility: [],
-      skills: [],
-      places: [],
+      languages: [
+        {
+          id: 1,
+          translations: [
+            { name: 'lade Sprachen...' },
+            { name: 'loading Languages...' },
+          ],
+        },
+      ],
+      mobility: [
+        {
+          id: 1,
+          translations: [
+            { name: 'lade Fortbewegungsmittel...' },
+            { name: 'loading Means of transportation...' },
+          ],
+        },
+      ],
+      skills: [
+        {
+          id: 1,
+          translations: [
+            { name: 'lade Themen...' },
+            { name: 'loading Themes...' },
+          ],
+        },
+      ],
+      places: [
+        {
+          id: 1,
+          translations: [
+            { name: 'lade Orte...' },
+            { name: 'loading Places...' },
+          ],
+        },
+      ],
       selectedLanguage: '0',
       selectedMobility: '0',
       selectedSkill: '0',
@@ -233,48 +288,79 @@ export default {
       loadingNextPage: false,
     }
   },
+
+  head() {
+    return {
+      title:
+        this.$i18n.locale === 'de'
+          ? 'Unsere Guides | Hamburger Gästeführer Verein e.V.'
+          : 'Our Guides | Hamburger Gästeführer Verein e.V.',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'Unsere Gästeführer sind Experten für Hamburg. Sie kennen die Stadt wie ihre Westentasche und zeigen Ihnen die schönsten Ecken der Hansestadt.',
+        },
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content:
+            this.$i18n.locale === 'de'
+              ? 'Unsere Guides | Hamburger Gästeführer Verein e.V.'
+              : 'Our Guides | Hamburger Gästeführer Verein e.V.',
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content:
+            'Unsere Gästeführer sind Experten für Hamburg. Sie kennen die Stadt wie ihre Westentasche und zeigen Ihnen die schönsten Ecken der Hansestadt.',
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content:
+            'https://api.hamburger-gaestefuehrer.de/storage/x7hk3mQpocKCksbGCHcRtRYZssznzVKJAm5oJ8KC.jpg',
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: 'https://hamburger-gaestefuehrer.de/guides',
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content:
+            this.$i18n.locale === 'de'
+              ? 'Unsere Guides | Hamburger Gästeführer Verein e.V.'
+              : 'Our Guides | Hamburger Gästeführer Verein e.V.',
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content:
+            'Unsere Gästeführer sind Experten für Hamburg. Sie kennen die Stadt wie ihre Westentasche und zeigen Ihnen die schönsten Ecken der Hansestadt.',
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content:
+            'https://api.hamburger-gaestefuehrer.de/storage/x7hk3mQpocKCksbGCHcRtRYZssznzVKJAm5oJ8KC.jpg',
+        },
+        {
+          hid: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image',
+        },
+      ],
+    }
+  },
   computed: {
     pageLoading() {
       return this.guides.length === 0 && this.image === null
     },
     filteredGuides() {
-      let guides = this.guides
-      if (this.selectedLanguage !== '0') {
-        guides = guides.filter((guide) => {
-          return guide.languages.some(
-            (language) => language.id === this.selectedLanguage
-          )
-        })
-      }
-      if (this.selectedMobility !== '0') {
-        guides = guides.filter((guide) => {
-          return guide.mobility.some(
-            (mobility) => mobility.id === this.selectedMobility
-          )
-        })
-      }
-      if (this.selectedSkill !== '0') {
-        guides = guides.filter((guide) => {
-          return guide.skills.some((skill) => skill.id === this.selectedSkill)
-        })
-      }
-
-      if (this.selectedPlace !== '0') {
-        const guideIds = []
-        this.places.forEach((place) => {
-          if (place.id === this.selectedPlace) {
-            place.tours.forEach((tour) => {
-              tour.guides.forEach((guide) => {
-                guideIds.push(guide.id)
-              })
-            })
-          }
-        })
-        guides = guides.filter((guide) => {
-          return guideIds.includes(guide.id)
-        })
-      }
-      return guides
+      return this.guides
     },
   },
   beforeMount() {
@@ -286,6 +372,39 @@ export default {
   },
 
   methods: {
+    filterGuide() {
+      let queryString = ''
+      if (this.selectedLanguage !== '0') {
+        queryString += `&language=${this.selectedLanguage}`
+      }
+      if (this.selectedMobility !== '0') {
+        queryString += `&mobility=${this.selectedMobility}`
+      }
+      if (this.selectedSkill !== '0') {
+        queryString += `&skill=${this.selectedSkill}`
+      }
+      if (this.selectedPlace !== '0') {
+        queryString += `&place=${this.selectedPlace}`
+      }
+      this.loadingNextPage = true
+      this.currentPageLoading = true
+      this.$axios
+        .get(
+          `https://api.hamburger-gaestefuehrer.de/api/guides?param=2${queryString}`
+        )
+        .then((response) => {
+          this.guides = response.data.guides.data
+          this.maxPages = response.data.guides.last_page
+          this.currentPageLoading = false
+          this.loadingNextPage = false
+        })
+        .catch((error) => {
+          console.log(error)
+          window.alert(
+            'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.'
+          )
+        })
+    },
     async getAllGuides() {
       const guides = await this.$axios.$get(
         `https://api.hamburger-gaestefuehrer.de/api/guides`
@@ -303,7 +422,15 @@ export default {
       await this.$axios
         .get('https://api.hamburger-gaestefuehrer.de/api/languages')
         .then((response) => {
-          this.languages = response.data.languages
+          this.languages = response.data.languages.sort((a, b) => {
+            if (a.translations[0].name < b.translations[0].name) {
+              return -1
+            }
+            if (a.translations[0].name > b.translations[0].name) {
+              return 1
+            }
+            return 0
+          })
         })
         .catch((error) => {
           console.log(error)
@@ -313,7 +440,15 @@ export default {
       await this.$axios
         .get('https://api.hamburger-gaestefuehrer.de/api/mobility')
         .then((response) => {
-          this.mobility = response.data.mobilities
+          this.mobility = response.data.mobilities.sort((a, b) => {
+            if (a.translations[0].name < b.translations[0].name) {
+              return -1
+            }
+            if (a.translations[0].name > b.translations[0].name) {
+              return 1
+            }
+            return 0
+          })
         })
         .catch((error) => {
           console.log(error)
@@ -322,9 +457,17 @@ export default {
 
     async getAllSkills() {
       await this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/skills')
+        .get('https://api.hamburger-gaestefuehrer.de/api/skills?preview=true')
         .then((response) => {
-          this.skills = response.data.skills
+          this.skills = response.data.skills.sort((a, b) => {
+            if (a.translations[0].name < b.translations[0].name) {
+              return -1
+            }
+            if (a.translations[0].name > b.translations[0].name) {
+              return 1
+            }
+            return 0
+          })
         })
         .catch((error) => {
           console.log(error)
@@ -335,7 +478,15 @@ export default {
       await this.$axios
         .get('https://api.hamburger-gaestefuehrer.de/api/places?with_guides=1')
         .then((response) => {
-          this.places = response.data.places
+          this.places = response.data.places.sort((a, b) => {
+            if (a.translations[0].name < b.translations[0].name) {
+              return -1
+            }
+            if (a.translations[0].name > b.translations[0].name) {
+              return 1
+            }
+            return 0
+          })
         })
         .catch((error) => {
           console.log(error)
@@ -351,12 +502,26 @@ export default {
         return
       }
 
+      let queryString = ''
+      if (this.selectedLanguage !== '0') {
+        queryString += `&language=${this.selectedLanguage}`
+      }
+      if (this.selectedMobility !== '0') {
+        queryString += `&mobility=${this.selectedMobility}`
+      }
+      if (this.selectedSkill !== '0') {
+        queryString += `&skill=${this.selectedSkill}`
+      }
+      if (this.selectedPlace !== '0') {
+        queryString += `&place=${this.selectedPlace}`
+      }
+
       this.loadingNextPage = true
       this.guidePage++
       this.currentPageLoading = true
       this.$axios
         .get(
-          `https://api.hamburger-gaestefuehrer.de/api/guides?page=${this.guidePage}`
+          `https://api.hamburger-gaestefuehrer.de/api/guides?page=${this.guidePage}${queryString}`
         )
         .then((response) => {
           this.guides.push(...response.data.guides.data)

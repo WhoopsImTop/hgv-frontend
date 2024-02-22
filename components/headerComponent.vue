@@ -14,7 +14,7 @@
         <nuxt-link
           class="font-sans text-hgv-950 mx-2.5 hover:no-underline hover:text-hgv_red-700"
           :to="LocalizePath('/guides')"
-          >{{ $i18n.locale === 'de' ? 'Gästeführer' : 'Guides' }}</nuxt-link
+          >{{ $i18n.locale === 'de' ? 'Guides' : 'Guides' }}</nuxt-link
         >
         <nuxt-link
           class="font-sans text-hgv-950 mx-2.5 hover:no-underline hover:text-hgv_red-700"
@@ -46,7 +46,7 @@
     </div>
     <div
       :class="mobileMenuOpen ? 'flex' : 'hidden'"
-      class="flex-col pt-12 md:hidden link-container h-[calc(100vh-88px)]"
+      class="flex-col pt-12 md:hidden link-container h-[calc(100vh-88px)] fixed top-[88px] left-0 right-0 bottom-0 bg-white"
     >
       <nuxt-link
         class="font-sans text-hgv-950 my-4 mx-auto hover:no-underline hover:text-hgv_red-700"

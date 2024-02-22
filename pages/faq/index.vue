@@ -102,6 +102,86 @@ export default {
     }
   },
 
+  head() {
+    const schema = {
+      '@context': 'http://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Welche Voraussetzungen müssen mitgebracht werden, um Mitglied im Verein zu werden?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Um Mitglied zu werden, müssen Sie seit mindestens drei Jahren als Gästeführer/in in Hamburg tätig sein und aktuell als Gästeführer/in arbeiten.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Sind diese Voraussetzungen erfüllt, wie kann ich mich bewerben?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Melden Sie sich bei uns per E-Mail an info@hamburger-gaestefuehrer.de. Senden Sie uns einen tabellarischen Lebenslauf, mindestens zwei Empfehlungen von Auftraggebern, eine Empfehlung eines HGV-Mitglieds (falls vorhanden), und falls vorhanden, einen Ausbildungsnachweis zur Gästeführer/in.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Wie geht es dann mit der Bewerbung weiter?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Nach Erhalt Ihrer vollständigen Bewerbung senden wir Ihnen einen Aufnahmeantrag. Nachdem Sie diesen ausgefüllt zurücksenden, laden wir Sie zu einem Vorstellungsgespräch ein. Die Entscheidung über die Aufnahme liegt beim Vorstand.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Vermittelt der Hamburger Gästeführer Verein Aufträge?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Nein, der Verein vermittelt keine Aufträge.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Bildet der HGV zum anerkannten Gästeführer nach DIN EN aus?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Ja, der HGV bildet Gästeführer nach den Richtlinien des BVGD (DIN EN-Zertifikat) aus. Die Termine für den Ausbildungszyklus finden Sie auf dieser Internetseite.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Ist die Ausbildung bzw. Zertifizierung kostenpflichtig und wird ein Bildungsgutschein anerkannt?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Ja, sowohl die Ausbildung als auch die Zertifizierung sind kostenpflichtig. Die Höhe hängt von verschiedenen Faktoren ab. Ein Bildungsgutschein wird nicht anerkannt.',
+          },
+        },
+      ],
+    }
+
+    return {
+      title:
+        this.$i18n.locale === 'de'
+          ? 'FAQ | Hamburger Gästeführer Verein e.V.'
+          : 'FAQ | Hamburger Gästeführer Verein e.V.',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            this.$i18n.locale === 'de'
+              ? 'Häufig gestellte Fragen und Antworten zum Hamburger Gästeführer Verein e.V.'
+              : 'Frequently asked questions and answers about the Hamburger Gästeführer Verein e.V.',
+        },
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(schema),
+        },
+      ],
+    }
+  },
+
   beforeMount() {
     this.loading = true
     axios

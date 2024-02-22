@@ -43,31 +43,39 @@
         </h1>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-      <nuxt-link
-        v-for="tour in languages.tours"
-        :key="tour.id"
-        :to="`/tour/${tour.id}`"
-        class="flex flex-row items-start border border-zinc-50 rounded-xl p-3 my-1 text-decoration-none"
-      >
-        <div class="mr-4">
-          <img
-            v-if="tour.images"
-            :src="tour.images[0].url"
-            :alt="tour.name"
-            class="w-24 h-24 rounded-lg object-cover"
-          />
-          <div v-else class="bg-zinc-50 rounded w-24 h-24"></div>
-        </div>
-        <div>
-          <h3 class="text-lg md:text-2xl font-sans font-bold mb-2">
-            {{
-              tour.translations[$i18n.locale === 'de' ? 0 : 1].name || tour.name
-            }}
-          </h3>
-          <p v-html="generateDescription(tour)"></p>
-        </div>
-      </nuxt-link>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+      <div v-for="tour in languages.tours" :key="tour.id" class="flex flex-col">
+        <nuxt-link
+          :to="`/tour/${tour.id}`"
+          class="flex flex-row items-start border border-zinc-50 rounded-xl p-3 text-decoration-none"
+        >
+          <div class="mr-4">
+            <img
+              v-if="tour.images"
+              :src="tour.images[0].url"
+              :alt="tour.name"
+              class="w-24 h-24 rounded-lg object-cover"
+            />
+            <div v-else class="bg-zinc-50 rounded w-24 h-24"></div>
+          </div>
+          <div>
+            <h3 class="text-2xl font-sans font-bold mb-2">
+              {{
+                tour.translations[$i18n.locale === 'de' ? 0 : 1].name ||
+                tour.name
+              }}
+            </h3>
+            <p
+              v-html="
+                tour.translations[
+                  $i18n.locale === 'de' ? 0 : 1
+                ].description.slice(0, 100) + '...' ||
+                tour.description.slice(0, 200) + '...'
+              "
+            ></p>
+          </div>
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>

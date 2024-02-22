@@ -1,60 +1,31 @@
 <template>
   <div>
-    <div class="bg-hgv-50 py-12 mt-20">
+    <div class="bg-hgv-50 py-4 mt-20">
       <div
-        class="container mx-auto flex md:flex-row flex-col md:justify-between md:align-end items-start"
+        class="container mx-auto flex md:flex-row flex-col md:justify-between md:align-end md:items-end"
       >
-        <div class="flex flex-col">
-          <nuxt-link class="font-sans my-1" :to="footerLinks_one.contactLink">{{
+        <div>
+          <img src="../assets/logo.svg" alt="HGV Logo" width="70" class="mb-4 sm:mb-0" />
+        </div>
+        <div class="flex flex-col md:flex-row">
+          <nuxt-link class="font-sans my-1 max-md:mx-0 md:mx-2" :to="footerLinks_one.faqLink">{{
+            footerLinks_one.translations[$i18n.locale].faq
+          }}</nuxt-link>
+          <nuxt-link class="font-sans my-1 max-md:mx-0 md:mx-2" :to="footerLinks_one.contactLink">{{
             footerLinks_one.translations[$i18n.locale].contact
           }}</nuxt-link>
           <nuxt-link
-            class="font-sans my-1"
+            class="font-sans my-1 max-md:mx-0 md:mx-2"
             :to="footerLinks_one.impressumLink"
             >{{
               footerLinks_one.translations[$i18n.locale].impressum
             }}</nuxt-link
           >
           <nuxt-link
-            class="font-sans my-1"
+            class="font-sans my-1 max-md:mx-0 md:mx-2"
             :to="footerLinks_one.datenschutzerklärenLink"
             >{{
               footerLinks_one.translations[$i18n.locale].datenschutzerklären
-            }}</nuxt-link
-          >
-        </div>
-        <div class="flex flex-col">
-          <nuxt-link
-            class="font-sans my-1"
-            :to="footerLinks_two.tour_guidesLink"
-            >{{
-              footerLinks_two.translations[$i18n.locale].tour_guides
-            }}</nuxt-link
-          >
-          <nuxt-link class="font-sans my-1" :to="footerLinks_two.toursLink">{{
-            footerLinks_two.translations[$i18n.locale].tours
-          }}</nuxt-link>
-        </div>
-        <div class="flex flex-col">
-          <nuxt-link
-            class="font-sans my-1"
-            :to="footerLinks_three.about_usLink"
-            >{{
-              footerLinks_three.translations[$i18n.locale].about_us
-            }}</nuxt-link
-          >
-          <nuxt-link
-            class="font-sans my-1"
-            :to="footerLinks_three.honoraryLink"
-            >{{
-              footerLinks_three.translations[$i18n.locale].honorary
-            }}</nuxt-link
-          >
-          <nuxt-link
-            class="font-sans my-1"
-            :to="footerLinks_three.become_a_memberLink"
-            >{{
-              footerLinks_three.translations[$i18n.locale].become_a_member
             }}</nuxt-link
           >
         </div>
@@ -82,16 +53,19 @@ export default {
       footerLinks_one: {
         translations: {
           de: {
+            faq: 'FAQ Mitgliedschaft',
             contact: 'Kontakt',
             impressum: 'Impressum',
             datenschutzerklären: 'Datenschutzerklärung',
           },
           en: {
+            faq: 'FAQ Membership',
             contact: 'Contact',
             impressum: 'Imprint',
             datenschutzerklären: 'Privacy Policy',
           },
         },
+        faqLink: '/faq',
         contactLink: '/contact',
         impressumLink: '/imprint',
         datenschutzerklärenLink: '/privacy-policy',
@@ -100,7 +74,7 @@ export default {
         translations: {
           de: {
             tour_guides: 'Gästeführer',
-            tours: 'Touren',
+            tours: 'Führungen',
           },
           en: {
             tour_guides: 'Tour Guides',
@@ -115,17 +89,14 @@ export default {
           de: {
             about_us: 'Über uns',
             honorary: 'Honorare',
-            become_a_member: 'Mitglied werden',
           },
           en: {
             about_us: 'About us',
             honorary: 'Honorary',
-            become_a_member: 'Become a member',
           },
         },
         about_usLink: '/about',
         honoraryLink: '/fees',
-        become_a_memberLink: '/become-member',
       },
       locale: this.$i18n.locale,
     }

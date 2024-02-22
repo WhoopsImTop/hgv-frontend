@@ -102,6 +102,25 @@ export default {
     }
   },
 
+  head() {
+    return {
+      title:
+        this.$i18n.locale === 'de'
+          ? 'Kontakt | Hamburger Gästeführer Verein e.V.'
+          : 'Contact | Hamburger Gästeführer Verein e.V.',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            this.$i18n.locale === 'de'
+              ? 'Hamburg Tourismus - Die offizielle Seite für Touristen in Hamburg. Hier finden Sie alles rund um Ihren Aufenthalt in Hamburg.'
+              : 'Hamburg Tourism - The official site for tourists in Hamburg. Here you will find everything about your stay in Hamburg.',
+        },
+      ],
+    }
+  },
+
   beforeMount() {
     this.loading = true
     axios

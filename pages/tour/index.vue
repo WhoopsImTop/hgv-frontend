@@ -1,6 +1,8 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 min-h-[calc(100vh-150px)]">
-    <div class="col-span-2">
+  <div
+    class="min-h-[calc(100vh-150px)]"
+  >
+    <div>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         <select
           class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans"
@@ -74,7 +76,7 @@
           id="mobility"
         >
           <option value="0">
-            {{ $i18n.locale === 'de' ? 'Mobilität' : 'Mobility' }}
+            {{ $i18n.locale === 'de' ? 'Fortbewegungsmittel' : 'Mobility' }}
           </option>
           <option
             v-for="mobility in mobility"
@@ -122,11 +124,11 @@
 
       <div
         v-if="tourLoading === false"
-        class="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-3 mt-6 h-auto"
+        class="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-4 mt-6 h-auto"
       >
         <div
           v-if="filteredTours.length === 0 && tourLoading === false"
-          class="border-hgv-950 border-2 md:grid-cols-2 lg:col-span-3 rounded-xl p-4 flex flex-col justify-between items-center text-center"
+          class="border-hgv-950 border-2 md:grid-cols-2 lg:col-span-4 rounded-xl p-4 flex flex-col justify-between items-center text-center"
         >
           <div class="flex flex-col">
             <h3 class="text-hgv-950 font-sans font-bold text-xl mb-2">
@@ -164,7 +166,7 @@
             <h4 class="text-sm">Anmeldung Erforderlich</h4>
           </div>
           <img
-            :src="tour.images[0].url"
+            :src="tour.images?.[0]?.url || '/placeholder.png'"
             :alt="tour.name"
             class="object-cover h-100 w-100"
           />
@@ -174,7 +176,7 @@
             <h3
               class="text-white text-base md:text-base lg:text-base font-bold"
             >
-              {{ tour.translations[$i18n.locale === 'de' ? '0' : '1'].name }}
+              {{ getTranslationName(tour) }}
             </h3>
           </div>
         </nuxt-link>
@@ -204,11 +206,14 @@
         </div>
       </div>
 
-      <div class="flex justify-center items-center mt-8" v-if="filteredTours.length > 0 || pagination != null">
+      <div
+        class="flex justify-center items-center mt-8"
+        v-if="filteredTours.length > 0 || pagination != null"
+      >
         <div v-for="page in pagination" :key="page.url">
           <button
             v-if="page.url !== null"
-            class="border border-gray-300 rounded-lg px-2.5 py-1 text-hgv-950 font-sans mx-1"
+            class="border border-gray-300 rounded-lg px-2.5 py-1 text-hgv-950 font-sans mx-1 mb-6 sm:mb-0"
             :class="page.active ? 'bg-hgv-950 text-white' : ''"
             @click="getAllTours(page.url)"
           >
@@ -217,19 +222,19 @@
         </div>
       </div>
     </div>
-    <div
-      class="overflow-hidden rounded-xl hidden lg:block sticky top-[6em] max-h-[80vh]"
+    <!-- <div
+      class="overflow-hidden rounded-xl block sticky min-h-[400px] top-[6em] max-h-[80vh]"
     >
       <mapComponent class="h-full" :tours="filteredTours" />
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import mapComponent from '~/components/mapComponent.vue'
+/* import mapComponent from '~/components/mapComponent.vue' */
 export default {
   components: {
-    mapComponent,
+    /* mapComponent, */
   },
   layout: 'main',
   data: () => ({
@@ -257,6 +262,73 @@ export default {
     tourLoading: true,
   }),
 
+  head() {
+    return {
+      title:
+        this.$i18n.locale === 'de'
+          ? 'Führungen | Hamburger Gästeführer Verein e.V.'
+          : 'Tours | Hamburger Gästeführer Verein e.V.',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'Entdecken Sie Hamburg mit unseren vielfältigen Touren! Von klassischen Stadtrundgängen und Busrundfahrten bis zu thematischen Erkundungen bieten wir über 70 verschiedene Führungen in 18 Sprachen an. Erleben Sie Hamburgs Highlights, erkunden Sie Stadtviertel und Quartiere, tauchen Sie in spannende Themen ein oder erkunden Sie die Metropolregion und ihre Umgebung. Über unsere Filter finden Sie ganz einfach Ihre maßgeschneiderte Tour und können diese dann direkt bei unseren Guides anfragen.',
+        },
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content:
+            this.$i18n.locale === 'de'
+              ? 'Führungen | Hamburger Gästeführer Verein e.V.'
+              : 'Tours | Hamburger Gästeführer Verein e.V.',
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content:
+            'Entdecken Sie Hamburg mit unseren vielfältigen Touren! Von klassischen Stadtrundgängen und Busrundfahrten bis zu thematischen Erkundungen bieten wir über 70 verschiedene Führungen in 18 Sprachen an. Erleben Sie Hamburgs Highlights, erkunden Sie Stadtviertel und Quartiere, tauchen Sie in spannende Themen ein oder erkunden Sie die Metropolregion und ihre Umgebung. Über unsere Filter finden Sie ganz einfach Ihre maßgeschneiderte Tour und können diese dann direkt bei unseren Guides anfragen.',
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content:
+            'https://api.hamburger-gaestefuehrer.de/storage/X397WPk8Ms4Mn4MVGQzSmC6ka2okqGngEjFD6a83.jpg',
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: 'https://hamburger-gaestefuehrer.de/tour',
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content:
+            this.$i18n.locale === 'de'
+              ? 'Führungen | Hamburger Gästeführer Verein e.V.'
+              : 'Tours | Hamburger Gästeführer Verein e.V.',
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content:
+            'Entdecken Sie Hamburg mit unseren vielfältigen Touren! Von klassischen Stadtrundgängen und Busrundfahrten bis zu thematischen Erkundungen bieten wir über 70 verschiedene Führungen in 18 Sprachen an. Erleben Sie Hamburgs Highlights, erkunden Sie Stadtviertel und Quartiere, tauchen Sie in spannende Themen ein oder erkunden Sie die Metropolregion und ihre Umgebung. Über unsere Filter finden Sie ganz einfach Ihre maßgeschneiderte Tour und können diese dann direkt bei unseren Guides anfragen.',
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content:
+            'https://api.hamburger-gaestefuehrer.de/storage/X397WPk8Ms4Mn4MVGQzSmC6ka2okqGngEjFD6a83.jpg',
+        },
+        {
+          hid: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image',
+        },
+      ],
+    }
+  },
+
   computed: {
     filteredTours() {
       return this.tours
@@ -280,7 +352,17 @@ export default {
     this.getAllMobility()
     this.getAllSkills()
   },
+
   methods: {
+    getTranslationName(tour) {
+      // Überprüfen, ob tour.translations definiert ist
+      if (tour.translations && tour.translations.length > 0) {
+        const translationIndex = this.$i18n.locale === 'de' ? 0 : 1
+        return tour.translations[translationIndex].name
+      }
+      // Fallback-Wert, wenn keine Übersetzungen vorhanden sind
+      return tour.name // oder einen anderen geeigneten Wert
+    },
     linkGenerator(tour) {
       const link = `/tour/${tour.id}`
       let query = '?'
@@ -323,7 +405,7 @@ export default {
       this.$axios
         .get('https://api.hamburger-gaestefuehrer.de/api/tours' + query)
         .then((response) => {
-          this.tours = response.data.tours
+          this.tours = response.data.tours?.data || response.data.tours
           this.tourLoading = false
         })
         .catch((error) => {
@@ -335,7 +417,7 @@ export default {
       this.mapLoading = true
       this.tourLoading = true
       let fetchUrl = url || 'https://api.hamburger-gaestefuehrer.de/api/tours'
-      
+
       if (fetchUrl.includes('?')) {
         fetchUrl += '&'
       } else {
@@ -398,8 +480,8 @@ export default {
           this.languages = response.data.languages.sort((a, b) =>
             a.translations[
               this.$i18n.locale === 'de' ? 0 : 1
-            ].description.localeCompare(
-              b.translations[this.$i18n.locale === 'de' ? 0 : 1].description
+            ].name.localeCompare(
+              b.translations[this.$i18n.locale === 'de' ? 0 : 1].name
             )
           )
         })
@@ -446,7 +528,7 @@ export default {
 
     async getAllSkills() {
       await this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/skills')
+        .get('https://api.hamburger-gaestefuehrer.de/api/skills?preview=true&fields=id,translations')
         .then((response) => {
           this.skills = response.data.skills.sort((a, b) =>
             a.translations[

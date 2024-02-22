@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Hamburger Gästeführer Verein',
+    title: 'Hamburger Gästeführer Verein e.V.',
     htmlAttrs: {
       lang: 'de',
     },
@@ -20,14 +20,19 @@ export default {
         content:
           'Entdecken Sie Hamburg mit den Hamburger Gästeführern! Wir bieten 70 einzigartige Touren in 15 Sprachen an, von klassischen Highlights bis zu individuellen Erkundungen. Buchen Sie jetzt und erleben Sie Hamburg mit Experten an Ihrer Seite',
       },
+      {
+        name: 'keywords',
+        content:
+          'Hamburg, Gästeführer, Gästeführung, Stadtführung, Stadtführer, Tour, Touren, Gruppen, Gruppenreise, Gruppenreisen, Reise, Reisen, Hamburg Tourismus, Hamburg Tourismus GmbH, Hamburg Tourismus Marketing GmbH, Hamburg Tourismus Marketing, Hamburg Tourismus Marketing GmbH, Hamburg Tourismus Marketing, Hamburg, khri8! more playgrounds',
+      },
       { name: 'format-detection', content: 'telephone=no' },
       {
         property: 'og:site_name',
-        content: 'Blue Angel',
+        content: 'Hamburger Gästeführer Verein e.V.',
       },
       {
         property: 'og:title',
-        content: 'Hamburger Gästeführer Verein',
+        content: 'Hamburger Gästeführer Verein e.V.',
       },
       {
         property: 'og:description',
@@ -58,7 +63,7 @@ export default {
   ],
 
   i18n: {
-    locales: ['de', 'en', 'fr'],
+    locales: ['de', 'en'],
     defaultLocale: 'de',
     strategy: 'prefix',
   },

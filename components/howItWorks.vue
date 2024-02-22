@@ -46,7 +46,7 @@ export default {
   methods: {
     getGuides() {
       this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/guides?preview=true')
+        .get('https://api.hamburger-gaestefuehrer.de/api/guides?preview=true&random=true')
         .then((response) => {
           this.guides = response.data.guides.data.splice(0, 4)
         })

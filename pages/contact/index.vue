@@ -78,27 +78,75 @@
 
 <script>
 import axios from 'axios'
+import guideLandingImage1 from '../../static/guidesLandingImages/hamburger_gästeführer_Christian_Lue.jpeg'
+import guideLandingImage2 from '../../static/guidesLandingImages/hamburger_gästeführer_Christian_Lue_2.jpeg'
+import guideLandingImage3 from '../../static/guidesLandingImages/hamburger_gästeführer_Moritz_Kindler.jpeg'
+import guideLandingImage4 from '../../static/guidesLandingImages/hamburger_gästeführer_Moritz_Kindler_2.jpeg'
 export default {
   layout: 'main',
-
-  async asyncData({ $axios, params }) {
-    try {
-      const accesskey = 'fpsBXV7HBwRnN5B90GnMnIZYg2EtqCBTCGMMyBvjvtw'
-      const secretkey = '-m9PfeP7BMEvsGE6HdU5QIWr2Hmb4-TfnTaszqbh_GI'
-      const url = `https://api.unsplash.com/photos/random?query=hamburg%20tourism&orientation=landscape&client_id=${accesskey}&client_key=${secretkey}&count=1`
-      const response = await fetch(url)
-      const data = await response.json()
-      return { image: data[0] }
-    } catch (error) {
-      console.log(error)
-    }
-  },
 
   data() {
     return {
       pageData: {},
       loading: false,
       errorMessages: '',
+      image: {
+        urls: {
+          regular: guideLandingImage1,
+        },
+        user: {
+          username: 'Christian Lue',
+          links: {
+            html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
+          },
+        },
+      },
+      landingImages: [
+        {
+          urls: {
+            regular: guideLandingImage1,
+          },
+          user: {
+            username: 'Christian Lue',
+            links: {
+              html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+        {
+          urls: {
+            regular: guideLandingImage2,
+          },
+          user: {
+            username: 'Christian Lue',
+            links: {
+              html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+        {
+          urls: {
+            regular: guideLandingImage3,
+          },
+          user: {
+            username: 'Moritz Kindler',
+            links: {
+              html: 'https://unsplash.com/@moritzkindler?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+        {
+          urls: {
+            regular: guideLandingImage4,
+          },
+          user: {
+            username: 'Moritz Kindler',
+            links: {
+              html: 'https://unsplash.com/@moritzkindler?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+      ],
     }
   },
 
@@ -135,6 +183,10 @@ export default {
           'Wir haben akutell eine hohe Auslastung. Bitte versuchen Sie es später erneut.'
         this.loading = false
       })
+
+    const randomImage =
+      this.landingImages[Math.floor(Math.random() * this.landingImages.length)]
+    this.image = randomImage
   },
 }
 </script>

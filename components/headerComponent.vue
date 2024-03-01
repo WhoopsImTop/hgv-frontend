@@ -11,6 +11,9 @@
         </nuxt-link>
       </div>
       <div class="hidden md:flex link-container items-center">
+        <nuxt-link to="/search"
+          ><img :src="searchImage" class="w-7 h-7 mr-2" alt="suche"
+        /></nuxt-link>
         <nuxt-link
           class="font-sans text-hgv-950 mx-2.5 hover:no-underline hover:text-hgv_red-700"
           :to="LocalizePath('/guides')"
@@ -48,6 +51,9 @@
       :class="mobileMenuOpen ? 'flex' : 'hidden'"
       class="flex-col pt-12 md:hidden link-container h-[calc(100vh-88px)] fixed top-[88px] left-0 right-0 bottom-0 bg-white"
     >
+      <nuxt-link to="/search"
+        ><img :src="searchImage" class="w-7 h-7 mx-auto my-4" alt="suche"
+      /></nuxt-link>
       <nuxt-link
         class="font-sans text-hgv-950 my-4 mx-auto hover:no-underline hover:text-hgv_red-700"
         :to="LocalizePath('/guides')"
@@ -79,10 +85,15 @@
 </template>
 
 <script>
+import searchImage from './../static/search.svg'
+import closeImage from './../static/close.svg'
 export default {
   data() {
     return {
       mobileMenuOpen: false,
+      showSearch: false,
+      searchImage,
+      closeImage,
     }
   },
 

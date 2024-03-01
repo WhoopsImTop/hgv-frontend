@@ -77,27 +77,54 @@
 
 <script>
 import axios from 'axios'
+
+import feeLandingImage1 from '../../static/honorareLandingImages/Hamburger_Gaestefuehrer_jonas-tebbe.jpeg'
+import feeLandingImage2 from '../../static/honorareLandingImages/Hamburger_Gaestefuehrer_khaled-ali.jpeg'
+import feeLandingImage3 from '../../static/honorareLandingImages/Hamburger_Gaestefuehrer_patrick-rosenkranz.jpeg'
 export default {
   layout: 'main',
 
-  async asyncData({ $axios, params }) {
-    try {
-      const accesskey = 'fpsBXV7HBwRnN5B90GnMnIZYg2EtqCBTCGMMyBvjvtw'
-      const secretkey = '-m9PfeP7BMEvsGE6HdU5QIWr2Hmb4-TfnTaszqbh_GI'
-      const url = `https://api.unsplash.com/photos/random?query=hamburg%20tourism&orientation=landscape&client_id=${accesskey}&client_key=${secretkey}&count=1`
-      const response = await fetch(url)
-      const data = await response.json()
-      return { image: data[0] }
-    } catch (error) {
-      console.log(error)
-    }
-  },
-
   data() {
     return {
+      landingImages: [
+        {
+          urls: {
+            regular: feeLandingImage1,
+          },
+          user: {
+            username: 'Jonas Tebbe',
+            links: {
+              html: 'https://unsplash.com/@jonastebbe?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+        {
+          urls: {
+            regular: feeLandingImage2,
+          },
+          user: {
+            username: 'Khaled Ali',
+            links: {
+              html: 'https://unsplash.com/@khaledali?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+        {
+          urls: {
+            regular: feeLandingImage3,
+          },
+          user: {
+            username: 'Patrick Rosenkranz',
+            links: {
+              html: 'https://unsplash.com/@pazzero?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+      ],
       pageData: {},
       loading: false,
       errorMessages: '',
+      image: {},
     }
   },
 
@@ -134,6 +161,10 @@ export default {
           'Wir haben akutell eine hohe Auslastung. Bitte versuchen Sie es später erneut.'
         this.loading = false
       })
+
+      this.image = this.landingImages[
+        Math.floor(Math.random() * this.landingImages.length)
+      ]
   },
 }
 </script>

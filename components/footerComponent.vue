@@ -5,9 +5,9 @@
         class="container mx-auto flex md:flex-row flex-col md:justify-between md:align-end md:items-end"
       >
         <div>
-          <img src="../assets/logo.svg" alt="HGV Logo" width="70" class="mb-4 sm:mb-0" />
+          <img src="../assets/logo.svg" alt="HGV Logo" width="70" class="sm:mb-0" />
         </div>
-        <div class="flex flex-col md:flex-row">
+        <div class="flex flex-col md:flex-row mt-4 sm:mt-0">
           <nuxt-link class="font-sans my-1 max-md:mx-0 md:mx-2" :to="footerLinks_one.faqLink">{{
             footerLinks_one.translations[$i18n.locale].faq
           }}</nuxt-link>

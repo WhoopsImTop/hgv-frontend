@@ -48,10 +48,10 @@
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-3">
         <select
-          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
-          name="language"
           id="language"
           v-model="selectedLanguage"
+          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
+          name="language"
         >
           <option value="0">
             {{ $i18n.locale === 'de' ? 'Sprache' : 'Language' }}
@@ -65,10 +65,10 @@
           </option>
         </select>
         <select
+          id="mobility"
+          v-model="selectedMobility"
           class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
           name="mobility"
-          v-model="selectedMobility"
-          id="mobility"
         >
           <option value="0">
             {{
@@ -81,10 +81,10 @@
             {{ mobil.translations[$i18n.locale === 'de' ? 0 : 1].name }}
           </option></select
         ><select
-          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
-          name="theme"
           id="theme"
           v-model="selectedSkill"
+          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
+          name="theme"
         >
           <option value="0">
             {{ $i18n.locale === 'de' ? 'Themen' : 'Themes' }}
@@ -94,10 +94,10 @@
           </option>
         </select>
         <select
-          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
-          name="orte"
           id="orte"
           v-model="selectedPlace"
+          class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-2"
+          name="orte"
         >
           <option value="0">
             {{ $i18n.locale === 'de' ? 'Orte' : 'Places' }}
@@ -144,8 +144,8 @@
       >
         <guide-component
           v-for="guide in filteredGuides"
-          :guide="guide"
           :key="guide.id"
+          :guide="guide"
         >
         </guide-component>
         <div v-if="loadingNextPage" class="flex justify-center items-center">
@@ -230,19 +230,66 @@
 </template>
 
 <script>
+import guideLandingImage1 from '../../static/guidesLandingImages/hamburger_gästeführer_Christian_Lue.jpeg'
+import guideLandingImage2 from '../../static/guidesLandingImages/hamburger_gästeführer_Christian_Lue_2.jpeg'
+import guideLandingImage3 from '../../static/guidesLandingImages/hamburger_gästeführer_Moritz_Kindler.jpeg'
+import guideLandingImage4 from '../../static/guidesLandingImages/hamburger_gästeführer_Moritz_Kindler_2.jpeg'
 export default {
   layout: 'main',
   data() {
     return {
+      landingImages: [
+        {
+          urls: {
+            regular: guideLandingImage1,
+          },
+          user: {
+            username: 'Christian Lue',
+            links: {
+              html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+        {
+          urls: {
+            regular: guideLandingImage2,
+          },
+          user: {
+            username: 'Christian Lue',
+            links: {
+              html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+        {
+          urls: {
+            regular: guideLandingImage3,
+          },
+          user: {
+            username: 'Moritz Kindler',
+            links: {
+              html: 'https://unsplash.com/@moritzkindler?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+        {
+          urls: {
+            regular: guideLandingImage4,
+          },
+          user: {
+            username: 'Moritz Kindler',
+            links: {
+              html: 'https://unsplash.com/@moritzkindler?utm_source=hgv&utm_medium=referral',
+            },
+          },
+        },
+      ],
       translations: {
         siteTitle: {
           de: 'Unsere Guides',
           en: 'Our Guides',
         },
       },
-      guides: [],
-      maxPages: 0,
-      image: null,
       languages: [
         {
           id: 1,
@@ -286,6 +333,9 @@ export default {
       guidePage: 1,
       currentPageLoading: false,
       loadingNextPage: false,
+      guides: [],
+      maxPages: 0,
+      image: null,
     }
   },
 
@@ -371,6 +421,10 @@ export default {
     this.getAllPlaces()
   },
 
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+
   methods: {
     filterGuide() {
       let queryString = ''
@@ -405,18 +459,15 @@ export default {
           )
         })
     },
+
     async getAllGuides() {
       const guides = await this.$axios.$get(
         `https://api.hamburger-gaestefuehrer.de/api/guides`
       )
-      const accesskey = 'fpsBXV7HBwRnN5B90GnMnIZYg2EtqCBTCGMMyBvjvtw'
-      const secretkey = '-m9PfeP7BMEvsGE6HdU5QIWr2Hmb4-TfnTaszqbh_GI'
-      const url = `https://api.unsplash.com/photos/random?query=hamburg%20tourism&orientation=landscape&client_id=${accesskey}&client_key=${secretkey}&count=1`
-      const response = await fetch(url)
-      const data = await response.json()
-      this.guides = guides.guides.data.sort(() => Math.random() - 0.5)
+      this.guides = guides.guides.data
       this.maxPages = guides.guides.last_page
-      this.image = data[0]
+      const data = this.landingImages[Math.floor(Math.random() * 4)]
+      this.image = data
     },
     async getAllLanguages() {
       await this.$axios
@@ -545,9 +596,6 @@ export default {
         this.getMoreGuides()
       }
     },
-  },
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll)
   },
 }
 </script>

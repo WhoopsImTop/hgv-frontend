@@ -42,7 +42,7 @@
           class="border border-gray-300 rounded-lg p-2 flex items-center justify-between"
         >
           <span class="text-hgv-950 font-sans">{{
-            $i18n.locale === 'de' ? 'Öffentliche Touren' : 'Public Tours'
+            $i18n.locale === 'de' ? 'Öffentliche Führungen' : 'Public Tours'
           }}</span>
           <label class="relative inline-flex items-center cursor-pointer mb-0">
             <input

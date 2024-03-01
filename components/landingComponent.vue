@@ -13,40 +13,31 @@
       ></p>
     </div>
     <div
-      class="col-span-7 bg-hgv-100 rounded-3xl relative flex justify-center align-center h-full min-h-full"
+      class="col-span-7 bg-hgv-100 rounded-3xl relative flex justify-center align-center h-full min-h-full overflow-hidden"
     >
       <img
-        class="object-cover overflow-hidden rounded-3xl"
-        src="/landing-image.png"
+        class="object-cover w-full h-full"
+        :src="landingImage"
         alt="landing-image"
       />
-      <div
-        class="hidden md:felx absolute items-center -bottom-6 rounded-lg bg-hgv-100 px-2 py-2"
-      >
-        <input
-          class="ring-1 ring-hgv-950 rounded py-2 px-2 focus:ring-0 mx-2"
-          type="text"
-          placeholder="Kategorie"
-        />
-        <input
-          class="ring-1 ring-hgv-950 rounded py-2 px-2 focus:ring-0 mx-2"
-          type="text"
-          placeholder="Sprache"
-        />
-        <button
-          class="bg-hgv-950 ring-1 ring-hgv-950 mx-2 px-4 py-2 rounded text-white"
-        >
-          Tour finden
-        </button>
-      </div>
+      <img class="absolute bottom-6 right-6 w-6 h-6 animate-spin-slow" src="/favicon.png" alt="hgv-logo">
     </div>
   </div>
 </template>
 
 <script>
+import landing01 from '../static/landing_01.png'
+import landing02 from '../static/landing_02.jpeg'
+import landing03 from '../static/landing_03.jpeg'
+import landing04 from '../static/landing_04.jpeg'
+import landing05 from '../static/landing_05.jpeg'
+import landing06 from '../static/landing_06.jpeg'
+import landing07 from '../static/landing_07.jpeg'
+
 export default {
   data() {
     return {
+      landingImage: null,
       translations: {
         de: {
           headline: 'Hamburger <br> Gästeführer <br> Verein e.V.',
@@ -70,8 +61,40 @@ Are you interested in introducing our guests to the most beautiful city in the w
       },
     }
   },
+  mounted() {
+    this.getRandomImage()
+    this.changeSlideTimer()
+  },
+  beforeDestroy() {
+    clearInterval(this.changeSlideTimer)
+  },
+  methods: {
+    getRandomImage() {
+      if (this.landingImage === this.chooseRandomImage()) {
+        this.getRandomImage()
+      } else {
+        this.landingImage = this.chooseRandomImage()
+      }
+    },
+    chooseRandomImage() {
+      const images = [
+        landing01,
+        landing02,
+        landing03,
+        landing04,
+        landing05,
+        landing06,
+        landing07,
+      ]
+      return images[Math.floor(Math.random() * images.length)]
+    },
+    changeSlideTimer() {
+      setInterval(() => {
+        this.getRandomImage()
+      }, 10000)
+    },
+  },
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

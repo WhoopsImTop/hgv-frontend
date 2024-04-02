@@ -10,6 +10,18 @@
 <script>
 export default {
   layout: 'main',
+
+  async asyncData({ $content, $axios }) {
+    const imprint = await $axios.$get(
+      'https://api.hamburger-gaestefuehrer.de/api/pages/5'
+    )
+    const data = {}
+    data.de = imprint.translations[0].description
+    data.en = imprint.translations[1].description
+
+    return { imprint: data }
+  },
+
   data() {
     return {
       imprint: {

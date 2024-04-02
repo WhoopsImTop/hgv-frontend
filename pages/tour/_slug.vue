@@ -43,6 +43,12 @@
           </button>
         </div>
       </div>
+      <div
+        v-if="tour.image_copyright"
+        class="absolute top-0 right-0 px-2 py-2 text-xs text-white bg-black bg-opacity-50 rounded-bl"
+      >
+        <span> © {{ tour.image_copyright }} </span>
+      </div>
     </div>
     <div class="grid grid-cols-1 xl:grid-cols-3 py-8 lg:gap-3">
       <div class="xl:col-span-2">

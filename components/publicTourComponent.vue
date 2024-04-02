@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center my-48">
+  <div class="flex flex-col items-center my-36">
     <h2 class="font-sans text-4xl font-bold text-hgv-950">
       {{ translations[$i18n.locale].title }}
     </h2>
@@ -7,7 +7,7 @@
       {{ translations[$i18n.locale].text }}
     </p>
 
-    <div v-if="tours.length > 0" class="mt-12">
+    <div v-if="tours.length > 0 && !error" class="mt-12">
       <nuxt-link
         v-for="tour in tours"
         :key="tour.id"
@@ -44,9 +44,8 @@
         </div>
       </nuxt-link>
     </div>
-
     <div
-      v-else
+      v-else-if="!error"
       class="grid w-full gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-6"
     >
       <div class="rounded-xl aspect-square relative overflow-hidden">
@@ -62,6 +61,11 @@
         <div class="animate-pulse bg-gray-200 h-100"></div>
       </div>
     </div>
+    <div v-else class="mt-10 bg-hgv-100 px-3 py-2 rounded">
+      <p class="text-hgv-950 text-center">
+        {{ errorMessage[$i18n.locale] }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -71,6 +75,8 @@ export default {
   data() {
     return {
       tours: [],
+      error: false,
+      errorMessage: {},
       translations: {
         de: {
           title: 'Öffentliche Führungen',
@@ -87,9 +93,16 @@ export default {
     axios
       .get('https://api.hamburger-gaestefuehrer.de/api/tours?is_public=true')
       .then((response) => {
-        this.tours = response.data.tours.data.filter((tour) => {
+        this.tours = response.data.tours.filter((tour) => {
           return new Date(tour.date) > new Date()
         })
+        if(this.tours.length === 0) {
+          this.error = true
+          this.errorMessage = {
+            de: 'Es gibt aktuell keine Öffentlichen Touren.',
+            en: 'There are currently no public tours.',
+          }
+        }
       })
       .catch((error) => {
         console.log(error)

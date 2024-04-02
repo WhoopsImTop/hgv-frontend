@@ -1,8 +1,6 @@
 <template>
-  <div
-    class="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:h-[calc(100vh-176px)] mt-4"
-  >
-    <div class="col-span-5 flex flex-col justify-center">
+  <div class="flex flex-col lg:grid lg:grid-cols-12 gap-20 mt-4">
+    <div class="col-span-6 flex flex-col justify-center">
       <h1
         class="font-sans text-hgv-950 font-bold text-6xl"
         v-html="translations[$i18n.locale].headline"
@@ -13,14 +11,30 @@
       ></p>
     </div>
     <div
-      class="col-span-7 bg-hgv-100 rounded-3xl relative flex justify-center align-center h-full min-h-full overflow-hidden"
+      class="col-span-6 bg-hgv-100 rounded-3xl relative flex justify-center align-center h-full min-h-full aspect-square overflow-hidden"
     >
       <img
         class="object-cover w-full h-full"
-        :src="landingImage"
+        :src="landingImage.image"
         alt="landing-image"
       />
-      <img class="absolute bottom-6 right-6 w-6 h-6 animate-spin-slow" src="/favicon.png" alt="hgv-logo">
+      <div
+        v-if="landingImage?.copyright && landingImage?.copyright_url"
+        class="absolute bottom-0 left-0 px-3 pt-1 pb-2 rounded-tr-md bg-black/70"
+      >
+        <a
+          class="text-white font-bold text-xs"
+          :href="landingImage.copyright_url"
+          target="_blank"
+        >
+          © {{ landingImage.copyright }}
+        </a>
+      </div>
+      <img
+        class="absolute bottom-6 right-6 w-6 h-6 animate-spin-slow"
+        src="/favicon.png"
+        alt="hgv-logo"
+      />
     </div>
   </div>
 </template>
@@ -29,7 +43,6 @@
 import landing01 from '../static/landing_01.png'
 import landing02 from '../static/landing_02.jpeg'
 import landing03 from '../static/landing_03.jpeg'
-import landing04 from '../static/landing_04.jpeg'
 import landing05 from '../static/landing_05.jpeg'
 import landing06 from '../static/landing_06.jpeg'
 import landing07 from '../static/landing_07.jpeg'
@@ -37,7 +50,7 @@ import landing07 from '../static/landing_07.jpeg'
 export default {
   data() {
     return {
-      landingImage: null,
+      landingImage: {},
       translations: {
         de: {
           headline: 'Hamburger <br> Gästeführer <br> Verein e.V.',
@@ -59,6 +72,38 @@ Are you interested in introducing our guests to the most beautiful city in the w
 `,
         },
       },
+      images: [
+        {
+          image: landing01,
+          copyright: 'Jonas Tebbe',
+          copyright_url: 'https://unsplash.com/de/@jonastebbe',
+        },
+        {
+          image: landing02,
+          copyright: 'Ajepbah',
+          copyright_url: 'https://commons.wikimedia.org/wiki/User:Ajepbah',
+        },
+        {
+          image: landing03,
+          copyright: 'Christian Brandes',
+          copyright_url: 'https://www.christianbrandes.de/',
+        },
+        {
+          image: landing05,
+          copyright: 'ThisIsJulia Photography',
+          copyright_url: 'https://thisisjulia.de/',
+        },
+        {
+          image: landing06,
+          copyright: 'Doublevision',
+          copyright_url: 'https://www.doublevision.photo/',
+        },
+        {
+          image: landing07,
+          copyright: 'ThisIsJulia Photography',
+          copyright_url: 'https://thisisjulia.de/',
+        },
+      ],
     }
   },
   mounted() {
@@ -77,16 +122,7 @@ Are you interested in introducing our guests to the most beautiful city in the w
       }
     },
     chooseRandomImage() {
-      const images = [
-        landing01,
-        landing02,
-        landing03,
-        landing04,
-        landing05,
-        landing06,
-        landing07,
-      ]
-      return images[Math.floor(Math.random() * images.length)]
+      return this.images[Math.floor(Math.random() * this.images.length)]
     },
     changeSlideTimer() {
       setInterval(() => {

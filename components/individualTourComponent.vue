@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 my-48">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 my-36">
     <div>
       <h2 class="font-sans text-4xl font-bold text-hgv-950">
         {{ translations[$i18n.locale].title }}
@@ -9,13 +9,21 @@
       </p>
     </div>
     <div
-      class="flex max-sm:flex-col sm:grid sm:grid-rows-2 sm:grid-cols-2 gap-4 sm:col-span-1 h-full sm:h-96"
+      class="grid grid-cols-2 md:grid-cols-3 md:grid-rows-2 gap-4 col-span-2 h-full sm:h-96"
     >
       <nuxt-link
         class="md:row-span-2 rounded-xl aspect-square relative overflow-hidden w-full h-full group"
         v-if="tours[0]"
         :to="`/tour/${tours[0].id}`"
       >
+        <div
+          v-if="tours.image_copyright"
+          class="absolute bottom-0 left-0 px-2 pt-1 pb-2 rounded-tr-md bg-black/70"
+        >
+          <span class="text-white font-bold text-xs">
+            © {{ tours.image_copyright }}
+          </span>
+        </div>
         <img
           :src="tours[0].images[0].url"
           :alt="tours[0].name"
@@ -29,11 +37,20 @@
           </h3>
         </div>
       </nuxt-link>
+
       <nuxt-link
         class="rounded-xl relative overflow-hidden h-full group"
         :to="`/tour/${tours[1].id}`"
         v-if="tours[1]"
       >
+        <div
+          v-if="tours.image_copyright"
+          class="absolute bottom-0 left-0 px-2 pt-1 pb-2 rounded-tr-md bg-black/70"
+        >
+          <span class="text-white font-bold text-xs">
+            © {{ tours.image_copyright }}
+          </span>
+        </div>
         <img
           :src="tours[1].images[0].url"
           :alt="tours[1].name"
@@ -47,11 +64,20 @@
           </h3>
         </div>
       </nuxt-link>
+
       <nuxt-link
-        class="md:col-start-2 rounded-xl relative overflow-hidden h-full max-sm:w-full max-sm:aspect-square group"
+        class="rounded-xl relative overflow-hidden h-full max-sm:w-full max-sm:aspect-square group"
         v-if="tours[2]"
         :to="`/tour/${tours[2].id}`"
       >
+        <div
+          v-if="tours.image_copyright"
+          class="absolute bottom-0 left-0 px-2 pt-1 pb-2 rounded-tr-md bg-black/70"
+        >
+          <span class="text-white font-bold text-xs">
+            © {{ tours.image_copyright }}
+          </span>
+        </div>
         <img
           :src="tours[2].images[0].url"
           :alt="tours[2].name"
@@ -65,6 +91,61 @@
           </h3>
         </div>
       </nuxt-link>
+
+      <nuxt-link
+        class="rounded-xl relative overflow-hidden h-full group"
+        :to="`/tour/${tours[3].id}`"
+        v-if="tours[3]"
+      >
+        <div
+          v-if="tours.image_copyright"
+          class="absolute bottom-0 left-0 px-2 pt-1 pb-2 rounded-tr-md bg-black/70"
+        >
+          <span class="text-white font-bold text-xs">
+            © {{ tours.image_copyright }}
+          </span>
+        </div>
+        <img
+          :src="tours[3].images[0].url"
+          :alt="tours[3].name"
+          class="object-cover h-full w-full group-hover:scale-110 transition-transform duration-300"
+        />
+        <div
+          class="absolute bottom-0 py-3 px-4 w-full flex items-end h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0"
+        >
+          <h3 class="text-white text-base md:text-lg lg:text-xl font-bold">
+            {{ tours[3].name }}
+          </h3>
+        </div>
+      </nuxt-link>
+      
+      <nuxt-link
+        class="col-span-2 md:col-span-1 rounded-xl relative overflow-hidden h-full group"
+        :to="`/tour/${tours[4].id}`"
+        v-if="tours[4]"
+      >
+        <div
+          v-if="tours.image_copyright"
+          class="absolute bottom-0 left-0 px-2 pt-1 pb-2 rounded-tr-md bg-black/70"
+        >
+          <span class="text-white font-bold text-xs">
+            © {{ tours.image_copyright }}
+          </span>
+        </div>
+        <img
+          :src="tours[4].images[0].url"
+          :alt="tours[4].name"
+          class="object-cover h-full w-full group-hover:scale-110 transition-transform duration-300"
+        />
+        <div
+          class="absolute bottom-0 py-3 px-4 w-full flex items-end h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0"
+        >
+          <h3 class="text-white text-base md:text-lg lg:text-xl font-bold">
+            {{ tours[4].name }}
+          </h3>
+        </div>
+      </nuxt-link>
+      
     </div>
   </div>
 </template>
@@ -88,9 +169,11 @@ export default {
     }
   },
   mounted() {
-    this.getTour(24)
+    this.getTour(11)
+    this.getTour(13)
     this.getTour(12)
-    this.getTour(25)
+    this.getTour(24)
+    this.getTour(43)
   },
   methods: {
     getTour(id) {

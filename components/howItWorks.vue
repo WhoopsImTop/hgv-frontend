@@ -1,9 +1,9 @@
 <template>
-  <div class="my-48">
+  <div class="my-36">
     <h2 class="text-center font-sans text-4xl font-bold text-hgv-950">
       {{ translations[$i18n.locale].title }}
     </h2>
-    <p class="text-center mt-4 text-hgv-950">
+    <p class="text-center mt-4 text-hgv-950 md:w-3/4 mx-auto">
       {{ translations[$i18n.locale].text }}
     </p>
     <div class="py-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -31,12 +31,12 @@ export default {
       translations: {
         de: {
           title: 'Guides',
-          text: `Hier finden Sie alle unsere Gästeführer.`,
+          text: `Entdecken Sie unser vielfältiges Team von engagierten Gästeführern, die Sie durch unvergessliche Touren führen. Hier präsentieren wir eine Auswahl unserer talentierten Guides. Durch einen Klick auf "Alle anzeigen" erhalten Sie Zugang zu unserem kompletten Angebot. Nutzen Sie dort die praktische Filterfunktion, um den idealen Guide für Ihre individuelle Tour je nach Sprache, Themengebiet und Fortbewegungsmittel zu finden.`,
           button: 'Alle anzeigen',
         },
         en: {
           title: 'Guides',
-          text: `Here you can find all our guides.`,
+          text: `Discover our diverse team of dedicated tour guides who will lead you through unforgettable tours. Here we present a selection of our talented guides. By clicking on “Show all” you will have access to our complete offering. Use the practical filter function there to find the ideal guide for your individual tour depending on language, subject area and means of transport.`,
           button: 'Show all',
         },
       },

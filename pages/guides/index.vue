@@ -415,10 +415,7 @@ export default {
   },
   beforeMount() {
     this.getAllGuides()
-    this.getAllLanguages()
-    this.getAllMobility()
-    this.getAllSkills()
-    this.getAllPlaces()
+    this.getAllData()
   },
 
   mounted() {
@@ -469,9 +466,10 @@ export default {
       const data = this.landingImages[Math.floor(Math.random() * 4)]
       this.image = data
     },
-    async getAllLanguages() {
-      await this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/languages')
+
+    getAllData() {
+      this.$axios
+        .get('https://api.hamburger-gaestefuehrer.de/api/data')
         .then((response) => {
           this.languages = response.data.languages.sort((a, b) => {
             if (a.translations[0].name < b.translations[0].name) {
@@ -482,15 +480,6 @@ export default {
             }
             return 0
           })
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-    async getAllMobility() {
-      await this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/mobility')
-        .then((response) => {
           this.mobility = response.data.mobilities.sort((a, b) => {
             if (a.translations[0].name < b.translations[0].name) {
               return -1
@@ -500,16 +489,6 @@ export default {
             }
             return 0
           })
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-
-    async getAllSkills() {
-      await this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/skills?preview=true')
-        .then((response) => {
           this.skills = response.data.skills.sort((a, b) => {
             if (a.translations[0].name < b.translations[0].name) {
               return -1
@@ -519,16 +498,6 @@ export default {
             }
             return 0
           })
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-
-    async getAllPlaces() {
-      await this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/places?with_guides=1')
-        .then((response) => {
           this.places = response.data.places.sort((a, b) => {
             if (a.translations[0].name < b.translations[0].name) {
               return -1

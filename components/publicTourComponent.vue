@@ -1,46 +1,63 @@
 <template>
-  <div class="flex flex-col items-center my-36">
+  <div class="my-36">
     <h2 class="font-sans text-4xl font-bold text-hgv-950">
       {{ translations[$i18n.locale].title }}
     </h2>
-    <p class="mt-4 text-hgv-950 lg:w-4/6 mx-auto text-center">
+    <p class="mt-4 text-hgv-950 w-1/2">
       {{ translations[$i18n.locale].text }}
     </p>
 
     <div v-if="tours.length > 0 && !error" class="mt-12">
       <nuxt-link
-        v-for="tour in tours"
-        :key="tour.id"
-        :to="`/tour/${tour.id}`"
+        v-for="date in tours"
+        :key="date.id"
+        :to="`/tour/${date.tour.id}`"
         class="flex flex-col md:flex-row items-center text-decoration-none border-b border-hgv-950/60 py-4"
       >
         <img
-          :src="tour.images[0].url"
-          :alt="tour.name"
+          :src="date.tour.images != null ? date.tour.images[0].url : ''"
+          :alt="date.tour.name"
           class="object-cover w-full md:w-40 h-40 rounded-lg"
         />
         <div class="flex flex-col px-4 xs:mt-4">
-          <div
-            v-if="tour.needs_registration"
-            class="py-1 px-2 bg-hgv-50 rounded flex items-center w-max my-3 md:mt-0"
-          >
-            <img
-              src="/info.svg"
-              width="20"
-              alt="info"
-              title="info"
-              class="mr-2"
-            />
-            <span class="font-bold text-sm">
-              {{
-                $i18n.locale === 'de'
-                  ? 'Anmeldung Erforderlich'
-                  : 'Registration Required'
-              }}
-            </span>
+          <div class="flex items-center gap-4 mb-3">
+            <div
+              v-if="date.tour.needs_registration"
+              class="py-1 px-2 bg-hgv-50 rounded flex items-center w-max md:mt-0"
+            >
+              <img
+                src="/info.svg"
+                width="20"
+                alt="info"
+                title="info"
+                class="mr-2"
+              />
+              <span class="font-bold text-sm">
+                {{
+                  $i18n.locale === 'de'
+                    ? 'Anmeldung Erforderlich'
+                    : 'Registration Required'
+                }}
+              </span>
+            </div>
+            <div
+              v-if="date.date"
+              class="py-1 px-2 bg-hgv-50 rounded flex items-center w-max md:mt-0"
+            >
+              <img
+                src="/calendar.svg"
+                width="20"
+                alt="info"
+                title="info"
+                class="mr-2"
+              />
+              <span class="font-bold text-sm">
+                {{ new Date(date.date).toLocaleDateString($i18n.locale) }}
+              </span>
+            </div>
           </div>
-          <h4 class="mb-2">{{ tour.name }}</h4>
-          <div v-html="tour.description"></div>
+          <h4 class="mb-2">{{ date.tour.name }}</h4>
+          <div v-html="date.tour.description"></div>
         </div>
       </nuxt-link>
     </div>
@@ -91,12 +108,12 @@ export default {
   },
   mounted() {
     axios
-      .get('https://api.hamburger-gaestefuehrer.de/api/tours?is_public=true')
+      .get('https://api.hamburger-gaestefuehrer.de/api/tour_dates')
       .then((response) => {
-        this.tours = response.data.tours.filter((tour) => {
+        this.tours = response.data.filter((tour) => {
           return new Date(tour.date) > new Date()
-        })
-        if(this.tours.length === 0) {
+        }).slice(0, 5)
+        if (this.tours.length === 0) {
           this.error = true
           this.errorMessage = {
             de: 'Es gibt aktuell keine Öffentlichen Touren.',

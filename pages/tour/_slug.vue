@@ -65,7 +65,7 @@
           <span
             class="text-hgv-950 font-sans font-medium justify-self-center flex items-center"
             ><img src="/calendar.svg" alt="price" class="mr-2" />{{
-              new Date(tour.date).toLocaleDateString('de-DE')
+              new Date(tour.date).toLocaleDateString($i18n.locale)
             }}
           </span>
           <span
@@ -94,13 +94,131 @@
           <h3 class="font-bold text-2xl font-sans mb-3">
             {{ translations.guides[$i18n.locale] }}
           </h3>
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <guide-component
-              v-for="guide in filteredGuides"
-              :guide="guide"
-              :key="guide.id"
+          <hr class="my-4" />
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-3">
+            <select
+              id="language"
+              v-model="selectedLanguage"
+              class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-3"
+              name="language"
             >
-            </guide-component>
+              <option value="0">
+                {{ $i18n.locale === 'de' ? 'Sprache' : 'Language' }}
+              </option>
+              <option
+                v-for="language in languages"
+                :key="language.id"
+                :value="language.id"
+              >
+                {{ language.translations[$i18n.locale === 'de' ? 0 : 1].name }}
+              </option>
+            </select>
+            <select
+              id="mobility"
+              v-model="selectedMobility"
+              class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-3"
+              name="mobility"
+            >
+              <option value="0">
+                {{
+                  $i18n.locale === 'de'
+                    ? 'Fortbewegungsmittel'
+                    : 'Means of transportation'
+                }}
+              </option>
+              <option
+                v-for="mobil in mobility"
+                :key="mobil.id"
+                :value="mobil.id"
+              >
+                {{ mobil.translations[$i18n.locale === 'de' ? 0 : 1].name }}
+              </option></select
+            ><select
+              id="theme"
+              v-model="selectedSkill"
+              class="border border-gray-300 rounded-lg p-2 text-hgv-950 font-sans md:col-span-3"
+              name="theme"
+            >
+              <option value="0">
+                {{ $i18n.locale === 'de' ? 'Themen' : 'Themes' }}
+              </option>
+              <option v-for="skill in skills" :key="skill.id" :value="skill.id">
+                {{ skill.translations[$i18n.locale === 'de' ? 0 : 1].name }}
+              </option>
+            </select>
+            <button
+              class="bg-hgv-950 text-white rounded-lg p-2 font-sans disabled:opacity-50 disabled:cursor-not-allowed md:col-span-2"
+              :disabled="
+                selectedLanguage === '0' &&
+                selectedMobility === '0' &&
+                selectedSkill === '0'
+              "
+              @click="filterGuide()"
+            >
+              {{ $i18n.locale === 'de' ? 'Filtern' : 'filter' }}
+            </button>
+            <button
+              class="bg-hgv_red-50 rounded-lg p-2 font-sans disabled:opacity-50 disabled:cursor-not-allowed md:col-span-1 flex items-center justify-center"
+              :disabled="
+                selectedLanguage === '0' &&
+                selectedMobility === '0' &&
+                selectedSkill === '0'
+              "
+              @click="
+                selectedLanguage = '0'
+                selectedMobility = '0'
+                selectedSkill = '0'
+                filterGuide()
+              "
+            >
+              <img src="/delete.svg" alt="delete" class="w-6 h-6" />
+            </button>
+          </div>
+          <div v-if="!guideLoading">
+            <div
+              v-if="tour.guides.length > 0"
+              class="grid grid-cols-1 lg:grid-cols-2 gap-4"
+            >
+              <guide-component
+                v-for="guide in tour.guides"
+                :guide="guide"
+                :key="guide.id"
+              >
+              </guide-component>
+            </div>
+            <div v-else class="text-center">
+              <span class="text-hgv-950 font-bold my-2">
+                {{
+                  $i18n.locale === 'de'
+                    ? 'Es wurden keine Guides mit diesen Filtern gefunden'
+                    : 'No guides found with these filters'
+                }}
+              </span>
+            </div>
+          </div>
+          <div
+            v-else
+            class="h-[calc(100vh-170px)] w-full flex flex-col justify-center items-center"
+          >
+            <div>
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-hgv-200 fill-hgv-950"
+                viewBox="0 0 100 101"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                  fill="currentFill"
+                />
+              </svg>
+              <span class="sr-only">Loading...</span>
+            </div>
           </div>
         </div>
       </div>
@@ -124,6 +242,40 @@
           </div>
         </div>
         <div
+          class="border border-zink-50 rounded-xl px-3 pt-3 mb-3"
+          v-if="tour.tour_dates != null && tour.tour_dates.length > 0"
+        >
+          <h3 class="font-bold text-2xl font-sans mb-3">
+            {{ translations.tour_dates[$i18n.locale] }}
+          </h3>
+          <div class="relative flex flex-col my-2">
+            <span
+              v-for="(date, index) in tour.tour_dates"
+              :key="date.id"
+              :class="
+                index != tour.tour_dates.length - 1
+                  ? 'border-b border-zink-50'
+                  : ''
+              "
+              class="py-2 mr-2 flex items-center font-bold text-hgv-950"
+            >
+              <img
+                src="../../assets/calendar.svg"
+                alt="alternativ termin"
+                title="alternativ termin"
+                class="mr-2"
+              />{{
+                new Date(date.date).toLocaleDateString($i18n.locale, {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })
+              }}
+            </span>
+          </div>
+        </div>
+        <div
           class="border-zink-50 rounded-xl overflow-hidden mb-2 h-[60vh] sticky top-32"
         >
           <mapComponent class="min-h-[450px]" :tours="[tour]" />
@@ -144,7 +296,12 @@ export default {
   async asyncData({ $axios, params }) {
     const tour = await $axios.$get(
       `https://api.hamburger-gaestefuehrer.de/api/tours/${params.slug}`
-    )
+    );
+    if(tour.tour.is_public && tour.tour.tour_dates) {
+      tour.tour.date = tour.tour.tour_dates[0].date;
+      tour.tour.tour_dates = tour.tour.tour_dates.slice(1, 6);
+    }
+    console.log(tour)
     return tour
   },
   data() {
@@ -157,6 +314,10 @@ export default {
         categories: {
           de: 'Kategorien',
           en: 'Categories',
+        },
+        tour_dates: {
+          de: 'Alternative Termine',
+          en: 'Alternative Dates',
         },
         languages: {
           de: 'Sprachen',
@@ -195,6 +356,37 @@ export default {
           width: 50,
         },
       },
+      languages: [
+        {
+          id: 1,
+          translations: [
+            { name: 'lade Sprachen...' },
+            { name: 'loading Languages...' },
+          ],
+        },
+      ],
+      mobility: [
+        {
+          id: 1,
+          translations: [
+            { name: 'lade Fortbewegungsmittel...' },
+            { name: 'loading Means of transportation...' },
+          ],
+        },
+      ],
+      skills: [
+        {
+          id: 1,
+          translations: [
+            { name: 'lade Themen...' },
+            { name: 'loading Themes...' },
+          ],
+        },
+      ],
+      selectedLanguage: '0',
+      selectedMobility: '0',
+      selectedSkill: '0',
+      guideLoading: false,
     }
   },
   head() {
@@ -250,29 +442,97 @@ export default {
   },
 
   computed: {
-    filteredGuides() {
-      let guides = this.tour.guides
-      if (this.$route.query.language) {
-        guides = guides.filter((guide) => {
-          return guide.languages.some(
-            (language) => language.id === parseInt(this.$route.query.language)
-          )
-        })
-      } else if (this.$route.query.guide) {
-        guides = guides.filter((guide) => {
-          return guide.id === parseInt(this.$route.query.guide)
-        })
-      } else if (this.$route.query.mobility) {
-        guides = guides.filter((guide) => {
-          return guide.mobility.some(
-            (mobility) => mobility.id === parseInt(this.$route.query.mobility)
-          )
-        })
-      }
-      return guides.sort(() => Math.random() - 0.5)
-    },
   },
+
+  mounted() {
+    const urlParams = new URLSearchParams(window.location.search)
+    const guideId = urlParams.get('guide')
+    if (guideId) {
+      this.tour.guides = this.tour.guides.filter(
+        (guide) => guide.id === parseInt(guideId)
+      )
+    }
+    this.getAllData()
+  },
+
   methods: {
+    getAllData() {
+      this.$axios
+        .get('https://api.hamburger-gaestefuehrer.de/api/data')
+        .then((response) => {
+          this.languages = response.data.languages.sort((a, b) => {
+            if (a.translations[0].name < b.translations[0].name) {
+              return -1
+            }
+            if (a.translations[0].name > b.translations[0].name) {
+              return 1
+            }
+            return 0
+          })
+          this.mobility = response.data.mobilities.sort((a, b) => {
+            if (a.translations[0].name < b.translations[0].name) {
+              return -1
+            }
+            if (a.translations[0].name > b.translations[0].name) {
+              return 1
+            }
+            return 0
+          })
+          this.skills = response.data.skills.sort((a, b) => {
+            if (a.translations[0].name < b.translations[0].name) {
+              return -1
+            }
+            if (a.translations[0].name > b.translations[0].name) {
+              return 1
+            }
+            return 0
+          })
+          this.places = response.data.places.sort((a, b) => {
+            if (a.translations[0].name < b.translations[0].name) {
+              return -1
+            }
+            if (a.translations[0].name > b.translations[0].name) {
+              return 1
+            }
+            return 0
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+
+    filterGuide() {
+      this.guideLoading = true
+      let queryString = ''
+      if (this.selectedLanguage !== '0') {
+        queryString += `&language=${this.selectedLanguage}`
+      }
+      if (this.selectedMobility !== '0') {
+        queryString += `&mobility=${this.selectedMobility}`
+      }
+      if (this.selectedSkill !== '0') {
+        queryString += `&skill=${this.selectedSkill}`
+      }
+      this.loadingNextPage = true
+      this.currentPageLoading = true
+      this.$axios
+        .get(
+          `https://api.hamburger-gaestefuehrer.de/api/guides?tour=${this.$route.params.slug}${queryString}`
+        )
+        .then((response) => {
+          this.tour.guides = response.data.guides.data
+          this.guideLoading = false
+        })
+        .catch((error) => {
+          console.log(error)
+          window.alert(
+            'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.'
+          )
+          this.guideLoading = false
+        })
+    },
+
     getUrl(guide) {
       if (!guide.image) {
         const canvas = document.createElement('canvas')
@@ -345,9 +605,6 @@ export default {
         })
     },
   },
-  /* mounted() {
-    this.getAllTours()
-  }, */
 }
 </script>
 

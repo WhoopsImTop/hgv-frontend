@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="min-h-[calc(100vh-150px)]"
-  >
+  <div class="min-h-[calc(100vh-150px)]">
     <div>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         <select
@@ -345,12 +343,20 @@ export default {
   },
 
   mounted() {
-    this.getAllTours()
     this.getAllCategories()
     this.getAllLanguages()
     this.getAllGuides()
     this.getAllMobility()
     this.getAllSkills()
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const themeId = urlParams.get('theme_id')
+    if (themeId) {
+      this.selectedCategory = themeId
+      this.FilterTours()
+    } else {
+      this.getAllTours()
+    }
   },
 
   methods: {
@@ -468,6 +474,9 @@ export default {
               b.translations[this.$i18n.locale === 'de' ? 0 : 1].name
             )
           )
+
+          const order = ['highlights', 'stadtviertel & quartiere', 'themenführungen', 'metropolregion & umgebung', 'kinder & jugendliche'];
+          this.categories.sort((a, b) => order.indexOf(a.translations[this.$i18n.locale === 'de' ? 0 : 1].name.toLowerCase()) - order.indexOf(b.translations[this.$i18n.locale === 'de' ? 0 : 1].name.toLowerCase()))
         })
         .catch((error) => {
           console.log(error)
@@ -528,7 +537,9 @@ export default {
 
     async getAllSkills() {
       await this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/skills?preview=true&fields=id,translations')
+        .get(
+          'https://api.hamburger-gaestefuehrer.de/api/skills?preview=true&fields=id,translations'
+        )
         .then((response) => {
           this.skills = response.data.skills.sort((a, b) =>
             a.translations[

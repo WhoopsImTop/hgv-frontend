@@ -224,8 +224,8 @@ export default {
       ],
       translations: {
         siteTitle: {
-          de: 'Unsere Guides',
-          en: 'Our Guides',
+          de: 'Suche',
+          en: 'Search',
         },
       },
       guides: [],

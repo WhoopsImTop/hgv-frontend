@@ -11,10 +11,10 @@
       ></p>
     </div>
     <div
-      class="col-span-6 bg-hgv-100 rounded-3xl relative flex justify-center align-center h-full min-h-full aspect-square overflow-hidden"
+      class="col-span-6 bg-hgv-100 rounded-3xl relative flex justify-center align-center h-full min-h-full overflow-hidden"
     >
       <img
-        class="object-cover w-full h-full"
+        class="object-cover w-full h-full aspect-square"
         :src="landingImage.image"
         alt="landing-image"
       />

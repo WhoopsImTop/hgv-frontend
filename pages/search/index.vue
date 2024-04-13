@@ -129,7 +129,7 @@
           class="rounded-xl aspect-square relative overflow-hidden"
           ><div
             v-if="tour.needs_registration"
-            class="absolute top-5 left-5 py-1 px-2 bg-white rounded flex items-center"
+            class="absolute top-2.5 md:top-5 left-2.5 md:left-5 p-1 md:py-1 md:px-2 bg-white rounded flex items-center"
           >
             <img
               src="/info.svg"
@@ -138,7 +138,7 @@
               title="info"
               class="mr-1"
             />
-            <h4 class="text-sm">Anmeldung Erforderlich</h4>
+            <h4 class="text-xs md:text-sm">Anmeldung Erforderlich</h4>
           </div>
           <img
             :src="tour.images?.[0]?.url || '/placeholder.png'"
@@ -146,7 +146,7 @@
             class="object-cover h-100 w-100"
           />
           <div
-            class="absolute bottom-0 py-3 px-4 w-full flex items-end h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0"
+            class="absolute bottom-0 p-2.5 md:py-3 md:px-4 w-full flex items-end h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0"
           >
             <h3
               class="text-white text-base md:text-base lg:text-base font-bold"

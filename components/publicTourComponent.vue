@@ -1,9 +1,9 @@
 <template>
-  <div class="my-36">
+  <div class="my-24 md:my-36">
     <h2 class="font-sans text-4xl font-bold text-hgv-950">
       {{ translations[$i18n.locale].title }}
     </h2>
-    <p class="mt-4 text-hgv-950 w-1/2">
+    <p class="mt-4 text-hgv-950 w-full md:w-1/2">
       {{ translations[$i18n.locale].text }}
     </p>
 
@@ -12,14 +12,14 @@
         v-for="date in tours"
         :key="date.id"
         :to="`/tour/${date.tour.id}`"
-        class="flex flex-col md:flex-row items-center text-decoration-none border-b border-hgv-950/60 py-4"
+        class="flex flex-col gap-4 md:gap-6 md:flex-row items-start text-decoration-none border-b border-hgv-950/60 py-4"
       >
         <img
           :src="date.tour.images != null ? date.tour.images[0].url : ''"
           :alt="date.tour.name"
-          class="object-cover w-full md:w-40 h-40 rounded-lg"
+          class="object-cover w-full md:w-40 h-40 rounded-lg sm:mb-4"
         />
-        <div class="flex flex-col px-4 xs:mt-4">
+        <div class="flex flex-col">
           <div class="flex items-center gap-4 mb-3">
             <div
               v-if="date.tour.needs_registration"

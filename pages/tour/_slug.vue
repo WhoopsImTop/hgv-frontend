@@ -26,7 +26,7 @@
         class="absolute bottom-0 py-3 px-4 w-full h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0"
       >
         <div class="flex justify-between h-100 items-end">
-          <h1 class="font-sans text-4xl text-white font-bold">
+          <h1 class="font-sans text-xl md:text-4xl text-white font-bold">
             {{ tour.translations[$i18n.locale === 'de' ? 0 : 1].name }}
           </h1>
 
@@ -50,7 +50,7 @@
         <span> © {{ tour.image_copyright }} </span>
       </div>
     </div>
-    <div class="grid grid-cols-1 xl:grid-cols-3 py-8 lg:gap-3">
+    <div class="grid grid-cols-1 xl:grid-cols-3 py-3 md:py-8 gap-3">
       <div class="xl:col-span-2">
         <div
           v-if="tour.is_public === 1"

@@ -49,7 +49,7 @@
     </div>
     <div
       :class="mobileMenuOpen ? 'flex' : 'hidden'"
-      class="flex-col pt-12 md:hidden link-container h-[calc(100vh-88px)] fixed top-[88px] left-0 right-0 bottom-0 bg-white"
+      class="flex-col pt-2 md:hidden link-container h-[calc(100vh-88px)] fixed top-[88px] left-0 right-0 bottom-0 bg-white"
     >
       <nuxt-link to="/search"
         ><img :src="searchImage" class="w-7 h-7 mx-auto my-4" alt="suche"

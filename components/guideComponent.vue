@@ -1,10 +1,10 @@
 <template>
   <nuxt-link
     :to="'/guide/' + guide.id"
-    class="flex items-start border border-gray-50 rounded-xl pt-4 px-4 pb-3 text-decoration-none"
+    class="flex items-start border border-gray-50 rounded-xl p-3 md:pt-4 md:px-4 md:pb-3 text-decoration-none gap-3"
   >
     <div
-      class="min-w-[48px] min-h-[48px] w-12 h-12 aspect-square rounded-full flex items-center justify-center overflow-hidden"
+      class="min-w-[32px] min-h-[32px] w-8 h-8 md:min-w-[48px] md:min-h-[48px] md:w-12 md:h-12 aspect-square rounded-full flex items-center justify-center overflow-hidden"
     >
       <img
         :src="getUrl(guide)"
@@ -20,17 +20,17 @@
       <p class="block mb-2 my-2">
         <a
           v-if="JSON.parse(guide.contact).email"
-          class="flex items-center text-xs sm:text-base"
+          class="flex items-center text-base"
           :href="'mailto:' + JSON.parse(guide.contact).email"
-          ><img src="/mail.svg" alt="mail" class="mr-2" />{{
+          ><img src="/mail.svg" alt="mail" class="hidden md:block mr-2" />{{
             JSON.parse(guide.contact).email
           }}</a
         >
         <a
           v-if="JSON.parse(guide.contact).mobile"
-          class="flex items-center text-xs sm:text-base"
+          class="flex items-center text-base"
           :href="'tel:' + JSON.parse(guide.contact).mobile"
-          ><img src="/phone.svg" alt="mobile" class="mr-2" />{{
+          ><img src="/phone.svg" alt="mobile" class="hidden md:block mr-2" />{{
             JSON.parse(guide.contact).mobile
           }}</a
         >
@@ -40,9 +40,9 @@
           v-for="language in guide.languages"
           :key="language.id"
           :to="'/tour/sprache/' + language.id"
-          class="px-2 py-1 rounded border border-hgv-900 font-bold mb-2 mr-2 text-sm text-decoration-none flex items-center"
+          class="px-2 py-1 aspect-square md:aspect-auto rounded-full md:rounded border border-hgv-900 font-bold mb-2 mx-0.5 md:mr-2 text-sm text-decoration-none flex items-center"
         >
-          <div class="w-4 h-4 rounded-full overflow-hidden mr-2">
+          <div class="w-4 h-4 rounded-full overflow-hidden md:mr-2">
             <img
               :src="`/languages/${language.description.toLowerCase()}.svg`"
               lazy
@@ -50,7 +50,9 @@
               alt="language icon"
             />
           </div>
-          {{ language.translations[$i18n.locale === 'de' ? 0 : 1].name }}
+          <span class="hidden md:block">{{
+            language.translations[$i18n.locale === 'de' ? 0 : 1].name
+          }}</span>
         </nuxt-link>
       </div>
       <div class="flex items-center flex-wrap">

@@ -39,6 +39,11 @@
           :to="LocalizePath('/contact')"
           >{{ $i18n.locale === 'de' ? 'Kontakt' : 'Contact' }}</nuxt-link
         >
+        <nuxt-link
+          class="font-sans text-hgv-950 mx-2.5 mr-3 hover:no-underline hover:text-hgv_red-700"
+          :to="LocalizePath('/blog')"
+          >{{ $i18n.locale === 'de' ? 'News' : 'News' }}</nuxt-link
+        >
         <language-switch-component />
       </div>
       <div class="md:hidden flex flex-col" @click="toggleMobileMenu">
@@ -78,6 +83,11 @@
         class="font-sans text-hgv-950 my-4 mx-auto mr-3 hover:no-underline hover:text-hgv_red-700"
         :to="LocalizePath('/contact')"
         >{{ $i18n.locale === 'de' ? 'Kontakt' : 'Contact' }}</nuxt-link
+      >
+      <nuxt-link
+        class="font-sans text-hgv-950 my-4 mx-auto mr-3 hover:no-underline hover:text-hgv_red-700"
+        :to="LocalizePath('/blog')"
+        >{{ $i18n.locale === 'de' ? 'News' : 'News' }}</nuxt-link
       >
       <language-switch-component class="mx-auto mt-4" />
     </div>

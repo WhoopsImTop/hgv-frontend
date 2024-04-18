@@ -8,7 +8,7 @@
         {{ translations[$i18n.locale].text }}
       </p>
     </div>
-    <div class="py-4 flex flex-col md:grid md:grid-cols-2 gap-4">
+    <div class="py-4 flex flex-col 2xl:grid 2xl:grid-cols-2 gap-4">
       <div v-for="guide in guides" :key="guide.id">
         <guide-component :guide="guide" class="h-100" />
       </div>
@@ -45,6 +45,9 @@ export default {
       guides: [],
     }
   },
+  mounted() {
+    this.getGuides()
+  },
   methods: {
     getGuides() {
       this.$axios
@@ -58,9 +61,6 @@ export default {
           console.log(error)
         })
     },
-  },
-  mounted() {
-    this.getGuides()
   },
 }
 </script>

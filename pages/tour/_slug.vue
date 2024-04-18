@@ -31,8 +31,8 @@
           </h1>
 
           <button
-            @click="SharePage()"
             class="hidden xl:block md:justify-self-end"
+            @click="SharePage()"
           >
             <img
               src="../../assets/share.svg"
@@ -50,8 +50,8 @@
         <span> © {{ tour.image_copyright }} </span>
       </div>
     </div>
-    <div class="grid grid-cols-1 xl:grid-cols-3 py-3 md:py-8 gap-3">
-      <div class="xl:col-span-2">
+    <div class="grid grid-cols-1 xl:grid-cols-5 py-3 md:py-8 gap-3">
+      <div class="xl:col-span-4">
         <div
           v-if="tour.is_public === 1"
           class="flex flex-row justify-between items-center py-2 px-2 rounded-xl border border-hgv-950 mb-2"
@@ -95,7 +95,10 @@
             {{ translations.guides[$i18n.locale] }}
           </h3>
           <hr class="my-4" />
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-3">
+          <div
+            v-if="!filterError"
+            class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-3"
+          >
             <select
               id="language"
               v-model="selectedLanguage"
@@ -181,8 +184,8 @@
             >
               <guide-component
                 v-for="guide in tour.guides"
-                :guide="guide"
                 :key="guide.id"
+                :guide="guide"
               >
               </guide-component>
             </div>
@@ -224,8 +227,8 @@
       </div>
       <div class="col-span-1">
         <div
-          class="border border-zink-50 rounded-xl px-3 pt-3 mb-3"
           v-if="tour.themes.length > 0"
+          class="border border-zink-50 rounded-xl px-3 pt-3 mb-3"
         >
           <h3 class="font-bold text-2xl font-sans mb-3">
             {{ translations.categories[$i18n.locale] }}
@@ -242,8 +245,8 @@
           </div>
         </div>
         <div
-          class="border border-zink-50 rounded-xl px-3 pt-3 mb-3"
           v-if="tour.tour_dates != null && tour.tour_dates.length > 0"
+          class="border border-zink-50 rounded-xl px-3 pt-3 mb-3"
         >
           <h3 class="font-bold text-2xl font-sans mb-3">
             {{ translations.tour_dates[$i18n.locale] }}
@@ -275,33 +278,32 @@
             </span>
           </div>
         </div>
-        <div
+        <!-- <div
           class="border-zink-50 rounded-xl overflow-hidden mb-2 h-[60vh] sticky top-32"
         >
           <mapComponent class="min-h-[450px]" :tours="[tour]" />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import mapComponent from '~/components/mapComponent.vue'
+/* import mapComponent from '~/components/mapComponent.vue' */
 export default {
   components: {
-    mapComponent,
+    /* mapComponent, */
   },
   layout: 'main',
 
   async asyncData({ $axios, params }) {
     const tour = await $axios.$get(
       `https://api.hamburger-gaestefuehrer.de/api/tours/${params.slug}`
-    );
-    if(tour.tour.is_public && tour.tour.tour_dates) {
-      tour.tour.date = tour.tour.tour_dates[0].date;
-      tour.tour.tour_dates = tour.tour.tour_dates.slice(1, 6);
+    )
+    if (tour.tour.is_public && tour.tour.tour_dates) {
+      tour.tour.date = tour.tour.tour_dates[0].date
+      tour.tour.tour_dates = tour.tour.tour_dates.slice(1, 6)
     }
-    console.log(tour)
     return tour
   },
   data() {
@@ -342,7 +344,6 @@ export default {
           lng: 9.993682,
         },
       ],
-      tours: [],
       currentLocation: null,
       pins: {
         selected: {
@@ -387,6 +388,7 @@ export default {
       selectedMobility: '0',
       selectedSkill: '0',
       guideLoading: false,
+      filterError: true,
     }
   },
   head() {
@@ -441,8 +443,7 @@ export default {
     }
   },
 
-  computed: {
-  },
+  computed: {},
 
   mounted() {
     const urlParams = new URLSearchParams(window.location.search)
@@ -496,9 +497,15 @@ export default {
             }
             return 0
           })
+          this.filterError = false
         })
         .catch((error) => {
-          console.log(error)
+          if (error.response) {
+            console.log(error.response.data)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+          }
+          this.filterError = true
         })
     },
 
@@ -588,21 +595,13 @@ export default {
       if (navigator.share) {
         navigator
           .share(data)
-          .then(() => console.log('Successful share'))
-          .catch((error) => console.log('Error sharing', error))
+          .then(() => {})
+          .catch((error) => {
+            window.alert('Fehler beim Teilen:', error)
+          })
       } else {
-        console.log('Web Share API not supported in your browser')
+        window.alert('Teilen wird nicht unterstützt')
       }
-    },
-    getAllTours() {
-      this.$axios
-        .get('https://api.hamburger-gaestefuehrer.de/api/tours')
-        .then((response) => {
-          this.tours = response.data.tours
-        })
-        .catch((error) => {
-          console.log(error)
-        })
     },
   },
 }

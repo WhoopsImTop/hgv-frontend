@@ -1,17 +1,19 @@
 <template>
   <div class="my-24 md:my-36">
-    <h2 class="font-sans text-4xl font-bold text-hgv-950">
-      {{ translations[$i18n.locale].title }}
-    </h2>
-    <p class="mt-4 text-hgv-950 w-full md:w-1/2">
-      {{ translations[$i18n.locale].text }}
-    </p>
+    <h2
+      class="font-sans text-4xl font-bold text-hgv-950"
+      v-html="title ?? translations[$i18n.locale].title"
+    ></h2>
+    <p
+      class="mt-4 text-hgv-950 w-full md:w-1/2"
+      v-html="description ?? translations[$i18n.locale].text"
+    ></p>
 
     <div v-if="tours.length > 0 && !error" class="mt-12">
       <nuxt-link
         v-for="date in tours"
         :key="date.id"
-        :to="`/tour/${date.tour.id}`"
+        :to="`/tour/${date.tour.id}?date=${date.id}`"
         class="flex flex-col gap-4 md:gap-6 md:flex-row items-start text-decoration-none border-b border-hgv-950/60 py-4"
       >
         <img
@@ -89,6 +91,10 @@
 <script>
 import axios from 'axios'
 export default {
+  props: {
+    title: String,
+    description: String,
+  },
   data() {
     return {
       tours: [],
@@ -110,9 +116,11 @@ export default {
     axios
       .get('https://api.hamburger-gaestefuehrer.de/api/tour_dates')
       .then((response) => {
-        this.tours = response.data.filter((tour) => {
-          return new Date(tour.date) > new Date()
-        }).slice(0, 5)
+        this.tours = response.data
+          .filter((tour) => {
+            return new Date(tour.date) > new Date()
+          })
+          .slice(0, 5)
         if (this.tours.length === 0) {
           this.error = true
           this.errorMessage = {
@@ -128,4 +136,5 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+</style>

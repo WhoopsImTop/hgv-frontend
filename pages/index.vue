@@ -1,17 +1,58 @@
 <template>
   <div>
-    <landing-component></landing-component>
-    <individual-tour-component></individual-tour-component>
+    <landing-component
+      :title="
+        landingPage.translations[$i18n.locale === 'de' ? 0 : 1]
+          .landing_component_title
+      "
+      :description="
+        landingPage.translations[$i18n.locale === 'de' ? 0 : 1]
+          .landing_component_description
+      "
+    ></landing-component>
+    <individual-tour-component
+      :title="
+        landingPage.translations[$i18n.locale === 'de' ? 0 : 1]
+          .tour_component_title
+      "
+      :description="
+        landingPage.translations[$i18n.locale === 'de' ? 0 : 1]
+          .tour_component_description
+      "
+    ></individual-tour-component>
     <public-tour-component
       v-if="$i18n.locale === 'de'"
+      :title="
+        landingPage.translations[$i18n.locale === 'de' ? 0 : 1]
+          .public_tour_component_title
+      "
+      :description="
+        landingPage.translations[$i18n.locale === 'de' ? 0 : 1]
+          .public_tour_component_description
+      "
     ></public-tour-component>
-    <how-it-works></how-it-works>
+    <how-it-works
+      :title="
+        landingPage.translations[$i18n.locale === 'de' ? 0 : 1]
+          .guide_component_title
+      "
+      :description="
+        landingPage.translations[$i18n.locale === 'de' ? 0 : 1]
+          .guide_component_description
+      "
+    ></how-it-works>
   </div>
 </template>
 
 <script>
 export default {
   layout: 'main',
+  async asyncData({ $axios }) {
+    const landingPage = await $axios.$get(
+      'https://api.hamburger-gaestefuehrer.de/api/landingpages/4'
+    )
+    return { landingPage }
+  },
   data() {
     return {}
   },

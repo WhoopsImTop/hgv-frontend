@@ -16,38 +16,7 @@
           "
         ></div>
       </div>
-      <div class="flex justify-center items-center relative">
-        <img
-          class="object-cover w-full h-full rounded-xl"
-          :src="
-            image.urls.regular ||
-            'https://images.unsplash.com/photo-1569150216991-aba1feb19ac5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-          "
-        />
-        <div
-          v-if="image && image.user"
-          class="absolute top-0 right-0 px-2 py-2 text-xs text-white bg-black bg-opacity-50 rounded-bl"
-        >
-          <p>
-            {{ $i18n.locale == 'de' ? 'Bild von' : 'image by' }}
-            <a
-              class="hover:text-white text-white"
-              :href="
-                image.user.links.html + '?utm_source=hgv&utm_medium=referral'
-              "
-              target="_blank"
-              >{{ image.user.username }}</a
-            >
-            {{ $i18n.locale == 'de' ? 'auf' : 'on' }}
-            <a
-              class="hover:text-white text-white"
-              href="https://unsplash.com/?utm_source=hgv&utm_medium=referral"
-              target="_blank"
-              >Unsplash</a
-            >
-          </p>
-        </div>
-      </div>
+      <random-image-generator />
     </div>
     <div
       v-else
@@ -78,10 +47,6 @@
 
 <script>
 import axios from 'axios'
-import guideLandingImage1 from '../../static/guidesLandingImages/hamburger_gästeführer_Christian_Lue.jpeg'
-import guideLandingImage2 from '../../static/guidesLandingImages/hamburger_gästeführer_Christian_Lue_2.jpeg'
-import guideLandingImage3 from '../../static/guidesLandingImages/hamburger_gästeführer_Moritz_Kindler.jpeg'
-import guideLandingImage4 from '../../static/guidesLandingImages/hamburger_gästeführer_Moritz_Kindler_2.jpeg'
 export default {
   layout: 'main',
 
@@ -90,63 +55,6 @@ export default {
       pageData: {},
       loading: false,
       errorMessages: '',
-      image: {
-        urls: {
-          regular: guideLandingImage1,
-        },
-        user: {
-          username: 'Christian Lue',
-          links: {
-            html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
-          },
-        },
-      },
-      landingImages: [
-        {
-          urls: {
-            regular: guideLandingImage1,
-          },
-          user: {
-            username: 'Christian Lue',
-            links: {
-              html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-        {
-          urls: {
-            regular: guideLandingImage2,
-          },
-          user: {
-            username: 'Christian Lue',
-            links: {
-              html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-        {
-          urls: {
-            regular: guideLandingImage3,
-          },
-          user: {
-            username: 'Moritz Kindler',
-            links: {
-              html: 'https://unsplash.com/@moritzkindler?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-        {
-          urls: {
-            regular: guideLandingImage4,
-          },
-          user: {
-            username: 'Moritz Kindler',
-            links: {
-              html: 'https://unsplash.com/@moritzkindler?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-      ],
     }
   },
 
@@ -183,10 +91,6 @@ export default {
           'Wir haben akutell eine hohe Auslastung. Bitte versuchen Sie es später erneut.'
         this.loading = false
       })
-
-    const randomImage =
-      this.landingImages[Math.floor(Math.random() * this.landingImages.length)]
-    this.image = randomImage
   },
 }
 </script>

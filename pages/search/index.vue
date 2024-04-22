@@ -1,48 +1,10 @@
 <template>
   <div>
     <div>
-      <div
-        class="relative h-[30vh] rounded-xl mx-auto w-full overflow-hidden flex items-center justify-center"
-      >
-        <img
-          v-if="image"
-          class="object-cover w-full h-full"
-          :src="
-            image.urls.regular ||
-            'https://images.unsplash.com/photo-1569150216991-aba1feb19ac5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-          "
-        />
-        <div
-          v-if="image && image.user"
-          class="absolute top-0 right-0 px-2 py-2 text-xs text-white bg-black bg-opacity-50 rounded-bl"
-        >
-          <p>
-            {{ $i18n.locale == 'de' ? 'Bild von' : 'image by' }}
-            <a
-              class="hover:text-white text-white"
-              :href="
-                image.user.links.html + '?utm_source=hgv&utm_medium=referral'
-              "
-              target="_blank"
-              >{{ image.user.username }}</a
-            >
-            {{ $i18n.locale == 'de' ? 'auf' : 'on' }}
-            <a
-              class="hover:text-white text-white"
-              href="https://unsplash.com/?utm_source=hgv&utm_medium=referral"
-              target="_blank"
-              >Unsplash</a
-            >
-          </p>
-        </div>
-        <div
-          class="absolute bottom-0 py-3 px-4 w-full flex items-end h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0 flex-row justify-between"
-        >
-          <h1 class="font-sans text-4xl font-bold text-white">
-            {{ translations.siteTitle[$i18n.locale] }}
-          </h1>
-        </div>
-      </div>
+      <random-image-generator
+        :translations="translations"
+        class="max-h-[30vh]"
+      />
       <div class="grid grid-cols-1 mb-3 mt-3">
         <input
           v-model="searchParam"
@@ -89,7 +51,9 @@
       <div v-else class="flex justify-center items-center">
         <p class="text-hgv-950">
           {{
-            $i18n.locale === 'de' ? 'Keine Guides mit diesem Namen gefunden' : 'No guides found with this name'
+            $i18n.locale === 'de'
+              ? 'Keine Guides mit diesem Namen gefunden'
+              : 'No guides found with this name'
           }}
         </p>
       </div>
@@ -159,7 +123,9 @@
       <div v-else class="flex justify-center items-center">
         <p class="text-hgv-950">
           {{
-            $i18n.locale === 'de' ? 'Keine Touren mit diesem Namen gefunden' : 'No tours found with this name'
+            $i18n.locale === 'de'
+              ? 'Keine Touren mit diesem Namen gefunden'
+              : 'No tours found with this name'
           }}
         </p>
       </div>
@@ -168,60 +134,10 @@
 </template>
 
 <script>
-import guideLandingImage1 from '../../static/guidesLandingImages/hamburger_gästeführer_Christian_Lue.jpeg'
-import guideLandingImage2 from '../../static/guidesLandingImages/hamburger_gästeführer_Christian_Lue_2.jpeg'
-import guideLandingImage3 from '../../static/guidesLandingImages/hamburger_gästeführer_Moritz_Kindler.jpeg'
-import guideLandingImage4 from '../../static/guidesLandingImages/hamburger_gästeführer_Moritz_Kindler_2.jpeg'
 export default {
   layout: 'main',
   data() {
     return {
-      landingImages: [
-        {
-          urls: {
-            regular: guideLandingImage1,
-          },
-          user: {
-            username: 'Christian Lue',
-            links: {
-              html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-        {
-          urls: {
-            regular: guideLandingImage2,
-          },
-          user: {
-            username: 'Christian Lue',
-            links: {
-              html: 'https://unsplash.com/@christianlue?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-        {
-          urls: {
-            regular: guideLandingImage3,
-          },
-          user: {
-            username: 'Moritz Kindler',
-            links: {
-              html: 'https://unsplash.com/@moritzkindler?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-        {
-          urls: {
-            regular: guideLandingImage4,
-          },
-          user: {
-            username: 'Moritz Kindler',
-            links: {
-              html: 'https://unsplash.com/@moritzkindler?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-      ],
       translations: {
         siteTitle: {
           de: 'Suche',
@@ -251,11 +167,6 @@ export default {
         },
       ],
     }
-  },
-
-  beforeMount() {
-    const data = this.landingImages[Math.floor(Math.random() * 4)]
-    this.image = data
   },
 
   mounted() {

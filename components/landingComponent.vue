@@ -3,12 +3,12 @@
     <div class="col-span-6 flex flex-col justify-center">
       <h1
         class="font-sans text-hgv-950 font-bold text-6xl"
-        v-html="translations[$i18n.locale].headline"
+        v-html="title ?? translations[$i18n.locale].headline"
       ></h1>
-      <p
-        class="mt-4 lg:mb-28 text-hgv-950"
-        v-html="translations[$i18n.locale].description"
-      ></p>
+      <div
+        class="mt-4 lg:mb-28 text-hgv-950 introduction-text"
+        v-html="description ?? translations[$i18n.locale].description"
+      ></div>
     </div>
     <div
       class="col-span-6 bg-hgv-100 rounded-3xl relative flex justify-center align-center h-full min-h-full overflow-hidden"
@@ -19,16 +19,12 @@
         alt="landing-image"
       />
       <div
-        v-if="landingImage?.copyright && landingImage?.copyright_url"
+        v-if="landingImage?.copyright"
         class="absolute bottom-0 left-0 px-3 pt-1 pb-2 rounded-tr-md bg-black/70"
       >
-        <a
-          class="text-white font-bold text-xs"
-          :href="landingImage.copyright_url"
-          target="_blank"
-        >
+        <span class="text-white font-bold text-xs">
           © {{ landingImage.copyright }}
-        </a>
+        </span>
       </div>
       <img
         class="absolute bottom-6 right-6 w-6 h-6 animate-spin-slow"
@@ -40,14 +36,22 @@
 </template>
 
 <script>
-import landing01 from '../static/landing_01.png'
-import landing02 from '../static/landing_02.jpeg'
-import landing03 from '../static/landing_03.jpeg'
-import landing05 from '../static/landing_05.jpeg'
-import landing06 from '../static/landing_06.jpeg'
-import landing07 from '../static/landing_07.jpeg'
+import landing01 from '../static/1.jpg'
+import landing02 from '../static/2.jpg'
+import landing03 from '../static/3.jpg'
+import landing04 from '../static/4.jpg'
+import landing05 from '../static/5.jpg'
+import landing06 from '../static/6.jpg'
+import landing07 from '../static/7.jpg'
+import landing08 from '../static/8.jpg'
+import landing09 from '../static/9.jpg'
+import landing10 from '../static/10.jpg'
 
 export default {
+  props: {
+    title: String,
+    description: String,
+  },
   data() {
     return {
       landingImage: {},
@@ -75,33 +79,43 @@ Are you interested in introducing our guests to the most beautiful city in the w
       images: [
         {
           image: landing01,
-          copyright: 'Jonas Tebbe',
-          copyright_url: 'https://unsplash.com/de/@jonastebbe',
+          copyright: 'Patricia Witzigmann',
         },
         {
           image: landing02,
-          copyright: 'Ajepbah',
-          copyright_url: 'https://commons.wikimedia.org/wiki/User:Ajepbah',
+          copyright: 'Patricia Witzigmann',
         },
         {
           image: landing03,
-          copyright: 'Christian Brandes',
-          copyright_url: 'https://www.christianbrandes.de/',
+          copyright: 'Patricia Witzigmann',
+        },
+        {
+          image: landing04,
+          copyright: 'Patricia Witzigmann',
         },
         {
           image: landing05,
-          copyright: 'ThisIsJulia Photography',
-          copyright_url: 'https://thisisjulia.de/',
+          copyright: 'Patricia Witzigmann',
         },
         {
           image: landing06,
-          copyright: 'Doublevision',
-          copyright_url: 'https://www.doublevision.photo/',
+          copyright: 'Patricia Witzigmann',
         },
         {
           image: landing07,
-          copyright: 'ThisIsJulia Photography',
-          copyright_url: 'https://thisisjulia.de/',
+          copyright: 'Patricia Witzigmann',
+        },
+        {
+          image: landing08,
+          copyright: 'Patricia Witzigmann',
+        },
+        {
+          image: landing09,
+          copyright: 'Patricia Witzigmann',
+        },
+        {
+          image: landing10,
+          copyright: 'Patricia Witzigmann',
         },
       ],
     }
@@ -133,4 +147,8 @@ Are you interested in introducing our guests to the most beautiful city in the w
 }
 </script>
 
-<style scoped></style>
+<style>
+.introduction-text a {
+  @apply underline text-hgv_red-700 hover:text-hgv_red-900;
+}
+</style>

@@ -103,7 +103,7 @@ export default {
     ],
   ],
 
-  plugins: ['~/plugins/jsonld'],
+  plugins: ['~/plugins/jsonld', '~/plugins/axios_error'],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {

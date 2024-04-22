@@ -1,38 +1,7 @@
 <template>
   <div>
-    <div
-      class="relative bg-gray-200 max-h-[256px] rounded-xl mx-auto w-full flex items-center justify-center"
-    >
-      <img
-        class="object-cover w-full h-full max-h-[256px] rounded-xl"
-        :src="
-          image.urls.regular ||
-          'https://images.unsplash.com/photo-1569150216991-aba1feb19ac5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-        "
-      />
-      <div
-        v-if="image && image.user"
-        class="absolute top-0 right-0 px-2 py-2 text-xs text-white bg-black bg-opacity-50 rounded-bl"
-      >
-        <p>
-          {{ $i18n.locale == 'de' ? 'Bild von' : 'image by' }}
-          <a
-            class="hover:text-white text-white"
-            :href="
-              image.user.links.html + '?utm_source=hgv&utm_medium=referral'
-            "
-            target="_blank"
-            >{{ image.user.username }}</a
-          >
-          {{ $i18n.locale == 'de' ? 'auf' : 'on' }}
-          <a
-            class="hover:text-white text-white"
-            href="https://unsplash.com/?utm_source=hgv&utm_medium=referral"
-            target="_blank"
-            >Unsplash</a
-          >
-        </p>
-      </div>
+    <div class="relative">
+      <random-image-generator class="max-h-[265px]" displayTopRight="true" />
       <div
         class="w-24 h-24 rounded-full border-2 border-white absolute -bottom-12 left-4"
       >
@@ -42,6 +11,7 @@
         />
       </div>
     </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-20">
       <div class="col-span-2 border border-gray-50 rounded-lg p-4">
         <h1 class="font-sans text-4xl text-hgv-950 font-bold">
@@ -221,12 +191,7 @@ export default {
       const guide = await $axios.$get(
         `https://api.hamburger-gaestefuehrer.de/api/guides/${params.slug}`
       )
-      const accesskey = 'fpsBXV7HBwRnN5B90GnMnIZYg2EtqCBTCGMMyBvjvtw'
-      const secretkey = '-m9PfeP7BMEvsGE6HdU5QIWr2Hmb4-TfnTaszqbh_GI'
-      const url = `https://api.unsplash.com/photos/random?query=hamburg%20tourism&orientation=landscape&client_id=${accesskey}&client_key=${secretkey}&count=1`
-      const response = await fetch(url)
-      const data = await response.json()
-      return { guide: guide.guide, image: data[0] }
+      return { guide: guide.guide }
     } catch (error) {
       console.log(error)
     }
@@ -325,7 +290,6 @@ export default {
 
   methods: {
     getUrl(guide) {
-      console.log(guide)
       if (!guide.image) {
         const canvas = document.createElement('canvas')
         canvas.width = 128

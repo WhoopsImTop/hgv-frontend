@@ -15,70 +15,7 @@
           "
         ></div>
       </div>
-      <div class="flex justify-center items-center relative">
-        <img
-          class="object-cover w-full h-full rounded-xl"
-          :src="
-            image.urls.regular ||
-            'https://images.unsplash.com/photo-1569150216991-aba1feb19ac5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-          "
-        />
-        <div
-          v-if="image && image.user"
-          class="absolute top-0 right-0 px-2 py-2 text-xs text-white bg-black bg-opacity-50 rounded-bl"
-        >
-          <p>
-            {{ $i18n.locale == 'de' ? 'Bild von' : 'image by' }}
-            <a
-              class="hover:text-white text-white"
-              :href="
-                image.user.links.html + '?utm_source=hgv&utm_medium=referral'
-              "
-              target="_blank"
-              >{{ image.user.username }}</a
-            >
-            {{ $i18n.locale == 'de' ? 'auf' : 'on' }}
-            <a
-              class="hover:text-white text-white"
-              href="https://unsplash.com/?utm_source=hgv&utm_medium=referral"
-              target="_blank"
-              >Unsplash</a
-            >
-          </p>
-        </div>
-      </div>
-      <div class="flex justify-center items-center relative md:col-span-2">
-        <img
-          class="object-cover w-full h-full rounded-xl"
-          :src="
-            image2.urls.regular ||
-            'https://images.unsplash.com/photo-1569150216991-aba1feb19ac5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-          "
-        />
-        <div
-          v-if="image2 && image2.user"
-          class="absolute top-0 right-0 px-2 py-2 text-xs text-white bg-black bg-opacity-50 rounded-bl"
-        >
-          <p>
-            {{ $i18n.locale == 'de' ? 'Bild von' : 'image by' }}
-            <a
-              class="hover:text-white text-white"
-              :href="
-                image2.user.links.html + '?utm_source=hgv&utm_medium=referral'
-              "
-              target="_blank"
-              >{{ image2.user.username }}</a
-            >
-            {{ $i18n.locale == 'de' ? 'auf' : 'on' }}
-            <a
-              class="hover:text-white text-white"
-              href="https://unsplash.com/?utm_source=hgv&utm_medium=referral"
-              target="_blank"
-              >Unsplash</a
-            >
-          </p>
-        </div>
-      </div>
+      <random-image-generator />
     </div>
     <div
       v-else

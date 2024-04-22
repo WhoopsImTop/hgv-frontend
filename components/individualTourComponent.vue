@@ -1,12 +1,14 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-20 my-24 md:my-36">
     <div>
-      <h2 class="font-sans text-4xl font-bold text-hgv-950">
-        {{ translations[$i18n.locale].title }}
-      </h2>
-      <p class="mt-4 text-hgv-950">
-        {{ translations[$i18n.locale].text }}
-      </p>
+      <h2
+        class="font-sans text-4xl font-bold text-hgv-950"
+        v-html="title ?? translations[$i18n.locale].title"
+      ></h2>
+      <p
+        class="mt-4 text-hgv-950"
+        v-html="description ?? translations[$i18n.locale].text"
+      ></p>
     </div>
     <div
       class="grid grid-cols-2 md:grid-cols-3 md:grid-rows-2 gap-4 h-full sm:h-96"
@@ -172,6 +174,10 @@
 <script>
 import axios from 'axios'
 export default {
+  props: {
+    title: String,
+    description: String,
+  },
   data() {
     return {
       tours: [],

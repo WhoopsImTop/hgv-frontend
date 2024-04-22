@@ -1,38 +1,7 @@
 <template>
   <div>
     <div v-if="pageData.translations">
-      <div class="flex justify-center items-center relative">
-        <img
-          class="object-cover w-full h-full max-h-96 rounded-xl"
-          :src="
-            image.urls.regular ||
-            'https://images.unsplash.com/photo-1569150216991-aba1feb19ac5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-          "
-        />
-        <div
-          v-if="image && image.user"
-          class="absolute top-0 right-0 px-2 py-2 text-xs text-white bg-black bg-opacity-50 rounded-bl"
-        >
-          <p>
-            {{ $i18n.locale == 'de' ? 'Bild von' : 'image by' }}
-            <a
-              class="hover:text-white text-white"
-              :href="
-                image.user.links.html + '?utm_source=hgv&utm_medium=referral'
-              "
-              target="_blank"
-              >{{ image.user.username }}</a
-            >
-            {{ $i18n.locale == 'de' ? 'auf' : 'on' }}
-            <a
-              class="hover:text-white text-white"
-              href="https://unsplash.com/?utm_source=hgv&utm_medium=referral"
-              target="_blank"
-              >Unsplash</a
-            >
-          </p>
-        </div>
-      </div>
+      <random-image-generator class="max-h-[40vh]" />
       <div class="grid grid-cols-1 gap-16 mt-8">
         <div>
           <h1 class="text-4xl font-sans font-bold text-hgv-950">
@@ -77,50 +46,11 @@
 
 <script>
 import axios from 'axios'
-
-import feeLandingImage1 from '../../static/honorareLandingImages/Hamburger_Gaestefuehrer_jonas-tebbe.jpeg'
-import feeLandingImage2 from '../../static/honorareLandingImages/Hamburger_Gaestefuehrer_khaled-ali.jpeg'
-import feeLandingImage3 from '../../static/honorareLandingImages/Hamburger_Gaestefuehrer_patrick-rosenkranz.jpeg'
 export default {
   layout: 'main',
 
   data() {
     return {
-      landingImages: [
-        {
-          urls: {
-            regular: feeLandingImage1,
-          },
-          user: {
-            username: 'Jonas Tebbe',
-            links: {
-              html: 'https://unsplash.com/@jonastebbe?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-        {
-          urls: {
-            regular: feeLandingImage2,
-          },
-          user: {
-            username: 'Khaled Ali',
-            links: {
-              html: 'https://unsplash.com/@khaledali?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-        {
-          urls: {
-            regular: feeLandingImage3,
-          },
-          user: {
-            username: 'Patrick Rosenkranz',
-            links: {
-              html: 'https://unsplash.com/@pazzero?utm_source=hgv&utm_medium=referral',
-            },
-          },
-        },
-      ],
       pageData: {},
       loading: false,
       errorMessages: '',
@@ -161,10 +91,6 @@ export default {
           'Wir haben akutell eine hohe Auslastung. Bitte versuchen Sie es später erneut.'
         this.loading = false
       })
-
-      this.image = this.landingImages[
-        Math.floor(Math.random() * this.landingImages.length)
-      ]
   },
 }
 </script>

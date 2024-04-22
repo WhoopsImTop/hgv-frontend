@@ -72,8 +72,7 @@
             class="text-hgv-950 font-sans font-medium justify-self-center flex items-center"
             ><img src="/duration.svg" alt="duration" class="mr-2" />{{
               tour.duration
-            }}
-            {{ translations.hours[$i18n.locale] }}</span
+            }}</span
           >
           <span
             class="text-hgv-950 font-sans font-medium justify-self-center flex items-center"
@@ -96,7 +95,7 @@
           </h3>
           <hr class="my-4" />
           <div
-            v-if="!filterError"
+            v-if="!filterError && !tour.is_public"
             class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-3"
           >
             <select
@@ -245,7 +244,7 @@
           </div>
         </div>
         <div
-          v-if="tour.tour_dates != null && tour.tour_dates.length > 0"
+          v-if="tourDates != null && tourDates.length > 0"
           class="border border-zink-50 rounded-xl px-3 pt-3 mb-3"
         >
           <h3 class="font-bold text-2xl font-sans mb-3">
@@ -253,13 +252,12 @@
           </h3>
           <div class="relative flex flex-col my-2">
             <span
-              v-for="(date, index) in tour.tour_dates"
+              v-for="(date, index) in tourDates"
               :key="date.id"
               :class="
-                index != tour.tour_dates.length - 1
-                  ? 'border-b border-zink-50'
-                  : ''
+                index != tourDates.length - 1 ? 'border-b border-zink-50' : ''
               "
+              @click="changeDate(date)"
               class="py-2 mr-2 flex items-center font-bold text-hgv-950"
             >
               <img
@@ -296,16 +294,27 @@ export default {
   },
   layout: 'main',
 
-  async asyncData({ $axios, params }) {
+  async asyncData({ $axios, params, route }) {
     const tour = await $axios.$get(
       `https://api.hamburger-gaestefuehrer.de/api/tours/${params.slug}`
     )
     if (tour.tour.is_public && tour.tour.tour_dates) {
-      tour.tour.date = tour.tour.tour_dates[0].date
-      tour.tour.tour_dates = tour.tour.tour_dates.slice(1, 6)
+      const date = route.query.date
+      if (date) {
+        const index = tour.tour.tour_dates.findIndex(
+          (tourDate) => tourDate.id === parseInt(date)
+        )
+        if (index !== -1) {
+          tour.tour.date = tour.tour.tour_dates[index].date
+          if (tour.tour.tour_dates[index].guide) {
+            tour.tour.guides = [tour.tour.tour_dates[index].guide]
+          }
+        }
+      }
     }
     return tour
   },
+
   data() {
     return {
       translations: {
@@ -328,10 +337,6 @@ export default {
         mobility: {
           de: 'Mobilität',
           en: 'Mobility',
-        },
-        hours: {
-          de: 'Stunden',
-          en: 'hours',
         },
         public: {
           de: 'Öffentlich',
@@ -443,7 +448,17 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    tourDates() {
+      return this.tour.tour_dates
+        .filter((date) => {
+          return date.date !== this.tour.date
+        })
+        .sort((a, b) => {
+          return new Date(a.date) - new Date(b.date)
+        })
+    },
+  },
 
   mounted() {
     const urlParams = new URLSearchParams(window.location.search)
@@ -457,6 +472,14 @@ export default {
   },
 
   methods: {
+    changeDate(date) {
+      if (date.guide) {
+        this.tour.guides = [date.guide]
+      } else {
+        this.tour.guides = []
+      }
+      this.tour.date = date.date
+    },
     getAllData() {
       this.$axios
         .get('https://api.hamburger-gaestefuehrer.de/api/data')

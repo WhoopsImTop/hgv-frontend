@@ -1,25 +1,27 @@
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-20 my-24 md:my-36">
     <div>
-      <h2 class="font-sans text-4xl font-bold text-hgv-950">
-        {{ translations[$i18n.locale].title }}
-      </h2>
-      <p class="mt-4 text-hgv-950">
-        {{ translations[$i18n.locale].text }}
-      </p>
+      <h2
+        class="font-sans text-4xl font-bold text-hgv-950"
+        v-html="title ?? translations[$i18n.locale].title"
+      ></h2>
+      <div
+        class="mt-4 text-hgv-950"
+        v-html="description ?? translations[$i18n.locale].text"
+      ></div>
     </div>
     <div class="py-4 flex flex-col 2xl:grid 2xl:grid-cols-2 gap-4">
       <div v-for="guide in guides" :key="guide.id">
         <guide-component :guide="guide" class="h-100" />
       </div>
       <div class="mt-4 md:col-span-2 text-center">
-      <nuxt-link
-        to="/guides"
-        class="text-center bg-hgv-950 text-white font-bold text-decoration-none py-2 px-3 rounded hover:bg-hgv-900 inline-flex"
-      >
-        {{ translations[$i18n.locale].button }}
-      </nuxt-link>
-    </div>
+        <nuxt-link
+          to="/guides"
+          class="text-center bg-hgv-950 text-white font-bold text-decoration-none py-2 px-3 rounded hover:bg-hgv-900 inline-flex"
+        >
+          {{ translations[$i18n.locale].button }}
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>
@@ -28,6 +30,10 @@
 import guideComponent from './guideComponent.vue'
 export default {
   components: { guideComponent },
+  props: {
+    title: String,
+    description: String,
+  },
   data() {
     return {
       translations: {

@@ -429,7 +429,7 @@ export default {
       } else {
         fetchUrl += '?'
       }
-      fetchUrl += 'preview=true'
+      fetchUrl += 'preview=true&currentLocale=' + this.$i18n.locale
 
       this.$axios
         .get(fetchUrl)
@@ -502,7 +502,7 @@ export default {
     async getAllGuides() {
       await this.$axios
         .get(
-          'https://api.hamburger-gaestefuehrer.de/api/guides?preview=true&per_page=200'
+          'https://api.hamburger-gaestefuehrer.de/api/guides?preview=true&per_page=200&fields=id'
         )
         .then((response) => {
           this.guides = response.data.guides.data.sort((a, b) =>

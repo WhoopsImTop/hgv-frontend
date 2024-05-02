@@ -406,6 +406,7 @@ export default {
       if (this.publicTour) {
         query += 'is_public=true&'
       }
+      query += 'currentLocale=' + this.$i18n.locale + '&'
       query = query.slice(0, -1)
 
       this.$axios
@@ -475,8 +476,26 @@ export default {
             )
           )
 
-          const order = ['highlights', 'stadtviertel & quartiere', 'themenführungen', 'metropolregion & umgebung', 'kinder & jugendliche'];
-          this.categories.sort((a, b) => order.indexOf(a.translations[this.$i18n.locale === 'de' ? 0 : 1].name.toLowerCase()) - order.indexOf(b.translations[this.$i18n.locale === 'de' ? 0 : 1].name.toLowerCase()))
+          const order = [
+            'highlights',
+            'stadtviertel & quartiere',
+            'themenführungen',
+            'metropolregion & umgebung',
+            'kinder & jugendliche',
+          ]
+          this.categories.sort(
+            (a, b) =>
+              order.indexOf(
+                a.translations[
+                  this.$i18n.locale === 'de' ? 0 : 1
+                ].name.toLowerCase()
+              ) -
+              order.indexOf(
+                b.translations[
+                  this.$i18n.locale === 'de' ? 0 : 1
+                ].name.toLowerCase()
+              )
+          )
         })
         .catch((error) => {
           console.log(error)

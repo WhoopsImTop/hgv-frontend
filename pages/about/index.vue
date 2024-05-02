@@ -49,19 +49,6 @@ import axios from 'axios'
 export default {
   layout: 'main',
 
-  async asyncData({ $axios, params }) {
-    try {
-      const accesskey = 'fpsBXV7HBwRnN5B90GnMnIZYg2EtqCBTCGMMyBvjvtw'
-      const secretkey = '-m9PfeP7BMEvsGE6HdU5QIWr2Hmb4-TfnTaszqbh_GI'
-      const url = `https://api.unsplash.com/photos/random?query=hamburg%20tourism&orientation=landscape&client_id=${accesskey}&client_key=${secretkey}&count=2`
-      const response = await fetch(url)
-      const data = await response.json()
-      return { image: data[0], image2: data[1] }
-    } catch (error) {
-      console.log(error)
-    }
-  },
-
   data() {
     return {
       pageData: {},

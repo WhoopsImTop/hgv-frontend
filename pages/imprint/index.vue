@@ -71,7 +71,6 @@ E-Mail: info@hamburger-gaestefuehrer.de</p>
 <p>Mediaserver Hamburg- © mediaserver.hamburg.de_Konstantin Beck</p>
 <p>Mediaserver Hamburg- © mediaserver.hamburg.de_Ingo Boelter</p>
 <p>Mediaserver Hamburg- © mediaserver.hamburg.de_Mattias Boem</p>
-<p>Unsplash-© unsplash.de_Diana Polekhina</p>
 <p>Shutterstock-© shutterstock.de_2024561522</p>
 <p>Hamburger Gästeführer Verein e.V.</p>
 
@@ -122,14 +121,6 @@ E-mail: info@hamburger-gaestefuehrer.de</p>
 <p>Mediaserver Hamburg- © mediaserver.hamburg.de_Julia Schwendner</p>
 <p>Mediaserver Hamburg- © mediaserver.hamburg.de_Uta Gleiser</p>
 <p>Mediaserver Hamburg- © mediaserver.hamburg.de_André Reuter</p>
-<p>Unsplash-© unsplash.de_Rojem Cajan</p>
-<p>Unsplash-© unsplash.de_Eduardo Cano</p>
-<p>Unsplash-© unsplash.de_Jan Bolz</p>
-<p>Unsplash-© unsplash.de_Martti Salmi</p>
-<p>Unsplash-© unsplash.de_Carlos Ibágnez</p>
-<p>Unsplash-© unsplash.de_Samuel Svec</p>
-<p>Unsplash-© unsplash.de_Jonathan Kemper</p>
-<p>Unsplash-© unsplash.de_Robert Katzki</p>
 <p>KZ_Gedenkstätte_Neuengamme_Michael Kottmeier_2005_ANg 2014-479</p>
 
 

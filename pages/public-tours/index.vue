@@ -1,15 +1,11 @@
 <template>
-  <div class="my-24 md:my-36">
+  <div class="my-12 md:my-24">
     <h2
       class="font-sans text-4xl font-bold text-hgv-950"
       v-html="title ?? translations[$i18n.locale].title"
     ></h2>
-    <p
-      class="mt-4 text-hgv-950 w-full md:w-1/2"
-      v-html="description ?? translations[$i18n.locale].text"
-    ></p>
 
-    <div v-if="tours.length > 0 && !error" class="mt-12">
+    <div v-if="tours.length > 0 && !error" class="md:mt-12">
       <nuxt-link
         v-for="date in tours"
         :key="date.id"
@@ -62,20 +58,23 @@
           <div v-html="date.tour.description"></div>
         </div>
       </nuxt-link>
-      <div class="flex items-center justify-center w-full mt-4">
-        <nuxt-link
-          to="/public-tours"
-          class="text-center bg-hgv-950 text-white font-bold text-decoration-none py-2 px-3 rounded hover:bg-hgv-900 inline-flex"
-        >
-          {{
-            $i18n.locale === 'de'
-              ? 'Alle Öffentlichen Touren'
-              : 'All Public Tours'
-          }}
-        </nuxt-link>
-      </div>
     </div>
-
+    <!-- create paginatinon -->
+    <div v-if="pagination" class="mt-10 flex justify-center">
+      <button
+        v-for="page in pagination"
+        v-show="
+          page.label != 'pagination.next' && page.label != 'pagination.previous'
+        "
+        :key="page.label"
+        @click="loadPaginatedPage(page.url)"
+        :disabled="page.active"
+        :class="{ 'bg-hgv-950 text-white': page.active }"
+        class="px-4 py-2 bg-hgv-100 text-hgv-950 rounded-lg mx-2"
+      >
+        {{ page.label }}
+      </button>
+    </div>
     <div
       v-else-if="!error"
       class="grid w-full gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-6"
@@ -104,6 +103,7 @@
 <script>
 import axios from 'axios'
 export default {
+  layout: 'main',
   props: {
     title: String,
     description: String,
@@ -111,29 +111,31 @@ export default {
   data() {
     return {
       tours: [],
+      per_page: 20,
+      pagination: {},
       error: false,
       errorMessage: {},
       translations: {
         de: {
           title: 'Öffentliche Führungen',
-          text: `Hier finden Sie auf einen Blick die Touren, die ein konkretes Datum haben und direkt beim Guide gebucht werden können. Wählen Sie einfach Ihre Tour und melden Sie sich in einem zweiten Schritt direkt beim Guide für das gewünschte Datum und die gewünschte Uhrzeit an.`,
         },
         en: {
           title: 'Public Tours',
-          text: `Here you will find the tours that have a specific date and can be booked directly with the guide. Simply select your tour and, in a second step, register directly with the guide for the desired date and time.`,
         },
       },
     }
   },
   mounted() {
     axios
-      .get('https://api.hamburger-gaestefuehrer.de/api/tour_dates')
+      .get(
+        'https://api.hamburger-gaestefuehrer.de/api/tour_dates' +
+          `?per_page=${this.per_page}`
+      )
       .then((response) => {
-        this.tours = response.data
-          .filter((tour) => {
-            return new Date(tour.date) > new Date()
-          })
-          .slice(0, 5)
+        this.tours = response.data.data.filter((tour) => {
+          return new Date(tour.date) > new Date()
+        })
+        this.pagination = response.data.links
         if (this.tours.length === 0) {
           this.error = true
           this.errorMessage = {
@@ -145,6 +147,19 @@ export default {
       .catch((error) => {
         console.log(error)
       })
+  },
+  methods: {
+    loadPaginatedPage(url) {
+      url = url + `&per_page=${this.per_page}`
+
+      axios.get(url).then((response) => {
+        this.tours = response.data.data.filter((tour) => {
+          return new Date(tour.date) > new Date()
+        })
+        this.pagination = response.data.links
+        window.scrollTo(0, 0)
+      })
+    },
   },
 }
 </script>

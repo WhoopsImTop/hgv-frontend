@@ -468,7 +468,15 @@ export default {
         (guide) => guide.id === parseInt(guideId)
       )
     }
-    this.getAllData()
+    if (!this.tour.is_public) {
+      this.getAllData()
+    }
+    if (!this.$route.query.date && this.tour.tour_dates && this.tour.is_public) {
+      this.tour.date = this.tour.tour_dates[0].date
+      if (this.tour.tour_dates[0].guide) {
+        this.tour.guides = [this.tour.tour_dates[0].guide]
+      }
+    }
   },
 
   methods: {

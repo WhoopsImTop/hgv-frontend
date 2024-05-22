@@ -190,7 +190,7 @@ export default {
       this.pageLoading = true
       this.$axios
         .get(
-          `https://api.hamburger-gaestefuehrer.de/api/guide/` + this.searchParam
+          `https://api.hamburger-gaestefuehrer.de/api/guide/` + this.searchParam + '?currentLocale=' + this.$i18n.locale
         )
         .then((response) => {
           this.guides = response.data.guide

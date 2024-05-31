@@ -29,7 +29,7 @@
         <img
           :src="tours[0].images[0].url"
           :alt="tours[0].name"
-          class="object-cover h-100 w-full group-hover:scale-110 transition-transform duration-300"
+          class="object-cover h-full w-auto group-hover:scale-110 transition-transform duration-300"
         />
         <div
           class="absolute bottom-0 py-3 px-4 w-full flex items-end h-36 bg-gradient-to-t from-slate-950/50 to-slate-950/0"

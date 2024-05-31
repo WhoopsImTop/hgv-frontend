@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="relative">
-      <random-image-generator class="max-h-[265px]" displayTopRight="true" />
+      <random-image-generator class="max-h-[265px]" :display-top-right=true />
       <div
         class="w-24 h-24 rounded-full border-2 border-white absolute -bottom-12 left-4"
       >
@@ -152,7 +152,7 @@
           <a
             v-if="JSON.parse(guide.contact).website"
             class="flex items-center my-2"
-            :href="'//' + JSON.parse(guide.contact).website"
+            :href="'//' + sanitiseUrl(JSON.parse(guide.contact).website)"
             target="_blank"
             ><img src="/web.svg" alt="website" class="mr-2" />{{
               JSON.parse(guide.contact).website
@@ -289,6 +289,9 @@ export default {
   },
 
   methods: {
+    sanitiseUrl(website) {
+      return website.replace(/^https?:\/\//, '');
+    },
     getUrl(guide) {
       if (!guide.image) {
         const canvas = document.createElement('canvas')

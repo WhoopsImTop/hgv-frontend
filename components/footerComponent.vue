@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <footer>
     <div class="bg-hgv-50 py-4 mt-20">
       <div
         class="container mx-auto flex md:flex-row flex-col md:justify-between md:align-end md:items-end"
@@ -43,7 +43,7 @@
         >
       </div>
     </div>
-  </div>
+  </footer>
 </template>
 
 <script>

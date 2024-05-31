@@ -91,16 +91,8 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/content
-    '@nuxt/content',
     '@nuxtjs/markdownit',
     '@nuxtjs/i18n',
-    [
-      'nuxt-gmaps',
-      {
-        key: 'AIzaSyBw_QNEvvoRbs-czfH2GbPPkupqDdJTxhg',
-      },
-    ],
   ],
 
   plugins: ['~/plugins/jsonld', '~/plugins/axios_error'],
@@ -109,11 +101,6 @@ export default {
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     baseURL: '/',
-  },
-
-  // Content module configuration: https://go.nuxtjs.dev/config-content
-  content: {
-    path: 'content',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

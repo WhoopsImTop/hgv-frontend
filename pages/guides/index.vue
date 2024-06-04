@@ -1,10 +1,8 @@
+
 <template>
   <div>
-    <div v-if="!currentPageLoading">
-      <random-image-generator
-        :translations="translations"
-        class="max-h-[40vh]"
-      />
+    <div v-if="!pageLoading">
+      <random-image-generator :translations="translations" class="max-h-[40vh]" />
       <h3 class="font-sans font-sm font-bold text-hgv-950 mt-5 mb-1">
         {{ $i18n.locale === 'de' ? 'Guide Filter' : 'Guide filter' }}
       </h3>
@@ -156,24 +154,12 @@
           ></div>
         </div>
       </div>
-      <div v-else class="flex flex-col justify-center items-center">
+      <div v-else class="flex justify-center items-center">
         <p class="text-hgv-950">
           {{
             $i18n.locale === 'de' ? 'Keine Guides gefunden' : 'No guides found'
           }}
         </p>
-        <button
-          class="bg-hgv-950 text-white rounded-lg p-2 px-4 font-sans disabled:opacity-50 disabled:cursor-not-allowed md:col-span-3 mt-3"
-          @click="
-            selectedLanguage = '0'
-            selectedMobility = '0'
-            selectedSkill = '0'
-            selectedPlace = '0'
-            filterGuide()
-          "
-        >
-          {{ $i18n.locale === 'de' ? 'Filter zurücksetzen' : 'Reset filter' }}
-        </button>
       </div>
     </div>
     <div
@@ -255,7 +241,7 @@ export default {
       selectedSkill: '0',
       selectedPlace: '0',
       guidePage: 1,
-      currentPageLoading: true,
+      currentPageLoading: false,
       loadingNextPage: false,
       guides: [],
       maxPages: 0,
@@ -331,6 +317,9 @@ export default {
     }
   },
   computed: {
+    pageLoading() {
+      return this.guides.length === 0 && this.image === null
+    },
     filteredGuides() {
       return this.guides
     },
@@ -383,7 +372,6 @@ export default {
       const guides = await this.$axios.$get(
         `https://api.hamburger-gaestefuehrer.de/api/guides`
       )
-      this.currentPageLoading = false
       this.guides = guides.guides.data
       this.maxPages = guides.guides.last_page
       this.random_seed = guides.random_seed
@@ -457,7 +445,7 @@ export default {
       if (this.selectedPlace !== '0') {
         queryString += `&place=${this.selectedPlace}`
       }
-      if (this.random_seed) {
+      if(this.random_seed) {
         queryString += `&random_seed=${this.random_seed}`
       }
 

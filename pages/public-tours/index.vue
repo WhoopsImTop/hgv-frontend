@@ -20,7 +20,7 @@
         <div class="flex flex-col">
           <div class="flex items-center gap-4 mb-3">
             <div
-              v-if="date.tour.needs_registration"
+              v-if="date.tour.is_public && date.tour.needs_registration"
               class="py-1 px-2 bg-hgv-50 rounded flex items-center w-max md:mt-0"
             >
               <img

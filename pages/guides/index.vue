@@ -1,8 +1,10 @@
-
 <template>
   <div>
-    <div v-if="!pageLoading">
-      <random-image-generator :translations="translations" class="max-h-[40vh]" />
+    <div v-if="!guidePageLoading">
+      <random-image-generator
+        :translations="translations"
+        class="max-h-[40vh]"
+      />
       <h3 class="font-sans font-sm font-bold text-hgv-950 mt-5 mb-1">
         {{ $i18n.locale === 'de' ? 'Guide Filter' : 'Guide filter' }}
       </h3>
@@ -98,10 +100,32 @@
         </button>
       </div>
       <hr class="border-1 border-gray-300 mt-1 mb-3" />
+
       <div
-        v-if="filteredGuides.length > 0"
-        class="grid grid-cols-1 md:grid-cols-3 gap-4"
+        v-if="filteredGuides.length === 0 && guideTotalCount === 0"
+        class="flex flex-col items-center"
       >
+        <p class="text-hgv-950">
+          {{
+            $i18n.locale === 'de'
+              ? 'Keine Guides mit diesem Filter gefunden'
+              : 'No guides found with this filter'
+          }}
+        </p>
+        <button
+          class="bg-hgv-950 text-white rounded-lg py-2 px-3 font-sans mt-4"
+          @click="
+            selectedLanguage = '0'
+            selectedMobility = '0'
+            selectedSkill = '0'
+            selectedPlace = '0'
+            filterGuide()
+          "
+        >
+          {{ $i18n.locale === 'de' ? 'Filter zurücksetzen' : 'Reset filter' }}
+        </button>
+      </div>
+      <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <guide-component
           v-for="guide in filteredGuides"
           :key="guide.id"
@@ -153,13 +177,6 @@
             class="bg-gray-100 animate-pulse mr-2 w-full h-56 rounded-xl pt-4 px-4 pb-3 text-decoration-none"
           ></div>
         </div>
-      </div>
-      <div v-else class="flex justify-center items-center">
-        <p class="text-hgv-950">
-          {{
-            $i18n.locale === 'de' ? 'Keine Guides gefunden' : 'No guides found'
-          }}
-        </p>
       </div>
     </div>
     <div
@@ -243,6 +260,8 @@ export default {
       guidePage: 1,
       currentPageLoading: false,
       loadingNextPage: false,
+      guidePageLoading: true,
+      guideTotalCount: null,
       guides: [],
       maxPages: 0,
       image: null,
@@ -317,24 +336,20 @@ export default {
     }
   },
   computed: {
-    pageLoading() {
-      return this.guides.length === 0 && this.image === null
-    },
     filteredGuides() {
       return this.guides
     },
   },
-  beforeMount() {
-    this.getAllGuides()
-    this.getAllData()
-  },
 
   mounted() {
+    this.getAllGuides()
+    this.getAllData()
     window.addEventListener('scroll', this.handleScroll)
   },
 
   methods: {
     filterGuide() {
+      this.guidePageLoading = true
       let queryString = ''
       if (this.selectedLanguage !== '0') {
         queryString += `&language=${this.selectedLanguage}`
@@ -348,6 +363,9 @@ export default {
       if (this.selectedPlace !== '0') {
         queryString += `&place=${this.selectedPlace}`
       }
+      if(this.random_seed){
+        queryString += `&random_seed=${this.random_seed}`
+      }
       this.loadingNextPage = true
       this.currentPageLoading = true
       this.$axios
@@ -357,24 +375,38 @@ export default {
         .then((response) => {
           this.guides = response.data.guides.data
           this.maxPages = response.data.guides.last_page
+          this.guideTotalCount = response.data.guides.total
           this.currentPageLoading = false
           this.loadingNextPage = false
+          this.guidePageLoading = false
+
+          this.guidePage = response.data.guides.current_page
+          this.maxPages = response.data.guides.last_page
         })
         .catch((error) => {
           console.log(error)
           window.alert(
             'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.'
           )
+          this.guidePageLoading = false
         })
     },
 
     async getAllGuides() {
-      const guides = await this.$axios.$get(
-        `https://api.hamburger-gaestefuehrer.de/api/guides`
-      )
-      this.guides = guides.guides.data
-      this.maxPages = guides.guides.last_page
-      this.random_seed = guides.random_seed
+      try {
+        const guides = await this.$axios.$get(
+          `https://api.hamburger-gaestefuehrer.de/api/guides`
+        )
+        this.guides = guides.guides.data
+        this.maxPages = guides.guides.last_page
+        this.random_seed = guides.random_seed
+      } catch (error) {
+        window.alert(
+          'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.'
+        )
+      } finally {
+        this.guidePageLoading = false
+      }
     },
 
     getAllData() {
@@ -417,9 +449,12 @@ export default {
             }
             return 0
           })
+
+          this.guidePageLoading = false
         })
         .catch((error) => {
           console.log(error)
+          this.guidePageLoading = false
         })
     },
 
@@ -445,7 +480,7 @@ export default {
       if (this.selectedPlace !== '0') {
         queryString += `&place=${this.selectedPlace}`
       }
-      if(this.random_seed) {
+      if (this.random_seed) {
         queryString += `&random_seed=${this.random_seed}`
       }
 

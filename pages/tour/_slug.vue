@@ -4,7 +4,7 @@
       class="relative h-[60vh] rounded-xl mx-auto w-full overflow-hidden flex items-center justify-center"
     >
       <div
-        v-if="tour.needs_registration"
+        v-if="tour.is_public && tour.needs_registration"
         class="absolute top-5 left-5 py-1 px-2 bg-white rounded flex items-center"
       >
         <img src="/info.svg" width="25" alt="info" title="info" class="mr-2" />
@@ -244,7 +244,7 @@
           </div>
         </div>
         <div
-          v-if="tourDates != null && tourDates.length > 0"
+          v-if="tour.is_public && tourDates != null && tourDates.length > 0"
           class="border border-zink-50 rounded-xl px-3 pt-3 mb-3"
         >
           <h3 class="font-bold text-2xl font-sans mb-3">

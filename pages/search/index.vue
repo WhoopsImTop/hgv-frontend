@@ -92,7 +92,7 @@
           :to="'/tour/' + tour.id"
           class="rounded-xl aspect-square relative overflow-hidden"
           ><div
-            v-if="tour.needs_registration"
+            v-if="tour.is_public && tour.needs_registration"
             class="absolute top-2.5 md:top-5 left-2.5 md:left-5 p-1 md:py-1 md:px-2 bg-white rounded flex items-center"
           >
             <img
@@ -190,7 +190,10 @@ export default {
       this.pageLoading = true
       this.$axios
         .get(
-          `https://api.hamburger-gaestefuehrer.de/api/guide/` + this.searchParam + '?currentLocale=' + this.$i18n.locale
+          `https://api.hamburger-gaestefuehrer.de/api/guide/` +
+            this.searchParam +
+            '?currentLocale=' +
+            this.$i18n.locale
         )
         .then((response) => {
           this.guides = response.data.guide

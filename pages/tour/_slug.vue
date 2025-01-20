@@ -65,7 +65,7 @@
           <span
             class="text-hgv-950 font-sans font-medium justify-self-center flex items-center"
             ><img src="/calendar.svg" alt="price" class="mr-2" />{{
-              new Date(tour.date).toLocaleDateString($i18n.locale)
+              returnTourDate(tour)
             }}
           </span>
           <span
@@ -471,7 +471,11 @@ export default {
     if (!this.tour.is_public) {
       this.getAllData()
     }
-    if (!this.$route.query.date && this.tour.tour_dates && this.tour.is_public) {
+    if (
+      !this.$route.query.date &&
+      this.tour.tour_dates &&
+      this.tour.is_public
+    ) {
       this.tour.date = this.tour.tour_dates[0].date
       if (this.tour.tour_dates[0].guide) {
         this.tour.guides = [this.tour.tour_dates[0].guide]
@@ -480,6 +484,19 @@ export default {
   },
 
   methods: {
+    returnTourDate(tour) {
+      if (tour.date === null) {
+        let youngestDate = new Date()
+        tour.tour_dates.forEach((date) => {
+          if (new Date(date.date) < youngestDate) {
+            youngestDate = new Date(date.date)
+          }
+        })
+        return youngestDate.toLocaleDateString(this.$i18n.locale)
+      } else {
+        return new Date(tour.date).toLocaleDateString(this.$i18n.locale)
+      }
+    },
     changeDate(date) {
       if (date.guide) {
         this.tour.guides = [date.guide]

@@ -131,7 +131,10 @@ export default {
       .then((response) => {
         this.tours = response.data
           .filter((tour) => {
-            return new Date(tour.date) > new Date()
+            return (
+              new Date(tour.date).setHours(0, 0, 0, 0) >=
+              new Date().setHours(0, 0, 0, 0)
+            )
           })
           .slice(0, 5)
         if (this.tours.length === 0) {

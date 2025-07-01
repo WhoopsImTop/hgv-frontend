@@ -11,6 +11,9 @@
           <nuxt-link class="font-sans my-1 max-md:mx-0 md:mx-2" :to="footerLinks_one.faqLink">{{
             footerLinks_one.translations[$i18n.locale].faq
           }}</nuxt-link>
+          <nuxt-link class="font-sans my-1 max-md:mx-0 md:mx-2" :to="footerLinks_one.board">{{
+            footerLinks_one.translations[$i18n.locale].board
+          }}</nuxt-link>
           <nuxt-link class="font-sans my-1 max-md:mx-0 md:mx-2" :to="footerLinks_one.contactLink">{{
             footerLinks_one.translations[$i18n.locale].contact
           }}</nuxt-link>
@@ -54,18 +57,21 @@ export default {
         translations: {
           de: {
             faq: 'FAQ Mitgliedschaft',
+            board: 'Vorstand',
             contact: 'Kontakt',
             impressum: 'Impressum',
             datenschutzerklären: 'Datenschutzerklärung',
           },
           en: {
             faq: 'FAQ Membership',
+            board: 'Board',
             contact: 'Contact',
             impressum: 'Imprint',
             datenschutzerklären: 'Privacy Policy',
           },
         },
         faqLink: '/faq',
+        board: '/guide/board',
         contactLink: '/contact',
         impressumLink: '/imprint',
         datenschutzerklärenLink: '/privacy-policy',

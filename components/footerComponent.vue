@@ -5,18 +5,37 @@
         class="container mx-auto flex md:flex-row flex-col md:justify-between md:align-end md:items-end"
       >
         <div>
-          <img src="../assets/logo.svg" alt="HGV Logo" width="70" class="sm:mb-0" />
+          <img
+            src="../assets/logo.svg"
+            alt="HGV Logo"
+            width="70"
+            class="sm:mb-0"
+          />
         </div>
         <div class="flex flex-col md:flex-row mt-4 sm:mt-0">
-          <nuxt-link class="font-sans my-1 max-md:mx-0 md:mx-2" :to="footerLinks_one.faqLink">{{
-            footerLinks_one.translations[$i18n.locale].faq
-          }}</nuxt-link>
-          <nuxt-link class="font-sans my-1 max-md:mx-0 md:mx-2" :to="footerLinks_one.board">{{
-            footerLinks_one.translations[$i18n.locale].board
-          }}</nuxt-link>
-          <nuxt-link class="font-sans my-1 max-md:mx-0 md:mx-2" :to="footerLinks_one.contactLink">{{
-            footerLinks_one.translations[$i18n.locale].contact
-          }}</nuxt-link>
+          <nuxt-link
+            class="font-sans my-1 max-md:mx-0 md:mx-2"
+            :to="footerLinks_one.faqLink"
+            >{{ footerLinks_one.translations[$i18n.locale].faq }}</nuxt-link
+          >
+          <nuxt-link
+            class="font-sans my-1 max-md:mx-0 md:mx-2"
+            :to="footerLinks_one.board"
+            >{{ footerLinks_one.translations[$i18n.locale].board }}</nuxt-link
+          >
+          <nuxt-link
+            class="font-sans my-1 max-md:mx-0 md:mx-2"
+            :to="footerLinks_one.contactLink"
+            >{{ footerLinks_one.translations[$i18n.locale].contact }}</nuxt-link
+          >
+
+          <nuxt-link
+            class="font-sans my-1 max-md:mx-0 md:mx-2"
+            :to="footerLinks_one.accessibilityLink"
+            >{{
+              footerLinks_one.translations[$i18n.locale].accessibility
+            }}</nuxt-link
+          >
           <nuxt-link
             class="font-sans my-1 max-md:mx-0 md:mx-2"
             :to="footerLinks_one.impressumLink"
@@ -59,6 +78,7 @@ export default {
             faq: 'FAQ Mitgliedschaft',
             board: 'Vorstand',
             contact: 'Kontakt',
+            accessibility: 'Barrierefreiheit',
             impressum: 'Impressum',
             datenschutzerklären: 'Datenschutzerklärung',
           },
@@ -66,6 +86,7 @@ export default {
             faq: 'FAQ Membership',
             board: 'Board',
             contact: 'Contact',
+            accessibility: 'Accessibility',
             impressum: 'Imprint',
             datenschutzerklären: 'Privacy Policy',
           },
@@ -73,6 +94,7 @@ export default {
         faqLink: '/faq',
         board: '/guide/board',
         contactLink: '/contact',
+        accessibilityLink: '/accessibility',
         impressumLink: '/imprint',
         datenschutzerklärenLink: '/privacy-policy',
       },

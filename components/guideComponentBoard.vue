@@ -13,9 +13,10 @@
       />
     </div>
     <div class="ml-2">
-      <h3 class="font-sans font-bold mb-2">
+      <h3 class="font-sans font-bold">
         {{ guide.name }}
       </h3>
+      <span class="font-sans font-medium mb-4">{{ guide.board_title }}</span>
       <p class="block mb-2 my-2">
         <a
           v-if="JSON.parse(guide.contact).email"
